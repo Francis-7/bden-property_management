@@ -1,0 +1,23 @@
+{% extends 'bdenapp/base.html' %}
+{% block title %}
+    Login page
+{% endblock title %}
+{% block content %}
+    <div class="text-center">
+        <h2 class="display-4">Login</h2>
+    </div>
+    <div class="text-center">
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" required>
+            </p>
+            <p>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" required>
+            </p>
+            <button class="btn btn-primary" type="submit">Login</button>
+        </form>
+    </div>
+{% endblock content %}

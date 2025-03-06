@@ -1,0 +1,195 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load custom_filters %}
+{% block title %}
+  Home Page
+{% endblock title %}
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock css %}
+{% block style %}
+  .location-icon {
+  width: 24px; /* Adjust the size as needed */
+  height: 24px;
+  fill: #000; /* Adjust the color as needed */
+  vertical-align: middle;
+  }
+  .container-form{
+  width: 50%;
+  min-width: 250px;
+  max-width: 300px;
+  height: 180px;
+  text-align: center;
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-100%, -10%);
+  }
+  .search-form{
+  background: grey;
+  border-radius: 25px;
+  position: relative;
+  width: 200%;
+  }
+  .search-form > input{
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 25px;
+  font-size: 20px;
+  padding: 8px 40px 8px 20px;
+  border: none;
+  box-shadow: 0 1px 1px 1px black;
+  <!-- background: rgba(0,0,0,0.2); -->
+  }
+  .search-form : input:focus{
+  outline: none;
+  }
+  .search-form > button{
+  position: absolute;
+  height: 100%;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 18px;
+  top: 0;
+  right: 2%;
+  }
+  .search-form > button i{
+  color: rgb(93, 94, 95);
+  }
+  .container > button:hover i{
+  color: rgb(162, 163, 163);
+  }
+{% endblock style %}
+{% block content %}
+  <header class="header">
+    <div class="overlay"></div>
+    <div class="header__text-box">
+      <h1 class="heading-primary">
+        <span class="heading-primary--main">b-den</span>
+        <span class="heading-primary--sub">get property easily</span>
+      </h1>
+      <!-- <a href="{% url 'search_results' %}" class="mybtn mybtn--white mybtn--animated">Search for a property</a> -->
+    </div>
+    <div class="container-form">
+      <form class="search-form"
+            method="get"
+            action="{% url 'property_search_result' %}">
+        <div class="overlay-form"></div>
+        <input type="text"
+               name="q"
+               placeholder="Search properties by location"
+               id="search-input">
+        <button type="submit">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+        <div id="suggestions"></div>
+      </form>
+    </div>
+  </header>
+  <section class="features">
+    <div class="feature">
+      <svg class="feature__icon">
+        <use xlink:href="img/sprite.svg#icon-global"></use>
+      </svg>
+      <h4 class="heading-4 heading-4--dark">World's best luxury homes</h4>
+      <p class="feature__text">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur distinctio necessitatibus pariatur voluptatibus.
+      </p>
+    </div>
+    <div class="feature">
+      <svg class="feature__icon">
+        <use xlink:href="img/sprite.svg#icon-trophy"></use>
+      </svg>
+      <h4 class="heading-4 heading-4--dark">Only the best properties</h4>
+      <p class="feature__text">
+        Voluptatum mollitia quae. Vero ipsum sapiente molestias accusamus rerum sed a eligendi aut quia.
+      </p>
+    </div>
+    <div class="feature">
+      <svg class="feature__icon">
+        <use xlink:href="img/sprite.svg#icon-map-pin"></use>
+      </svg>
+      <h4 class="heading-4 heading-4--dark">All homes in in top locations</h4>
+      <p class="feature__text">Tenetur distinctio necessitatibus pariatur voluptatibus quidem consequatur harum.</p>
+    </div>
+    <div class="feature">
+      <svg class="feature__icon">
+        <use xlink:href="img/sprite.svg#icon-key"></use>
+      </svg>
+      <h4 class="heading-4 heading-4--dark">New home in one week</h4>
+      <p class="feature__text">
+        Vero ipsum sapiente molestias accusamus rerum. Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+      </p>
+    </div>
+    <div class="feature">
+      <svg class="feature__icon">
+        <use xlink:href="img/sprite.svg#icon-presentation"></use>
+      </svg>
+      <h4 class="heading-4 heading-4--dark">Top 1% realtors</h4>
+      <p class="feature__text">
+        Quidem consequatur harum, voluptatum mollitia quae. Tenetur distinctio necessitatibus pariatur voluptatibus.
+      </p>
+    </div>
+    <div class="feature">
+      <svg class="feature__icon">
+        <use xlink:href="img/sprite.svg#icon-lock"></use>
+      </svg>
+      <h4 class="heading-4 heading-4--dark">Secure payments on nexter</h4>
+      <p class="feature__text">Pariatur voluptatibus quidem consequatur harum, voluptatum mollitia quae.</p>
+    </div>
+  </section>
+  <div class="mygrid">
+    <div class="story__pictures">
+      <img src="{% static 'bdenapp/images/story-1.jpeg' %}"
+           alt="Couple with new house"
+           class="story__img--1">
+      <img src="{% static 'bdenapp/images/story-2.jpeg' %}"
+           alt="New house"
+           class="story__img--2">
+    </div>
+    <div class="story__content">
+      <h3 class="heading-3 mb-sm">Happy Customers</h3>
+      <h2 class="heading-2 heading-2--dark mb-md">&ldquo;The best decision of our lives&rdquo;</h2>
+      <p class="story__text">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur distinctio necessitatibus pariatur voluptatibus. Quidem consequatur harum volupta!
+      </p>
+      <button class="bbtn">Find your own home</button>
+    </div>
+  </div>
+</div>
+<!-- Property header text -->
+<div class="text-center py-4">
+  <h2 class="display-4">List of All available properties</h2>
+  <!-- set--background -->
+  <div class="image__gallery">
+    {% for property in properties %}
+      <div class="image__item">
+        <a href="{% url 'propertyview' property.pk %}">
+          <img src="{{ property.picture.url }}" alt="{{ property.owner }}" class="" />
+        </a>
+        <div class="image__details">
+          <h3>
+            <span>
+              <svg class="location-icon"
+                   xmlns="http://www.w3.org/2000/svg"
+                   viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+              </svg>
+            {{ property.location |first_word_before_comma }}</span>
+            <br>
+            <span>{{ property.typeChoice }}</span>
+          </h5>
+          <p>{{ property.description }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}
+{% block script %}
+{% endblock script %}

@@ -1,0 +1,71 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block css %}
+    {{ block.super }}
+{% endblock css %}
+{% block style %}
+    #search-query {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    }
+    #suggestions {
+    border: 1px solid #ccc;
+    max-width: 300px;
+    background-color: #fff;
+    position: absolute;
+    z-index: 1000;
+    }
+    .suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    }
+    .suggestion-item:hover {
+    background-color: #f0f0f0;
+    }
+{% endblock style %}
+{% block title %}
+    Your Search result
+{% endblock title %}
+{% block content %}
+    <div class="the-form">
+        <form method="get" action="{% url 'property_search_result' %}">
+            <div class="reton">{{ results.form.as_p }}</div>
+            <div id="suggestions"></div>
+            <button type="submit" class="result-btn">Search</button>
+        </form>
+    </div>
+{% endblock content %}
+{% block script %}
+    document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.querySelector(".reton input[name='q']");
+    searchInput.addEventListener("input", () => {
+    showSuggestions(searchInput.value);
+    });
+    });
+    function showSuggestions(query) {
+    const suggestionsContainer = document.getElementById('suggestions');
+    suggestionsContainer.innerHTML = '';
+    if (query.length === 0) {
+    return;
+    }
+    fetch(`/search-suggestions/?query=${encodeURIComponent(query)}`)
+    .then(response => response.json())
+    .then(data => {
+    data.suggestions.forEach(suggestion => {
+    const suggestionItem = document.createElement('div');
+    suggestionItem.className = 'suggestion-item';
+    suggestionItem.innerText = suggestion;
+    suggestionItem.onclick = () => {
+    document.querySelector(".reton input[name='q']").value = suggestion;
+    suggestionsContainer.innerHTML = '';
+    };
+    suggestionsContainer.appendChild(suggestionItem);
+    });
+    })
+    .catch(error => {
+    console.error('Error fetching suggestions:', error);
+    });
+    }
+{% endblock script %}

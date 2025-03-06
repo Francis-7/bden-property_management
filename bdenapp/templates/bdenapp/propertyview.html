@@ -1,0 +1,87 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+    Property View
+{% endblock title %}
+{% block css %}
+    {{ block.super }}
+{% endblock css %}
+{% block style %}
+    .thumbnail {
+    width: 300px; /* Adjust the width of the thumbnail */
+    }
+    .full-size {
+    display: none; /* Hide the full-size image by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    border: 2px solid #000;
+    background-color: #fff;
+    object-fit: contain;
+    height: 100%;
+    <!-- width: 50vw; -->
+    }
+    .overlay {
+    display: none; /* Hide the overlay by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    }
+    .next-button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1001;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="property-container">
+        <div class="image-flex">
+            <img src="{{ property.picture.url }}"
+                 alt="{{ property.owner }}"
+                 class=""
+                 height="400">
+        </div>
+        <div class="text-flex">
+            <h3 class="">
+                <strong style="background-color: rgba(0,0,0,0.0);">Location:</strong>
+                <br>
+                {{ property.location }}
+            </h3>
+            <h2 class="">{{ property.description }}</h2>
+            <p class="">
+                Type:
+                <br>
+                {{ property.typeChoice }}
+            </p>
+            <button class="">₦{{ property.price | intcomma }}</button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid p-2 mt-5">
+    <div class="row row-col-2">
+        {% for image in images %}
+            <div class="col">
+                <img src="{{ image.images.url }}"
+                     alt="{{ image.property.owner }}"
+                     height="150">
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

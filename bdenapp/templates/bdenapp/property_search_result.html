@@ -1,0 +1,39 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    properties
+{% endblock title %}
+{% block style %}
+    .properties {
+    <!-- background-color: red; -->
+    }
+    .property-row {
+    display: flexbox;
+    align-items:start;
+    padding: 20px;
+    }
+    .property-col {
+    display: flex;
+    flex-direction: row;
+    <!-- flex-wrap: wrap; -->
+    justify-content: flex-start;
+    gap: 13px;
+    }
+    }
+{% endblock %}
+{% block content %}
+    <div class="properties">
+        <div class="property-row">
+            <h1 class="display-4">Results: {{ size }}</h1>
+            {% for result in results %}
+                <div class="property-col">
+                    <a href="{% url 'propertyview' result.id %}">
+                        <img src="{{ result.picture.url }}" alt="{{ result.owner }}" height="150">
+                    </a>
+                {% empty %}
+                    <p class="no-result">No results found</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
