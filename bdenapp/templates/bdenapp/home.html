@@ -65,6 +65,39 @@
   .container > button:hover i{
   color: rgb(162, 163, 163);
   }
+  .cards {
+  max-width: 100%;
+  margin: 1em auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 15px;
+  }
+  .for-property {
+  font: 1em sans-serif;
+  padding: 1em;
+  }
+  .for-property img {
+  max-width: 100%;
+  }
+  .card {
+  border: 1px solid #999;
+  border-radius: 3px;
+  display: grid;
+  grid-template-rows: max-content 150px 1fr;
+  }
+  .card img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  }
+  .card h2 {
+  margin: 0;
+  padding: 0.5rem;
+  font: 1em sans-serif;
+  }
+  .card .content {
+  padding: 0.5rem;
+  }
 {% endblock style %}
 {% block content %}
   <header class="header">
@@ -166,30 +199,33 @@
 <!-- Property header text -->
 <div class="text-center py-4">
   <h2 class="display-4">List of All available properties</h2>
-  <!-- set--background -->
-  <div class="image__gallery">
+</div>
+<!-- set--background -->
+<section class="for-property">
+  <div class="cards">
     {% for property in properties %}
-      <div class="image__item">
+      <div class="card">
+        <div class="heading">
+          <h2>{{ property.typeChoice }}</h2>
+        </div>
         <a href="{% url 'propertyview' property.pk %}">
-          <img src="{{ property.picture.url }}" alt="{{ property.owner }}" class="" />
+          <img src="{{ property.picture.url }}" alt="{{ property.owner }}" />
         </a>
-        <div class="image__details">
+        <div class="content">
           <h3>
-            <span>
-              <svg class="location-icon"
-                   xmlns="http://www.w3.org/2000/svg"
-                   viewBox="0 0 24 24">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-              </svg>
-            {{ property.location |first_word_before_comma }}</span>
-            <br>
-            <span>{{ property.typeChoice }}</span>
-          </h5>
+            <svg class="location-icon"
+                 xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+            {{ property.location |first_word_before_comma }}
+          </h3>
           <p>{{ property.description }}</p>
         </div>
       </div>
     {% endfor %}
   </div>
+</section>
 {% endblock content %}
 {% block script %}
 {% endblock script %}

@@ -1,39 +1,69 @@
 {% extends 'bdenapp/base.html' %}
 {% load static %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock css %}
+{% load custom_filters %}
 {% block title %}
     properties
 {% endblock title %}
 {% block style %}
-    .properties {
-    <!-- background-color: red; -->
+    .cards {
+    max-width: 100%;
+    margin: 1em auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 15px;
     }
-    .property-row {
-    display: flexbox;
-    align-items:start;
-    padding: 20px;
+    .for-property {
+    font: 1em sans-serif;
+    padding: 1em;
     }
-    .property-col {
-    display: flex;
-    flex-direction: row;
-    <!-- flex-wrap: wrap; -->
-    justify-content: flex-start;
-    gap: 13px;
+    .for-property img {
+    max-width: 100%;
     }
+    .card {
+    border: 1px solid #999;
+    border-radius: 3px;
+    display: grid;
+    grid-template-rows: max-content 150px 1fr;
+    }
+    .card img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    }
+    .card h2 {
+    margin: 0;
+    padding: 0.5rem;
+    font: 1em sans-serif;
+    }
+    .card .content {
+    padding: 0.5rem;
     }
 {% endblock %}
 {% block content %}
-    <div class="properties">
-        <div class="property-row">
-            <h1 class="display-4">Results: {{ size }}</h1>
+    <h1 class="display-4">Results: {{ size }}</h1>
+    <section class="for-property">
+        <div class="cards">
             {% for result in results %}
-                <div class="property-col">
-                    <a href="{% url 'propertyview' result.id %}">
-                        <img src="{{ result.picture.url }}" alt="{{ result.owner }}" height="150">
+                <div class="card">
+                    <div class="heading">
+                        <h2>{{ result.typeChoice }}</h2>
+                    </div>
+                    <a href="{% url 'propertyview' result.pk %}">
+                        <img src="{{ result.picture.url }}" alt="{{ result.owner }}" />
                     </a>
-                {% empty %}
-                    <p class="no-result">No results found</p>
+                    <div class="content">
+                        <h3>{{ result.location |first_word_before_comma }}</h3>
+                        <p>{{ result.description }}</p>
+                    </div>
                 </div>
+            {% empty %}
+                <p class="display-4">No Match</p>
             {% endfor %}
         </div>
-    </div>
+    </section>
 {% endblock content %}

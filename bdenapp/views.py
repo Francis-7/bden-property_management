@@ -58,9 +58,14 @@ def property_search(request):
 
 def property_search_result(request):
     query = request.GET.get('q')
-    results = Property.objects.filter(
-            Q(location__icontains=query) | Q(description__icontains=query) | Q(typeChoice__icontains=query)
-        )
+    if query:
+        if query != '':
+            results = Property.objects.filter(
+                Q(location__icontains=query) | Q(description__icontains=query) | Q(typeChoice__icontains=query)
+            )
+        else:
+            results = Property.objects.filter(location__icontains=query)
+    
     return render(request, 'bdenapp/property_search_result.html', {'results' : results, 'size' : results.count()})
     
 # def the suggestion part of the search query
@@ -111,20 +116,29 @@ def user_logout(request):
 @user_passes_test(lambda u: u.is_superuser)
 def upload_property(request):
     if request.method == 'POST':
-        form = PropertyForm(data=request.POST)
+        form = PropertyForm(request.POST)
         if form.is_valid():
-            form.save()
+            property = form.save(commit=False)
+            property.save()
             return redirect('home')
     else:
         form = PropertyForm()
     return render(request, 'bdenapp/upload_property.html', {'form':form})
 
+@user_passes_test(lambda u: u.is_superuser)
 def upload_images(request):
     if request.method == 'POST':
-        form = PropertyImageForm(data=request.POST)
-        if form.is_valid:
-            form.save()
-            return redirect('home')
+        form = PropertyImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            property_instance = form.cleaned_data.get('property')  # Get the property instance
+            images = request.FILES.getlist('images')  # Get all uploaded images
+
+            for img in images:
+                PropertyImage.objects.create(property=property_instance, images=img)
+            return redirect('home')  # Ensure the home URL is defined in urls.py
+        else:
+            print("Form errors:", form.errors)  # Debug form errors
     else:
         form = PropertyImageForm()
+
     return render(request, 'bdenapp/upload_images.html', {'form': form})

@@ -1,87 +1,84 @@
 {% extends 'bdenapp/base.html' %}
 {% load static %}
 {% load humanize %}
+{% load custom_filters %}
 {% block title %}
     Property View
 {% endblock title %}
 {% block css %}
     {{ block.super }}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock css %}
 {% block style %}
-    .thumbnail {
-    width: 300px; /* Adjust the width of the thumbnail */
+    .main-property {
+    font: 1.2em sans-serif;
     }
-    .full-size {
-    display: none; /* Hide the full-size image by default */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    border: 2px solid #000;
-    background-color: #fff;
-    object-fit: contain;
-    height: 100%;
-    <!-- width: 50vw; -->
+    .main-property img {
+    max-width: 100%;
     }
-    .overlay {
-    display: none; /* Hide the overlay by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    .content {
+    margin:  0 0 1em 0;
+    }
+    .media {
+    display: grid;
+    padding: 2em;
+    grid-template-columns: minmax(200px, 400px) 1fr;
+    gap: 1.5rem;
+    align-content: center;
+    }
+    .image-row {
+    max-width: 100%;
+    margin: 1em auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-gap: 1px;
+    }
+    .images-col {
+    <!-- border: 1px solid #999; -->
+    <!-- border-radius: 3px; -->
+    display: grid;
+    grid-template-rows: 70px;
+    margin: 1em;
+    }
+    .images-col img {
+    object-fit: cover;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
     }
-    .next-button {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    background-color: #000;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 1001;
+    .more-images img {
+    max-width: 100%;
     }
 {% endblock style %}
 {% block content %}
-    <div class="property-container">
-        <div class="image-flex">
-            <img src="{{ property.picture.url }}"
-                 alt="{{ property.owner }}"
-                 class=""
-                 height="400">
-        </div>
-        <div class="text-flex">
-            <h3 class="">
-                <strong style="background-color: rgba(0,0,0,0.0);">Location:</strong>
-                <br>
-                {{ property.location }}
-            </h3>
-            <h2 class="">{{ property.description }}</h2>
-            <p class="">
-                Type:
-                <br>
-                {{ property.typeChoice }}
-            </p>
-            <button class="">₦{{ property.price | intcomma }}</button>
-        </div>
-    </div>
-</div>
-<div class="container-fluid p-2 mt-5">
-    <div class="row row-col-2">
-        {% for image in images %}
-            <div class="col">
-                <img src="{{ image.images.url }}"
-                     alt="{{ image.property.owner }}"
-                     height="150">
+    <section class="main-property">
+        <div class="media">
+            <div class="img">
+                <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
             </div>
-        {% endfor %}
-    </div>
-</div>
+            <div class="content">
+                <h3>
+                    <strong>Location:</strong>
+                    <br>
+                    {{ property.location }}
+                </h3>
+                <h4>{{ property.description }}</h4>
+                <p>
+                    Type:
+                    <br>
+                    {{ property.typeChoice }}
+                </p>
+                <h2 class="display-4">₦{{ property.price | intcomma }}</h2>
+            </div>
+        </div>
+    </section>
+    <section class="more-images">
+        <div class="image-row">
+            {% for image in images %}
+                <div class="images-col">
+                    <img src="{{ image.images.url }}" alt="{{ image.property.owner }}">
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock content %}

@@ -45,6 +45,10 @@ class PropertyForm(forms.ModelForm):
         fields = '__all__'
 
 class PropertyImageForm(forms.ModelForm):
+    # image = forms.FileField(widget=forms.TextInput(attrs={"name":"images","type":"File","multiple":"True"}), label = "Upload Images")
     class Meta:
         model = PropertyImage
-        fields = '__all__'
+        fields = ['property', 'images']
+        property = forms.CharField(widget=forms.TextInput(attrs={'name':'property'}), label='Property')
+        images = forms.FileField(widget=forms.TextInput(attrs={"name":"images","type":"File","multiple":"True"}), label = "Upload Images")
+        

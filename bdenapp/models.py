@@ -26,7 +26,7 @@ class Property(models.Model):
 
 class PropertyImage(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    images = models.ImageField(upload_to='more_pictures/')
+    images = models.ImageField(upload_to='more_pictures/', null=True, blank=True)
 
     class Meta:
         db_table = 'more_images'
