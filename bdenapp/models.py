@@ -3,18 +3,30 @@ from django.db.models import Count
 from collections import defaultdict
 # from django.contrib.auth.models import User
 
+class Category(models.Model):
+    CATEGORIES = models.TextChoices('CATEGORIES', 'Apartment Residence Unit')
+    name = models.CharField(max_length=15, choices=CATEGORIES)
+
+    class Meta:
+        db_table = 'categories'
+        verbose_name_plural = 'categories'
+
+    def __str__(self):
+        return f"{self.name}"
+    
 class Property(models.Model):
     location = models.CharField(max_length=250)
     owner = models.CharField(max_length=150)
     price = models.FloatField()
-    propertyType = models.TextChoices('propertyType', 'Apartment Container Land')
-    typeChoice = models.CharField(max_length=15, choices=propertyType)
+    propertyType = models.TextChoices('propertyType', 'studio 1-bedroom 2-bedroom 3-bedroom pent-house single-family-home town-house condominium duplex villa luxury-apartment estate-home mansion private-villa pent-house-suite')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    typeChoice = models.CharField(max_length=150, choices=propertyType, default='')
     description = models.CharField(max_length=500)
     isAvailable = models.BooleanField(default=True)
     STATUS = models.TextChoices('STATUS', 'Rent Lease Sale')
     picture = models.ImageField(upload_to="images/")
     uploaded = models.DateField(auto_now_add=True)
-    isPairToPair = models.BooleanField(default=False)
+    isPeerToPeer = models.BooleanField(default=False)
     provision = models.CharField(max_length=10, choices=STATUS, default='rent')
 
     class Meta:
