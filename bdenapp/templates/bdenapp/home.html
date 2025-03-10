@@ -131,6 +131,21 @@
   .card .content {
   padding: 0.5rem;
   }
+  .lower-body {
+  background-color: rgba(0,0,255,0.5);
+  padding: 2em;
+  }
+  .state-name {
+  font: 24px sans-serif;
+  padding: 0;
+  }
+  .state-number {
+  font: 24px sans-serif;
+  padding: 0;
+  }
+  ..heading-primary--sub {
+  letter-spacing: 0.5rem;
+  }
 {% endblock style %}
 {% block content %}
   <header class="header">
@@ -183,11 +198,12 @@
     <div class="containter text-center  m-5 ps-5">
       <div class="row row-cols-6 ">
         {% for key, value in groups.items %}
-          <a href="{% url 'category' key %}" class="btn btn-outline-primary mx-2">
-            <div class="col p-4">
-              <span class="display-5">{{ key }}</span>
+          <a href="{% url 'category' key %}"
+             class="btn btn-outline-primary mx-2 py-3 px-1">
+            <div class="col pt-3">
+              <span class="state-name">{{ key }}</span>
               <br>
-              <span class="display-5">{{ value }}</span>
+              <span class="state-number">{{ value }}</span>
             </div>
           </a>
         {% endfor %}
@@ -195,35 +211,37 @@
     </div>
   </section>
   <!-- Property header text -->
-  <div class="text-center py-4">
-    <h2 class="display-5">Featured properties</h2>
-  </div>
-  <!-- set--background -->
-  <section class="for-property">
-    <div class="cards">
-      {% for property in properties %}
-        <div class="card">
-          <div class="heading">
-            <h2>{{ property.typeChoice }}</h2>
-          </div>
-          <a href="{% url 'propertyview' property.pk %}">
-            <img src="{{ property.picture.url }}" alt="{{ property.owner }}" />
-          </a>
-          <div class="content">
-            <h3>
-              <svg class="location-icon"
-                   xmlns="http://www.w3.org/2000/svg"
-                   viewBox="0 0 24 24">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-              </svg>
-              {{ property.location |first_word_before_comma }}
-            </h3>
-            <p>{{ property.description }}</p>
-          </div>
-        </div>
-      {% endfor %}
+  <div class="lower-body">
+    <div class="text-center py-4">
+      <h2 class="display-5 text-white">Featured properties</h2>
     </div>
-  </section>
+    <!-- set--background -->
+    <section class="for-property">
+      <div class="cards">
+        {% for property in properties %}
+          <div class="card">
+            <div class="heading">
+              <h2>{{ property.typeChoice }}</h2>
+            </div>
+            <a href="{% url 'propertyview' property.pk %}">
+              <img src="{{ property.picture.url }}" alt="{{ property.owner }}" />
+            </a>
+            <div class="content">
+              <h3>
+                <svg class="location-icon"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+                {{ property.location |first_word_before_comma }}
+              </h3>
+              <p>{{ property.description }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
 {% endblock content %}
 {% block script %}
 {% endblock script %}
