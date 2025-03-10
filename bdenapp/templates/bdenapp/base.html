@@ -31,7 +31,38 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
     <!-- for the search button functionality -->
-    <style>{% block style %} {% endblock %}</style>
+    <style>{% block style %}
+    .footers {
+      display: grid;
+    background-color: #dd1c46;
+    grid-column: full-start / full-end;
+    padding: 90rem;
+
+  }
+  .icon {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-gap: 2rem;
+  align-items: center; }
+  .icon__link:link, .nav__link:visited {
+    font-size: 1.4rem;
+    color: #fff;
+    text-decoration: none;
+    font-family: "Josefin Sans", sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 1.5rem;
+    display: block;
+    transition: all .2s; }
+  .icon__link:hover, .icon__link:active {
+    background-color: rgba(1, 20, 0, 0.05);
+    transform: translateY(-3px); }
+
+/* foooter */
+
+     {% endblock %}
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg shadow p-3 mb-5 sticky-top bg-body-tertiary rounded border border-secondary-subtle">

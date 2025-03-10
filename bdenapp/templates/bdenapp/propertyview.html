@@ -26,10 +26,10 @@
     grid-template-rows: 1fr 1fr;
     gap: 5px;
     }
-    .main-body > section.main-property > .nested-grid {
+    .main-body > section.main-property{
     grid-area: property;
     }
-    .main-body > section.more-images > .nested-grid {
+    .main-body > section.more-images {
     grid-area: property;
     }
     .main-body > section.for-review {
@@ -76,9 +76,6 @@
     width: 100%;
     height: 100%;
     }
-    .more-images img {
-    max-width: 100%;
-    }
 {% endblock style %}
 {% block content %}
     <div class="main-body">
@@ -123,22 +120,26 @@
             <div class="user-image">
                 <img src="" alt="">
                 <div class="reviewer">
-                    <p></p>
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio ducimus, voluptatum deserunt repellat et quos cumque ipsam aspernatur perferendis modi obcaecati soluta totam delectus natus, sunt neque quisquam fugiat sapiente.
+                    </p>
                 </div>
             </div>
             <div class="user-review">
                 <h3></h3>
             </div>
         </section>
-        <section class="for-related">
+        <div class="for-related">
             {% for property in properties %}
-                <div class="related-image">
-                    <img src="{{ property.picture.url }}"
-                         alt="{{ property.owner }}"
-                         height="50">
-                </div>
-                <div class="related-contemt">
-                    <!-- <h3>Property related view</h3> -->
+                <div class="related">
+                    <div class="related-image">
+                        <img src="{{ property.picture.url }}"
+                             alt="{{ property.owner }}"
+                             height="50">
+                    </div>
+                    <div class="related-content">
+                        <!-- <h3>Property related view</h3> -->
+                    </div>
                 </div>
             {% endfor %}
         </section>
@@ -153,4 +154,5 @@
             </div>
         </section>
     </div>
+</div>
 {% endblock content %}
