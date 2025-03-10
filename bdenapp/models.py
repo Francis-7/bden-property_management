@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Count
+from collections import defaultdict
 # from django.contrib.auth.models import User
 
 class Property(models.Model):
@@ -32,3 +34,16 @@ class PropertyImage(models.Model):
         db_table = 'more_images'
         verbose_name_plural = 'propertyImages'
         
+def group_and_sort_by_first_word():
+    # fetch all objects
+    objects = Property.objects.all()
+    groups = defaultdict(int)
+
+    for obj in objects:
+        # extract the first word before the first comma
+        first_word = obj.location.split(',', 1)[0]
+        groups[first_word] += 1
+
+    # sort the groups by the first word
+    sorted_groups = dict(sorted(groups.items()))
+    return sorted_groups

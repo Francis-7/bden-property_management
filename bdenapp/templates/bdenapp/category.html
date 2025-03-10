@@ -1,0 +1,69 @@
+{% extends 'bdenApp/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}
+    Category View
+{% endblock title %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock css %}
+{% block style %}
+    .cards {
+    max-width: 100%;
+    margin: 1em auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 15px;
+    }
+    .for-property {
+    font: 1em sans-serif;
+    padding: 1em;
+    }
+    .for-property img {
+    max-width: 100%;
+    }
+    .card {
+    border: 1px solid #999;
+    border-radius: 3px;
+    display: grid;
+    grid-template-rows: max-content 150px 1fr;
+    }
+    .card img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    }
+    .card h2 {
+    margin: 0;
+    padding: 0.5rem;
+    font: 1em sans-serif;
+    }
+    .card .content {
+    padding: 0.5rem;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="text-center">
+        <h2 class="display-4">Property Category View</h2>
+    </div>
+    <section class="for-property">
+        <div class="cards">
+            {% for obj in objects %}
+                <div class="card">
+                    <div class="heading">
+                        <h2>{{ obj.typeChoice }}</h2>
+                    </div>
+                    <a href="{% url 'propertyview' obj.pk %}">
+                        <img src="{{ obj.picture.url }}" alt="{{ obj.owner }}" />
+                    </a>
+                    <div class="content">
+                        <h3>{{ obj.location |first_word_before_comma }}</h3>
+                        <p>{{ obj.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock content %}

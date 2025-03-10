@@ -6,16 +6,19 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import UserRegistrationForm, PropertyForm, PropertyImageForm
+from .models import group_and_sort_by_first_word
 
 
 def home(request):
     properties = Property.objects.all().order_by('location')
-    return render(request, 'bdenapp/home.html', {'properties': properties})
+    grouped_data = group_and_sort_by_first_word()
+    return render(request, 'bdenapp/home.html', {'properties': properties, 'groups' : grouped_data})
 
 def propertyView(request, id):
     property = get_object_or_404(Property, id=id)
     images = property.propertyimage_set.all()
-    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images})
+    properties = Property.objects.all()
+    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties})
 
 # Define a search pattern for the page
 def search_results_single(request):
@@ -142,3 +145,10 @@ def upload_images(request):
         form = PropertyImageForm()
 
     return render(request, 'bdenapp/upload_images.html', {'form': form})
+
+
+# category view
+def category_view(request, category):
+    # Filter objects by the first word before the comma in the location field
+    filtered_objects = Property.objects.filter(location__startswith=category)
+    return render(request, 'bdenApp/category.html', {'objects': filtered_objects})

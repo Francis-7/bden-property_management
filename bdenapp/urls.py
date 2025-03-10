@@ -13,4 +13,5 @@ urlpatterns = [
     path('upload_property', views.upload_property, name='upload_property'),
     path('upload_images', views.upload_images, name='upload_images'),
     path('property_search/', views.property_search, name='property_search'),
+    path('category/<str:category>/', views.category_view, name='category'),
 ]

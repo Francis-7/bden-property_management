@@ -17,6 +17,35 @@
   fill: #000; /* Adjust the color as needed */
   vertical-align: middle;
   }
+  .filter-sel {
+  position: absolute;
+  top: 82%;
+  left: 43%;
+  transform: translate(-100%, -10%);
+  <!-- width: 90%; -->
+  }
+  .filter-sel > select {
+  padding: 5px;
+  width: 150%;
+  text-alignment: center;
+  <!-- border-radius: 20%; -->
+  color: white;
+  font: 20px sans-serif;
+  }
+  .price-choice {
+  position: absolute;
+  top: 82%;
+  right: 25%;
+  transform: translate(-100%, -10%);
+  }
+  .price-choice > select {
+  padding: 5px;
+  width: 150%;
+  text-alignment: center;
+  <!-- border-radius: 20%; -->
+  color: white;
+  font: 20px sans-serif;
+  }
   .container-form{
   width: 50%;
   min-width: 250px;
@@ -44,6 +73,10 @@
   border: none;
   box-shadow: 0 1px 1px 1px black;
   <!-- background: rgba(0,0,0,0.2); -->
+  }
+  <!-- the anchor decoration -->
+  #tag-anchor {
+  text-decoration: none;
   }
   .search-form : input:focus{
   outline: none;
@@ -124,108 +157,71 @@
         <div id="suggestions"></div>
       </form>
     </div>
+    <div class="filter-sel">
+      <select name="" id="choice">
+        <option value="">--Select Type--</option>
+        <option value="bedroom">bedroom</option>
+        <option value="apartment">Apartment</option>
+      </select>
+    </div>
+    <div class="price-choice">
+      <select name="" id="price range">
+        <option value="">--Select price</option>
+        <option value="low">~ ₦300,000</option>
+        <option value="mediu">~ ₦500,000</option>
+        <option value="high">₦1,000,000+</option>
+      </select>
+    </div>
   </header>
-  <section class="features">
-    <div class="feature">
-      <svg class="feature__icon">
-        <use xlink:href="img/sprite.svg#icon-global"></use>
-      </svg>
-      <h4 class="heading-4 heading-4--dark">World's best luxury homes</h4>
-      <p class="feature__text">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur distinctio necessitatibus pariatur voluptatibus.
-      </p>
+  <!-- this section is for grouping by states and number of properties -->
+  <section class="group-list">
+    <div class="text-center m-4">
+      <h2 class="display-2">List of properties in States</h2>
     </div>
-    <div class="feature">
-      <svg class="feature__icon">
-        <use xlink:href="img/sprite.svg#icon-trophy"></use>
-      </svg>
-      <h4 class="heading-4 heading-4--dark">Only the best properties</h4>
-      <p class="feature__text">
-        Voluptatum mollitia quae. Vero ipsum sapiente molestias accusamus rerum sed a eligendi aut quia.
-      </p>
-    </div>
-    <div class="feature">
-      <svg class="feature__icon">
-        <use xlink:href="img/sprite.svg#icon-map-pin"></use>
-      </svg>
-      <h4 class="heading-4 heading-4--dark">All homes in in top locations</h4>
-      <p class="feature__text">Tenetur distinctio necessitatibus pariatur voluptatibus quidem consequatur harum.</p>
-    </div>
-    <div class="feature">
-      <svg class="feature__icon">
-        <use xlink:href="img/sprite.svg#icon-key"></use>
-      </svg>
-      <h4 class="heading-4 heading-4--dark">New home in one week</h4>
-      <p class="feature__text">
-        Vero ipsum sapiente molestias accusamus rerum. Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-      </p>
-    </div>
-    <div class="feature">
-      <svg class="feature__icon">
-        <use xlink:href="img/sprite.svg#icon-presentation"></use>
-      </svg>
-      <h4 class="heading-4 heading-4--dark">Top 1% realtors</h4>
-      <p class="feature__text">
-        Quidem consequatur harum, voluptatum mollitia quae. Tenetur distinctio necessitatibus pariatur voluptatibus.
-      </p>
-    </div>
-    <div class="feature">
-      <svg class="feature__icon">
-        <use xlink:href="img/sprite.svg#icon-lock"></use>
-      </svg>
-      <h4 class="heading-4 heading-4--dark">Secure payments on nexter</h4>
-      <p class="feature__text">Pariatur voluptatibus quidem consequatur harum, voluptatum mollitia quae.</p>
+    <div class="containter text-center  m-5 ps-5">
+      <div class="row row-cols-6 ">
+        {% for key, value in groups.items %}
+          <a href="{% url 'category' key %}" class="btn btn-outline-primary mx-2">
+            <div class="col p-4">
+              <span class="display-5">{{ key }}</span>
+              <br>
+              <span class="display-5">{{ value }}</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
     </div>
   </section>
-  <div class="mygrid">
-    <div class="story__pictures">
-      <img src="{% static 'bdenapp/images/story-1.jpeg' %}"
-           alt="Couple with new house"
-           class="story__img--1">
-      <img src="{% static 'bdenapp/images/story-2.jpeg' %}"
-           alt="New house"
-           class="story__img--2">
-    </div>
-    <div class="story__content">
-      <h3 class="heading-3 mb-sm">Happy Customers</h3>
-      <h2 class="heading-2 heading-2--dark mb-md">&ldquo;The best decision of our lives&rdquo;</h2>
-      <p class="story__text">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur distinctio necessitatibus pariatur voluptatibus. Quidem consequatur harum volupta!
-      </p>
-      <button class="bbtn">Find your own home</button>
-    </div>
+  <!-- Property header text -->
+  <div class="text-center py-4">
+    <h2 class="display-4">List of All available properties</h2>
   </div>
-</div>
-<!-- Property header text -->
-<div class="text-center py-4">
-  <h2 class="display-4">List of All available properties</h2>
-</div>
-<!-- set--background -->
-<section class="for-property">
-  <div class="cards">
-    {% for property in properties %}
-      <div class="card">
-        <div class="heading">
-          <h2>{{ property.typeChoice }}</h2>
+  <!-- set--background -->
+  <section class="for-property">
+    <div class="cards">
+      {% for property in properties %}
+        <div class="card">
+          <div class="heading">
+            <h2>{{ property.typeChoice }}</h2>
+          </div>
+          <a href="{% url 'propertyview' property.pk %}">
+            <img src="{{ property.picture.url }}" alt="{{ property.owner }}" />
+          </a>
+          <div class="content">
+            <h3>
+              <svg class="location-icon"
+                   xmlns="http://www.w3.org/2000/svg"
+                   viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+              </svg>
+              {{ property.location |first_word_before_comma }}
+            </h3>
+            <p>{{ property.description }}</p>
+          </div>
         </div>
-        <a href="{% url 'propertyview' property.pk %}">
-          <img src="{{ property.picture.url }}" alt="{{ property.owner }}" />
-        </a>
-        <div class="content">
-          <h3>
-            <svg class="location-icon"
-                 xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 24 24">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-            </svg>
-            {{ property.location |first_word_before_comma }}
-          </h3>
-          <p>{{ property.description }}</p>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-</section>
+      {% endfor %}
+    </div>
+  </section>
 {% endblock content %}
 {% block script %}
 {% endblock script %}

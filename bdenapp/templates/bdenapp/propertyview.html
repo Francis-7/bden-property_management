@@ -11,6 +11,36 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock css %}
 {% block style %}
+    .main-body {
+    display: grid;
+    background: yellow;
+    grid-template-areas:
+    "property related"
+    "review contact";
+    gap: 5px;
+    grid-template-columns: 2fr 1fr;
+    padding: 5px;
+    }
+    .main-body .nested-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 5px;
+    }
+    .main-body > section.main-property > .nested-grid {
+    grid-area: property;
+    }
+    .main-body > section.more-images > .nested-grid {
+    grid-area: property;
+    }
+    .main-body > section.for-review {
+    frid-area: review;
+    }
+    .main-body > section.for-related {
+    grid-area: related;
+    }
+    .main-body > section.for-contact {
+    grid-area: contact;
+    }
     .main-property {
     font: 1.2em sans-serif;
     }
@@ -51,34 +81,76 @@
     }
 {% endblock style %}
 {% block content %}
-    <section class="main-property">
-        <div class="media">
-            <div class="img">
-                <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
+    <div class="main-body">
+        <section class="main-property">
+            <div class="media">
+                <div class="img">
+                    <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
+                </div>
+                <div class="content">
+                    <h3>
+                        <strong>Location:</strong>
+                        <br>
+                        {{ property.location }}
+                    </h3>
+                    <h4>{{ property.description }}</h4>
+                    <p>
+                        Type:
+                        <br>
+                        {{ property.typeChoice }}
+                    </p>
+                    <h2 class="display-4">₦{{ property.price | intcomma }}</h2>
+                </div>
             </div>
-            <div class="content">
-                <h3>
-                    <strong>Location:</strong>
-                    <br>
-                    {{ property.location }}
-                </h3>
-                <h4>{{ property.description }}</h4>
-                <p>
-                    Type:
-                    <br>
-                    {{ property.typeChoice }}
-                </p>
-                <h2 class="display-4">₦{{ property.price | intcomma }}</h2>
+        </section>
+        <section class="more-images">
+            <div class="image-row">
+                {% for image in images %}
+                    <div class="images-col">
+                        <img src="{{ image.images.url }}" alt="{{ image.property.owner }}">
+                    </div>
+                {% endfor %}
             </div>
-        </div>
-    </section>
-    <section class="more-images">
-        <div class="image-row">
-            {% for image in images %}
-                <div class="images-col">
-                    <img src="{{ image.images.url }}" alt="{{ image.property.owner }}">
+            <div class="p-4 m-4">
+                <a href="">
+                    <button class="btn btn-info btn-lg me-4">Purchase this Property</button>
+                </a>
+                <button class="btn btn-lg btn-secondary">Save for later</button>
+            </div>
+        </section>
+        <section class="for-review">
+            <h2 class="review-heading">See the reviews on this property</h2>
+            <div class="user-image">
+                <img src="" alt="">
+                <div class="reviewer">
+                    <p></p>
+                </div>
+            </div>
+            <div class="user-review">
+                <h3></h3>
+            </div>
+        </section>
+        <section class="for-related">
+            {% for property in properties %}
+                <div class="related-image">
+                    <img src="{{ property.picture.url }}"
+                         alt="{{ property.owner }}"
+                         height="50">
+                </div>
+                <div class="related-contemt">
+                    <!-- <h3>Property related view</h3> -->
                 </div>
             {% endfor %}
-        </div>
-    </section>
+        </section>
+        <section class="for-contact">
+            <div class="contact-form">
+                <form action="">
+                    <label for="username">Name:</label>
+                    <input type="text" id="username" required>
+                    <label for="email">Email</label>
+                    <input type="email" name="" id="email">
+                </form>
+            </div>
+        </section>
+    </div>
 {% endblock content %}
