@@ -15,104 +15,124 @@
     display: grid;
     background: yellow;
     grid-template-areas:
-    "property related"
-    "review contact";
-    gap: 5px;
+    "main-property related"
+    "for-review contact";
+    gap: 25px;
     grid-template-columns: 2fr 1fr;
     padding: 5px;
-    }
-    .main-body .nested-grid {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    gap: 5px;
-    }
-    .main-body > section.main-property{
-    grid-area: property;
-    }
-    .main-body > section.more-images {
-    grid-area: property;
-    }
-    .main-body > section.for-review {
-    frid-area: review;
-    }
-    .main-body > section.for-related {
-    grid-area: related;
-    }
-    .main-body > section.for-contact {
-    grid-area: contact;
+    grid-template-rows: auto auto;
+    <!-- grid-auto-rows: 100px; -->
     }
     .main-property {
-    font: 1.2em sans-serif;
-    }
-    .main-property img {
-    max-width: 100%;
-    }
-    .content {
-    margin:  0 0 1em 0;
+    grid-area: main-property;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    row-gap: 10px;
     }
     .media {
-    display: grid;
-    padding: 2em;
-    grid-template-columns: minmax(200px, 400px) 1fr;
-    gap: 1.5rem;
-    align-content: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    <!-- background-color: #f9f9f9 -->
     }
-    .image-row {
+    .for-review {
+    grid-area: for-review;
+    display: grid;
+    }
+    .related {
+    grid-area: related;
+    display: grid;
+    }
+    .media-1 {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    align-items: center;
+    }
+    .media-1 img {
     max-width: 100%;
-    margin: 1em auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    grid-gap: 1px;
+    height: auto;
+    object-fit: contain;
+    display: block;
     }
-    .images-col {
-    <!-- border: 1px solid #999; -->
-    <!-- border-radius: 3px; -->
+    .media-1 .content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font: 18px sans-serif;
+    }
+    .media-2 {
     display: grid;
-    grid-template-rows: 70px;
-    margin: 1em;
+    grid-auto-flow: column;
+    gap: 5px;
+    align-items: start;
     }
     .images-col img {
-    object-fit: cover;
     width: 100%;
-    height: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    }
+    .related-items {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    }
+    .related-item {
+    display: flex;
+    flex-direction: row; /* Arrange image and text side by side */
+    align-items: center; /* Center content vertically within the row */
+    gap: 20px; /* Add space between image and text */
+    }
+    .related-image img {
+    width: 100px; /* Set the image width */
+    height: 100px; /* Set the image height */
+    object-fit: cover; /* Ensure the image fills the dimensions without distortion */
+    display: block;
+    }
+    .related-item .related-content h2 {
+    font: 16px sans-serif;
     }
 {% endblock style %}
 {% block content %}
     <div class="main-body">
         <section class="main-property">
             <div class="media">
-                <div class="img">
-                    <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
-                </div>
-                <div class="content">
-                    <h3>
-                        <strong>Location:</strong>
-                        <br>
-                        {{ property.location }}
-                    </h3>
-                    <h4>{{ property.description }}</h4>
-                    <p>
-                        Type:
-                        <br>
-                        {{ property.typeChoice }}
-                    </p>
-                    <h2 class="display-4">₦{{ property.price | intcomma }}</h2>
-                </div>
-            </div>
-        </section>
-        <section class="more-images">
-            <div class="image-row">
-                {% for image in images %}
-                    <div class="images-col">
-                        <img src="{{ image.images.url }}" alt="{{ image.property.owner }}">
+                <div class="media-1">
+                    <div class="img">
+                        <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
                     </div>
-                {% endfor %}
+                    <div class="content">
+                        <h3>
+                            <strong>Location:</strong>
+                            <br>
+                            {{ property.location }}
+                        </h3>
+                        <h4>{{ property.description }}</h4>
+                        <p>
+                            Type:
+                            <br>
+                            {{ property.typeChoice }}
+                        </p>
+                        <h2 class="display-4">₦{{ property.price | intcomma }}</h2>
+                    </div>
+                </div>
             </div>
-            <div class="p-4 m-4">
-                <a href="">
-                    <button class="btn btn-info btn-lg me-4">Purchase this Property</button>
-                </a>
-                <button class="btn btn-lg btn-secondary">Save for later</button>
+            <div class="media">
+                <div class="media-2">
+                    {% for image in images %}
+                        <div class="images-col">
+                            <img src="{{ image.images.url }}" alt="{{ image.property.owner }}">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="media">
+                <div class="p-4 m-4">
+                    <a href="">
+                        <button class="btn btn-info btn-lg me-4">Purchase this Property</button>
+                    </a>
+                    <button class="btn btn-lg btn-secondary">Save for later</button>
+                </div>
             </div>
         </section>
         <section class="for-review">
@@ -129,20 +149,21 @@
                 <h3></h3>
             </div>
         </section>
-        <div class="for-related">
-            {% for property in properties %}
-                <div class="related">
-                    <div class="related-image">
-                        <img src="{{ property.picture.url }}"
-                             alt="{{ property.owner }}"
-                             height="50">
+        <div class="related">
+            <div class="related-items">
+                <h2 class="display-5">See similar properties</h2>
+                {% for property in properties %}
+                    <div class="related-item">
+                        <div class="related-image">
+                            <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
+                        </div>
+                        <div class="related-content">
+                            <h2>{{ property.description }}</h2>
+                        </div>
                     </div>
-                    <div class="related-content">
-                        <!-- <h3>Property related view</h3> -->
-                    </div>
-                </div>
-            {% endfor %}
-        </section>
+                {% endfor %}
+            </div>
+        </div>
         <section class="for-contact">
             <div class="contact-form">
                 <form action="">
