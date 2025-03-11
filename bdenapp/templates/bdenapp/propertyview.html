@@ -132,7 +132,9 @@
                     <a href="">
                         <button class="btn btn-info btn-lg me-4">Purchase this Property</button>
                     </a>
-                    <button class="btn btn-lg btn-secondary">Save for later</button>
+                    <a href="{% url 'save_for_later' property.id %}">
+                        <button class="btn btn-lg btn-secondary">Save for later</button>
+                    </a>
                 </div>
             </div>
         </section>

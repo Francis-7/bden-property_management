@@ -191,9 +191,9 @@ def save_user_profile(sender, instance, **kwargs):
 @login_required
 def user_dashboard(request):
     user_profile = UserProfile.objects.get(user=request.user)
-    saved_items = request.user.saveitems_set.all()
+    saved_items = request.user.saveditems_set.all()
     purchases = request.user.purchase_set.all()
-    return render(request, 'bdenapp/dashboard.html', {'user_profile':UserProfile, 'saved_items':saved_items, 'purchases':purchases})
+    return render(request, 'bdenapp/dashboard.html', {'user_profile':user_profile, 'saved_items':saved_items, 'purchases':purchases})
 
 # update profile picture
 @login_required
