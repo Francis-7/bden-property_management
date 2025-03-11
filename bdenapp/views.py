@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Property, PropertyImage, Review
+from .models import Property, PropertyImage, Review, UserProfile, User, SavedItems
 from .filters import PropertyFilter
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import UserRegistrationForm, PropertyForm, PropertyImageForm, ReviewForm
+from .forms import UserRegistrationForm, PropertyForm, PropertyImageForm, ReviewForm, UserProfileForm
 from .models import group_and_sort_by_first_word
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 def home(request):
@@ -171,3 +173,39 @@ def submit_review(request, id):
     else:
         form = ReviewForm()
     return render(request, 'bdenapp/submit_review.html', {'form':form, 'property':property})
+
+# user profile creation and things
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userprofile.save()
+
+# the user dashboard
+@login_required
+def user_dashboard(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    saved_items = request.user.saveitems_set.all()
+    purchases = request.user.purchase_set.all()
+    return render(request, 'bdenapp/dashboard.html', {'user_profile':UserProfile, 'saved_items':saved_items, 'purchases':purchases})
+
+# update profile picture
+@login_required
+def update_profile_picture(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = UserProfileForm()
+    return render(request, 'bdenapp/update_profile_picture.html', {'form':form})
+
+# save an item 
+def save_for_later(request, id):
+    property = get_object_or_404(Property, id=id)
+    SavedItems.objects.create(user=request.user, property=property)
+    return redirect('dashboard')

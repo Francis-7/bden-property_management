@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import PropertyImage, Property, Review
+from .models import PropertyImage, Property, Review, UserProfile
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={
@@ -56,3 +56,8 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model =  Review
         fields = ['rating', 'review_text']
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['bio', 'profile_picture']

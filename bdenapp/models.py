@@ -56,9 +56,25 @@ class Review(models.Model):
 
     class Meta:
         db_table = 'review'
+        ordering = ['created_at']
 
     def __str__(self):
         return f"{self.user.username} - {self.review_text}"
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+
+    class Meta:
+        db_table = 'user_profile'
+
+    def __str__(self):
+        return f"{self.user.username}"
+    
+class SavedItems(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
 
 def group_and_sort_by_first_word():
     # fetch all objects

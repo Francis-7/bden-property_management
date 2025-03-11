@@ -15,4 +15,6 @@ urlpatterns = [
     path('property_search/', views.property_search, name='property_search'),
     path('category/<str:category>/', views.category_view, name='category'),
     path('submit_review/<int:id>/', views.submit_review, name='submit_review'),
+    path('update_profile_picture', views.update_profile_picture, name='update_profile_picture'),
+    path('dashboard', views.user_dashboard, name='dashboard'),
 ]
