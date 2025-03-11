@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Property, PropertyImage
+from .models import Property, PropertyImage, Review
 from .filters import PropertyFilter
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import UserRegistrationForm, PropertyForm, PropertyImageForm
+from .forms import UserRegistrationForm, PropertyForm, PropertyImageForm, ReviewForm
 from .models import group_and_sort_by_first_word
 
 
@@ -18,7 +18,8 @@ def propertyView(request, id):
     property = get_object_or_404(Property, id=id)
     images = property.propertyimage_set.all()
     properties = Property.objects.all()
-    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties})
+    reviews = Review.objects.filter(property=property)
+    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews})
 
 # Define a search pattern for the page
 def search_results_single(request):
@@ -152,3 +153,21 @@ def category_view(request, category):
     # Filter objects by the first word before the comma in the location field
     filtered_objects = Property.objects.filter(location__startswith=category)
     return render(request, 'bdenApp/category.html', {'objects': filtered_objects})
+
+# handling reviews 
+
+# submiting a reviw
+@login_required
+def submit_review(request, id):
+    property = get_object_or_404(Property, id=id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.property = property
+            review.save()
+            return redirect('propertyview', id=property.id)
+    else:
+        form = ReviewForm()
+    return render(request, 'bdenapp/submit_review.html', {'form':form, 'property':property})

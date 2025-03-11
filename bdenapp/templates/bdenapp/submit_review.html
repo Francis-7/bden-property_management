@@ -1,0 +1,19 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load custom_filters %}
+{% block title %}
+    Leave a review
+{% endblock title %}
+{% block content %}
+    <div class="text-center">
+        <h2 class="display-5">Submit your review</h2>
+    </div>
+    <div class="text-center">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">submit</button>
+        </form>
+    </div>
+{% endblock content %}

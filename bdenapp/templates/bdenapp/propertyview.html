@@ -13,7 +13,7 @@
 {% block style %}
     .main-body {
     display: grid;
-    background: yellow;
+    background: rgba(0,0,255,0.5);
     grid-template-areas:
     "main-property related"
     "for-review contact";
@@ -21,6 +21,7 @@
     grid-template-columns: 2fr 1fr;
     padding: 5px;
     grid-template-rows: auto auto;
+    color: white;
     <!-- grid-auto-rows: 100px; -->
     }
     .main-property {
@@ -136,17 +137,21 @@
             </div>
         </section>
         <section class="for-review">
-            <h2 class="review-heading">See the reviews on this property</h2>
-            <div class="user-image">
-                <img src="" alt="">
-                <div class="reviewer">
-                    <p>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio ducimus, voluptatum deserunt repellat et quos cumque ipsam aspernatur perferendis modi obcaecati soluta totam delectus natus, sunt neque quisquam fugiat sapiente.
-                    </p>
-                </div>
-            </div>
-            <div class="user-review">
-                <h3></h3>
+            <div class="reviews">
+                <h2 class="review-heading">See the reviews on this property</h2>
+                {% for review in reviews %}
+                    <div class="review">
+                        <div class="reviewer-img">
+                            <img src="" alt="">
+                        </div>
+                        <div class="reviewer-name">
+                            <h3>{{ review.user.username }}: {{ review.rating }}/5</h3>
+                        </div>
+                        <div class="review-text">{{ review.review_text }}</div>
+                    </div>
+                {% empty %}
+                    <h4>No reviews yet</h4>
+                {% endfor %}
             </div>
         </section>
         <div class="related">
@@ -155,7 +160,9 @@
                 {% for property in properties %}
                     <div class="related-item">
                         <div class="related-image">
-                            <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
+                            <a href="{% url 'propertyview' property.pk %}">
+                                <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
+                            </a>
                         </div>
                         <div class="related-content">
                             <h2>{{ property.description }}</h2>
