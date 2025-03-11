@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Property, PropertyImage, Review, UserProfile, User, SavedItems
+from .models import Property, PropertyImage, Review, UserProfile, User, SavedItems, Purchase
 from .filters import PropertyFilter
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
@@ -98,6 +98,8 @@ def register(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
+            if not hasattr(user, 'userprofile'):
+                UserProfile.objects.create(user=user)
             return redirect('login')
     else:
         form = UserRegistrationForm()
@@ -182,7 +184,8 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.userprofile.save()
+    if hasattr(instance, 'userprofile'):
+        instance.userprofile.save()
 
 # the user dashboard
 @login_required
@@ -205,7 +208,15 @@ def update_profile_picture(request):
     return render(request, 'bdenapp/update_profile_picture.html', {'form':form})
 
 # save an item 
+@login_required
 def save_for_later(request, id):
     property = get_object_or_404(Property, id=id)
     SavedItems.objects.create(user=request.user, property=property)
+    return redirect('dashboard')
+
+# completing a transaction
+@login_required
+def complete_purchase(request, id):
+    property = get_object_or_404(Property, id=id)
+    Purchase.objects.create(user=request.user, property=property)
     return redirect('dashboard')

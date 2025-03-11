@@ -62,7 +62,7 @@ class Review(models.Model):
         return f"{self.user.username} - {self.review_text}"
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 
@@ -75,6 +75,19 @@ class UserProfile(models.Model):
 class SavedItems(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
+
+class Purchase(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    # quantity = models.PositiveIntegerField()
+    purchased_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'purchase'
+        ordering = ['purchased_at']
+
+    def __str__(self):
+        return f"{self.user.username}"
 
 def group_and_sort_by_first_word():
     # fetch all objects

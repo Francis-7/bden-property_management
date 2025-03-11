@@ -5,3 +5,8 @@
 {% block title %}
     Dashboard
 {% endblock title %}
+{% block content %}
+    <div class="text-center">
+        <h2 class="display-5">Welcome {{ user_profile.user.username }}</h2>
+    </div>
+{% endblock content %}
