@@ -5,8 +5,33 @@
 {% block title %}
     Dashboard
 {% endblock title %}
+{% block style %}
+    .parent {
+    }
+    .child {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border: solid 2px black;
+    }
+{% endblock style %}
 {% block content %}
     <div class="text-center">
         <h2 class="display-5">Welcome {{ user_profile.user.username }}</h2>
+    </div>
+    <div class="text-center">
+        <div class="parent">
+            <div class="child">
+                {% for item in saved_items %}
+                    <div class="image">
+                        <div class="image">
+                            <img src="{{ item.property.picture.url }}"
+                                 alt="{{ item.description }}"
+                                 height="150">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock content %}

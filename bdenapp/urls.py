@@ -18,4 +18,5 @@ urlpatterns = [
     path('update_profile_picture', views.update_profile_picture, name='update_profile_picture'),
     path('dashboard', views.user_dashboard, name='dashboard'),
     path('save_for_later/<int:id>', views.save_for_later, name='save_for_later'),
+    path('', views.landing_page, name='landing_page'),
 ]

@@ -211,7 +211,7 @@ def update_profile_picture(request):
 @login_required
 def save_for_later(request, id):
     property = get_object_or_404(Property, id=id)
-    SavedItems.objects.create(user=request.user, property=property)
+    SavedItems.objects.get_or_create(user=request.user, property=property)
     return redirect('dashboard')
 
 # completing a transaction
@@ -220,3 +220,7 @@ def complete_purchase(request, id):
     property = get_object_or_404(Property, id=id)
     Purchase.objects.create(user=request.user, property=property)
     return redirect('dashboard')
+
+# the landing page view
+def landing_page(request):
+    return render(request, 'bdenapp/landing_page.html', {})
