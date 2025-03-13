@@ -126,9 +126,10 @@ body {
         transform: translateY(1rem); } }
 
 .header {
-  background-color: #54483A;
+    position: relative;
+  background: url(images/landing.jpg) no-repeat ;
   grid-column: full-start / col-end 6;
-  background-image: linear-gradient(rgba(16, 29, 44, 0.93), rgba(16, 29, 44, 0.93)), url(../img/hero.jpeg);
+  /* background-image: linear-gradient(rgba(16, 29, 44, 0.93), rgba(16, 29, 44, 0.93)); */
   background-size: cover;
   background-position: center;
   padding: 8rem;
@@ -146,12 +147,15 @@ body {
       padding: 5rem; } }
   .header__logo {
     height: 3rem;
+    position: absolute;
+    top: 30%;
     justify-self: center; }
   .header__btn {
     align-self: start;
     justify-self: start; }
   .header__seenon-text {
     display: grid;
+    position: absolute;
     grid-template-columns: 1fr max-content 1fr;
     grid-column-gap: 1.5rem;
     align-items: center;
@@ -164,6 +168,7 @@ body {
       background-color: currentColor; }
   .header__seenon-logos {
     display: grid;
+    position: absolute;
     grid-template-columns: repeat(4, 1fr);
     grid-column-gap: 3rem;
     justify-items: center;
@@ -173,8 +178,52 @@ body {
       max-width: 100%;
       filter: brightness(70%); }
 
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.heading-text {
+    position: absolute;
+    top: 33%;
+    left: 20%;
+    transform: translate(-5%, -50%);
+    text-align: center;
+}
+.heading-text h3 {
+    font-size: 33px;
+    color: white;
+}
+.nav-l {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+}
+
+.header__seenon-text {
+    position: absolute;
+    top: 78%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.header__seenon-logos {
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
 .realtors {
-  background-color: #101d2c;
+  background-color: #021b38;
   grid-column: col-start 7 / full-end;
   padding: 3rem;
   display: grid;
@@ -409,15 +458,16 @@ body {
     display: block; }
 
 .footer {
-  background-color: #101d2c;
+  background-color: #032d5c;
   grid-column: full-start / full-end;
-  padding: 8rem; }
+  padding: 1.5rem;
+  margin-top: 10rem; }
 
 .nav {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  grid-gap: 2rem;
+  grid-gap: 0.5rem;
   align-items: center; }
   .nav__link:link, .nav__link:visited {
     font-size: 1.4rem;
@@ -436,7 +486,7 @@ body {
 .copyright {
   font-size: 1.4rem;
   color: #aaa;
-  margin-top: 6rem;
+  margin-top: 2rem;
   margin-right: auto;
   margin-left: auto;
   text-align: center;
