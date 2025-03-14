@@ -129,9 +129,23 @@
             </div>
             <div class="media">
                 <div class="p-4 m-4">
-                    <a href="">
-                        <button class="btn btn-info btn-lg me-4">Purchase this Property</button>
-                    </a>
+                    {% if property.isPeerToPeer and property.provision == "Rent" %}
+                        <a href="" class="">
+                            <button class="btn btn-info me-4">Check the PeerToPeer condition</button>
+                        </a>
+                    {% elif property.provision == "Lease" %}
+                        <a href="">
+                            <button class="btn btn-info me-4">See the lease condition</button>
+                        </a>
+                    {% elif property.provision == "Rent" %}
+                        <a href="">
+                            <button class="btn btn-info btn-lg me-4">Purchase this Property</button>
+                        </a>
+                    {% elif property.provison == "Sale" %}
+                        <a href="">
+                            <button class="btn btn-info me-e">Proceed to buy</button>
+                        </a>
+                    {% endif %}
                     <a href="{% url 'save_for_later' property.id %}">
                         <button class="btn btn-lg btn-secondary">Save for later</button>
                     </a>

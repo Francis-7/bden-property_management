@@ -157,6 +157,16 @@
   bottom: 0;
   background: rgba(0,0,0,0.7)
   }
+  .lesser-view {
+  display: grid;
+  padding: 2rem;
+  margin: 2rem;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+  }
 {% endblock style %}
 {% block content %}
   <header class="header">
@@ -229,7 +239,7 @@
     <div class="lesser-view">
       {% for key, value in groups.items %}
         <div class="image">
-          <div class="over"></div>
+          <!-- <div class="over"></div> -->
           <img src="{% static 'bdenapp/images/landing.jpg' %}" alt="" height="100">
           <div class="state">
             <h3>{{ key }}</h3>
