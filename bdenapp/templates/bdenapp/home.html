@@ -146,6 +146,17 @@
   ..heading-primary--sub {
   letter-spacing: 0.5rem;
   }
+  .image {
+  position: relative;
+  }
+  .over {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7)
+  }
 {% endblock style %}
 {% block content %}
   <header class="header">
@@ -214,6 +225,18 @@
   <div class="lower-body">
     <div class="text-center py-4">
       <h2 class="display-5 text-white">Featured properties</h2>
+    </div>
+    <div class="lesser-view">
+      {% for key, value in groups.items %}
+        <div class="image">
+          <div class="over"></div>
+          <img src="{% static 'bdenapp/images/landing.jpg' %}" alt="" height="100">
+          <div class="state">
+            <h3>{{ key }}</h3>
+            <p>has {{ value }} properties</p>
+          </div>
+        </div>
+      {% endfor %}
     </div>
     <!-- set--background -->
     <section class="for-property">

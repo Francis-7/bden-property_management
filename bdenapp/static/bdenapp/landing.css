@@ -146,10 +146,10 @@ body {
     .header {
       padding: 5rem; } }
   .header__logo {
-    height: 3rem;
-    position: absolute;
-    top: 30%;
-    justify-self: center; }
+    height: 5rem;
+    width: 5rem;
+    
+    justify-self: start; }
   .header__btn {
     align-self: start;
     justify-self: start; }
@@ -552,4 +552,37 @@ body {
 
 .fullscreen-btn:focus {
     outline: none;
+}
+
+.landing {
+  position: relative;
+  
+  /* background-color: rgba(64, 58, 70, 0.938); */
+  /* border-radius: 50%; */
+  /* padding: 1px; */
+}
+
+.logo--b {
+  position: absolute;
+  top: 5%;
+  left: 15%;
+}
+
+.cover-l {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.heading-head {
+  position: absolute;
+  color: white;
+  top: 5%;
+  left: 23%;
+  font-size: 1.5rem ;
+  letter-spacing: 1.2em;
+  text-transform: uppercase;
 }
