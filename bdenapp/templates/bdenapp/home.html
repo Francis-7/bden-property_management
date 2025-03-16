@@ -161,7 +161,7 @@
   max-width: 100%;
   margin: 1em auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 15px;
   }
   .cities {
@@ -219,6 +219,28 @@
   }
   .state-number {
   font-size: 18px;
+  }
+  .pagination {
+  margin: 20px 0;
+  text-align: center;
+  color: white;
+  }
+  .pagination a {
+  margin: 0 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: white;
+  background-color: #007bff;
+  border-radius: 5px;
+  color: white;
+  }
+  .pagination a:hover {
+  background-color: #0056b3;
+  }
+  .pagination span {
+  margin: 0 10px;
+  font-weight: bold;
+  color: white;
   }
 {% endblock style %}
 {% block content %}
@@ -291,6 +313,31 @@
       <h2 class="display-5 text-white">Featured properties</h2>
     </div>
     <div class="lesser-view">
+      {% for key, value in page_obj %}
+        <a href="{% url 'category' key %}" class="cities">
+          <div class="image">
+            <img src="{% static 'bdenapp/images/landing.jpg' %}" alt="">
+          </div>
+          <div class="layover"></div>
+          <div class="state">
+            <h3>{{ key }}</h3>
+            <p>has {{ value }} properties</p>
+          </div>
+        </a>
+      {% endfor %}
+      <div class="pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">First</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+      </div>
+    </div>
+    {% comment %}
       {% for key, value in groups.items %}
         <a href="{% url 'category' key %}" class="cities">
           <div class="image">
@@ -304,8 +351,8 @@
           </div>
         </a>
       {% endfor %}
-    </div>
-    {% comment %}
+    
+    
     <!-- set--background -->
     <section class="for-property">
       <div class="cards">

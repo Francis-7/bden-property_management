@@ -11,7 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-def home(request):
+def home_view(request):
     properties = Property.objects.all().order_by('location')
     grouped_data = group_and_sort_by_first_word()
     return render(request, 'bdenapp/home.html', {'properties': properties, 'groups' : grouped_data})
@@ -239,3 +239,25 @@ def delete_purchase(request, id):
         except Purchase.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Purchase not found.'})
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
+
+# pagenated home view 
+from django.core.paginator import Paginator
+
+def home(request):
+    properties = Property.objects.all().order_by('location')
+    grouped_data = group_and_sort_by_first_word()  # Assuming this returns a dictionary
+
+    # Convert grouped_data into a list of items for pagination
+    grouped_data_items = list(grouped_data.items())
+
+    # Paginate the grouped data (e.g., 10 groups per page)
+    paginator = Paginator(grouped_data_items, 10)
+
+    # Get the current page number from the request
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'bdenapp/home.html', {
+        'properties': properties,
+        'page_obj': page_obj,  # This will include the paginated groups
+    })
