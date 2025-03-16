@@ -19,4 +19,6 @@ urlpatterns = [
     path('dashboard', views.user_dashboard, name='dashboard'),
     path('save_for_later/<int:id>', views.save_for_later, name='save_for_later'),
     path('landing_page', views.landing_page, name='landing_page'),
+    path('purchase/<int:id>', views.complete_purchase, name='purchase'),
+    path('delete-purchase/<int:id>/', views.delete_purchase, name='delete-purchase'),
 ]

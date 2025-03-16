@@ -158,14 +158,67 @@
   background: rgba(0,0,0,0.7)
   }
   .lesser-view {
+  max-width: 100%;
+  margin: 1em auto;
   display: grid;
-  padding: 2rem;
-  margin: 2rem;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1.5rem;
-  align-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 15px;
+  }
+  .cities {
+  border: 1px solid #999;
+  border-radius: 3px;
+  display: grid;
+  grid-template-rows: 20rem;
+  position: relative;
+  }
+  .cities img {
+  object-fit: cover;
   width: 100%;
+  height: 100%;
+  }
+  .state {
+  position: absolute;
+  color: white;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  }
+  .layover {
+  position: absolute;
+  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  }
+  .section--row {
+  display: flex;
+  justify-content: center;
+  align-content: space-between;
+  }
+  .section--a {
+  align-self: auto;
+  text-decoration: none;
+  padding: 1.5rem 2.5rem;
+  border: 1px solid blue;
+  margin: 1rem;
+  }
+  .section--a:hover {
+  background: rgba(0,0,255,0.4);
+  color: white;
+  }
+  .section--text {
+  text-align: center;
+  <!-- font-weight: 800; -->
+  }
+  .state-name {
+  display: block;
+  font-size: 20px;
+  <!-- margin-bottom: 1px; -->
+  }
+  .state-number {
+  font-size: 18px;
   }
 {% endblock style %}
 {% block content %}
@@ -216,15 +269,16 @@
       <h2 class="display-5">Suggested locations in Nigeria</h2>
       <h3>Below are states and it's updated properties in Nigeria</h3>
     </div>
-    <div class="containter text-center  m-5 ps-5">
-      <div class="row row-cols-6 ">
+    <div class="section--states">
+      <div class="section--row">
         {% for key, value in groups.items %}
-          <a href="{% url 'category' key %}"
-             class="btn btn-outline-primary mx-2 py-3 px-1">
-            <div class="col pt-3">
-              <span class="state-name">{{ key }}</span>
+          <a href="{% url 'category' key %}" class="section--a">
+            <div class="section--text">
+              <span class="state-name">Properties in
+                <br>
+              {{ key }}</span>
               <br>
-              <span class="state-number">{{ value }}</span>
+              <span class="state-number">{{ value }} properties</span>
             </div>
           </a>
         {% endfor %}
@@ -238,16 +292,20 @@
     </div>
     <div class="lesser-view">
       {% for key, value in groups.items %}
-        <div class="image">
-          <!-- <div class="over"></div> -->
-          <img src="{% static 'bdenapp/images/landing.jpg' %}" alt="" height="100">
+        <a href="{% url 'category' key %}" class="cities">
+          <div class="image">
+            <!-- <div class="over"></div> -->
+            <img src="{% static 'bdenapp/images/landing.jpg' %}" alt="">
+          </div>
+          <div class="layover"></div>
           <div class="state">
             <h3>{{ key }}</h3>
             <p>has {{ value }} properties</p>
           </div>
-        </div>
+        </a>
       {% endfor %}
     </div>
+    {% comment %}
     <!-- set--background -->
     <section class="for-property">
       <div class="cards">
@@ -261,9 +319,7 @@
             </a>
             <div class="content">
               <h3>
-                <svg class="location-icon"
-                     xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 24 24">
+                <svg class="location-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                 </svg>
                 {{ property.location |first_word_before_comma }}
@@ -274,6 +330,7 @@
         {% endfor %}
       </div>
     </section>
+    {% endcomment %}
   </div>
 {% endblock content %}
 {% block script %}

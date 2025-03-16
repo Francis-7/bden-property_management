@@ -224,3 +224,18 @@ def complete_purchase(request, id):
 # the landing page view
 def landing_page(request):
     return render(request, 'bdenapp/landing_page.html', {})
+
+# Deleting a purchase
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def delete_purchase(request, id):
+    if request.method == 'POST':
+        try:
+            purchase = Purchase.objects.get(id=id, user=request.user)
+            purchase.delete()
+            return JsonResponse({'success': True})
+        except Purchase.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Purchase not found.'})
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'})

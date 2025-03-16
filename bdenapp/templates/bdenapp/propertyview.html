@@ -13,11 +13,11 @@
 {% block style %}
     .main-body {
     display: grid;
-    background: rgba(100,45,38,0.8);
+    background-color: rgba(0,0,0,0.3);
     grid-template-areas:
     "main-property related"
     "for-review contact";
-    gap: 25px;
+    gap: 55px;
     grid-template-columns: 2fr 1fr;
     padding: 5px;
     grid-template-rows: auto auto;
@@ -80,14 +80,14 @@
     }
     .related-item {
     display: flex;
-    flex-direction: row; /* Arrange image and text side by side */
-    align-items: center; /* Center content vertically within the row */
-    gap: 20px; /* Add space between image and text */
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
     }
     .related-image img {
-    width: 100px; /* Set the image width */
-    height: 100px; /* Set the image height */
-    object-fit: cover; /* Ensure the image fills the dimensions without distortion */
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
     display: block;
     }
     .related-item .related-content h2 {
@@ -139,11 +139,11 @@
                         </a>
                     {% elif property.provision == "Rent" %}
                         <a href="">
-                            <button class="btn btn-info btn-lg me-4">Purchase this Property</button>
+                            <button class="btn btn-info btn-lg me-4">Rent this Property</button>
                         </a>
-                    {% elif property.provison == "Sale" %}
-                        <a href="">
-                            <button class="btn btn-info me-e">Proceed to buy</button>
+                    {% elif property.provision == "Sale" %}
+                        <a href="{% url 'purchase' property.id %}">
+                            <button class="btn btn-info me-4">Purchase this property</button>
                         </a>
                     {% endif %}
                     <a href="{% url 'save_for_later' property.id %}">

@@ -6,13 +6,47 @@
     Dashboard
 {% endblock title %}
 {% block style %}
-    .parent {
+    .wrapper {
+    <!-- background: yellow; -->
+    display: grid;
+    grid-template-columns: repeat(2, 1fr 2fr);
+    grid-template-areas:
+    "logo header"
+    "purchased saved";
+    grid-auto-rows: minmax(100px, auto);
+    padding: 2em;
     }
-    .child {
+    .profile-info {
+    grid-area: logo;
     display: flex;
-    gap: 10px;
-    padding: 15px;
-    border: solid 2px black;
+    width: 30%;
+    padding: 2rem;
+    <!-- background: blue; -->
+    }
+    .user--name {
+    grid-area: header;
+    <!-- background: green; -->
+    }
+    .content-body {
+    grid-area: saved;
+    }
+    .purchased {
+    grid-area: purchased;
+    }
+    .saved--later {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-column-gap: 2em;
+    <!-- grid-auto-rows: minmax(100px, auto); -->
+    grid-row-gap: 22em;
+    max-width: 80%;
+    align-items: center;
+    }
+    .saved--later img {
+    width: 100%;
+    <!-- height: 100%; -->
+    object-fit: cover;
+    margin: 1.5em;
     }
     .profile {
     border-radius: 50%;
@@ -24,9 +58,63 @@
     .bio-section {
     margin-left: 1.5rem;
     }
+    .sub--text {
+    padding: 2px;
+    align-text: center;
+    margin-bottom: 15px;
+    font: 18px sans-serif;
+    }
+    .purchases {
+    max-width: 100%;
+    margin: 1em auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 15px;
+    }
+    .purchases--container {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    }
+    .purchases--img img {
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
+    .close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    }
+    .close:hover {
+    background-color: #ff3333;
+    }
+    .sub--text {
+    text-transform: uppercase;
+    }
+    .heading--text {
+    text-transform: uppercase;
+    letter-spacing: 20px;
+    font-size: 20px;
+    }
+    .headline {
+    text-align: center;
+    margin: 2rem;
+    }
 {% endblock style %}
 {% block content %}
-    <div class="dashboard-header">
+    <div class="wrapper">
         <div class="profile-info">
             {% if user_profile.profile_picture %}
                 <img src="{{ user_profile.profile_picture.url }}"
@@ -50,13 +138,14 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="text-center">
-        <h2 class="display-5">Welcome {{ user_profile.user.username }}</h2>
-    </div>
-    <div class="text-center">
-        <div class="parent">
-            <div class="child">
+        <div class="user--name">
+            <div class="text-center">
+                <h2 class="display-5">Welcome {{ user_profile.user.username }}</h2>
+            </div>
+        </div>
+        <div class="content-body">
+            <h2 class="sub--text">Saved items</h2>
+            <div class="saved--later">
                 {% for item in saved_items %}
                     <div class="image">
                         <div class="image">
@@ -68,5 +157,48 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="purchased">
+            <div class="headline">
+                <h2 class="heading--text">Purchased Properties</h2>
+            </div>
+            <div class="purchases">
+                {% for item in purchases %}
+                    <div class="purchases--container" data-id="{{ item.id }}">
+                        <a href="" class="purchases--img">
+                            <img src="{{ item.property.picture.url }}"
+                                 alt="Property Image"
+                                 height="150">
+                        </a>
+                        <button class="close" onclick="deleteImage('{{ item.id }}')">x</button>
+                    </div>
+                {% empty %}
+                    <h3 class="sub--text">No purchases</h3>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock content %}
+{% block js %}
+    const csrfToken = '{{ csrf_token }}';
+    function deleteImage(id) {
+    // Optionally, make an AJAX call to delete the item server-side
+    fetch(`delete-purchase/${id}/`, {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json',
+    'X-CSRFToken': csrfToken
+    }
+    })
+    .then(response => {
+    if (response.ok) {
+    // Find the container for the image and remove it from the DOM
+    const container = document.querySelector(`[data-id="${id}"]`);
+    if (container) {
+    container.remove();
+    }
+    } else {
+    alert('Failed to delete the image.');
+    }
+    });
+    }
+{% endblock js %}
