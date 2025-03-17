@@ -1,0 +1,46 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Success
+{% endblock title %}
+{% block style %}
+    .my--heading {
+    text-align: center;
+    font: 25px sans-serif;
+    letter-spacing: 5px;
+    margin: 1rem 4rem auto auto;
+    <!-- background: blue; -->
+    }
+    .my--heading h2 {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 1rem 4rem auto auto;
+    }
+    .my--context {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 2rem;
+    }
+    .my--context a {
+    text-decoration: none;
+    background: blue;
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 2rem;
+    }
+    a:hover {
+    background: green;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="my--heading">
+        <h2>Email Sent Successfully</h2>
+    </div>
+    <div class="my--context">
+        <p>Your message has been sent to the owner of {{ property.location }}.</p>
+        <a href="{% url 'home' %}">Go back to Home</a>
+        <a href="{% url 'submit_review' property.id %}">leave a review</a>
+    </div>
+{% endblock content %}

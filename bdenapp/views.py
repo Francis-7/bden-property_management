@@ -20,7 +20,7 @@ def propertyView(request, id):
     property = get_object_or_404(Property, id=id)
     images = property.propertyimage_set.all()
     properties = Property.objects.all()
-    reviews = Review.objects.filter(property=property)
+    reviews = Review.objects.filter(property=property, user=request.user)
     return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews})
 
 # Define a search pattern for the page
@@ -199,7 +199,7 @@ def user_dashboard(request):
 @login_required
 def update_profile_picture(request):
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
             return redirect('dashboard')
@@ -260,4 +260,55 @@ def home(request):
     return render(request, 'bdenapp/home.html', {
         'properties': properties,
         'page_obj': page_obj,  # This will include the paginated groups
+    })
+
+# view for email generation and handling
+from django.core.mail import send_mail
+from .forms import EmailForm
+
+@login_required
+def handle_purchase(request, property_id):
+    # Get the property by ID
+    property_obj = get_object_or_404(Property, id=property_id)
+    
+    # Extract owner details from the 'owner' field
+    owner_details = property_obj.owner.split(', ')  # Assuming 'name, email, phone' format
+    if len(owner_details) == 3:
+        owner_name, owner_email, owner_phone = owner_details
+    else:
+        owner_name, owner_email, owner_phone = "Unknown", "Unknown", "Unknown"
+
+    if request.method == 'POST':
+        # Process the submitted form
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            full_message = f"""
+            Dear {owner_name},
+
+            {message}
+
+            You can contact me directly via email: {request.user.email} or phone: {request.user.username}.
+            """
+            
+            # Send the email
+            send_mail(
+                subject,
+                full_message,
+                request.user.email,  # From the logged-in user's email
+                [owner_email],  # To the owner's email
+            )
+
+            return render(request, 'bdenapp/success.html', {'property': property_obj})
+    else:
+        form = EmailForm()
+
+    # Render the form for GET requests
+    return render(request, 'bdenapp/purchase_form.html', {
+        'form': form,
+        'property': property_obj,
+        'owner_name': owner_name,
+        'owner_phone': owner_phone,
+        'owner_email': owner_email,
     })

@@ -93,6 +93,48 @@
     .related-item .related-content h2 {
     font: 16px sans-serif;
     }
+    .reviews {
+    padding: 2rem;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 1rem;
+    }
+    .review-heading {
+    letter-spacing: 0.5rem;
+    text-transform: uppercase;
+    }
+    .review img {
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    }
+    .title--head {
+    margin: 4em;
+    text-align: center;
+    }
+    .review {
+    text-align: center;
+    }
+    .para {
+    margin: 2rem;
+    letter-spacing: 1rem;
+    font-size: 20px;
+    text-transform: uppercase;
+    }
+    .reviewer-rating {
+    display: block;
+    align-items: center;
+    }
+    .star {
+    font-size: 20px;
+    color: #ccc; /* Gray for empty stars */
+    }
+    .star.filled {
+    color: #ffc107; /* Gold for filled stars */
+    }
 {% endblock style %}
 {% block content %}
     <div class="main-body">
@@ -153,17 +195,29 @@
             </div>
         </section>
         <section class="for-review">
-            <div class="reviews">
+            <div class="title--head">
                 <h2 class="review-heading">See the reviews on this property</h2>
+            </div>
+            <div class="reviews">
                 {% for review in reviews %}
                     <div class="review">
-                        <div class="reviewer-img">
-                            <img src="" alt="">
+                        <img src="{{ review.user.profile.profile_picture.url }}" alt="">
+                        <div class="para">
+                            <p>{{ review.user.username }}</p>
                         </div>
-                        <div class="reviewer-name">
-                            <h3>{{ review.user.username }}: {{ review.rating }}/5</h3>
+                    </div>
+                    <div class="reviewer-name">
+                        <div class="reviewer-rating">
+                            {% for i in 1|to:6 %}
+                                <!-- Loop from 1 to 5 (inclusive) -->
+                                {% if i <= review.rating %}
+                                    <span class="star filled">★</span>  <!-- Filled star for ratings less than or equal to user input -->
+                                {% else %}
+                                    <span class="star">★</span>  <!-- Empty star for remaining -->
+                                {% endif %}
+                            {% endfor %}
                         </div>
-                        <div class="review-text">{{ review.review_text }}</div>
+                        {{ review.review_text }}
                     </div>
                 {% empty %}
                     <h4>No reviews yet</h4>

@@ -21,4 +21,5 @@ urlpatterns = [
     path('landing_page', views.landing_page, name='landing_page'),
     path('purchase/<int:id>', views.complete_purchase, name='purchase'),
     path('delete-purchase/<int:id>/', views.delete_purchase, name='delete-purchase'),
+    path('purchase/<int:property_id>/', views.handle_purchase, name='handle-purchase'),
 ]

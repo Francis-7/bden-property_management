@@ -1,0 +1,22 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Make a purchase
+{% endblock title %}
+{% block content %}
+    <h2>Contact the Owner of {{ property.location }}</h2>
+    <p>
+        <strong>Owner:</strong> {{ owner_name }}
+    </p>
+    <p>
+        <strong>Email:</strong> {{ owner_email }}
+    </p>
+    <p>
+        <strong>Phone:</strong> {{ owner_phone }}
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send Email</button>
+    </form>
+{% endblock content %}
