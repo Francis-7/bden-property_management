@@ -218,7 +218,7 @@ def save_for_later(request, id):
 @login_required
 def complete_purchase(request, id):
     property = get_object_or_404(Property, id=id)
-    Purchase.objects.create(user=request.user, property=property)
+    Purchase.objects.get_or_create(user=request.user, property=property)
     return redirect('dashboard')
 
 # the landing page view

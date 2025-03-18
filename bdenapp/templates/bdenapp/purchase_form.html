@@ -3,20 +3,49 @@
 {% block title %}
     Make a purchase
 {% endblock title %}
+{% block style %}
+    .headline--contact {
+    text-align: center;
+    letter-spacing: 3px;
+    margin: 30px;
+    }
+    .headline--contact h2 {
+    font-size: 30px;
+    }
+    .body--content {
+    text-align: center;
+    font-size: 22px;
+    margin-top: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+    border: solid 1px black;
+    padding: 10px;
+    }
+    .body--content button {
+    padding: 5px;
+    background: blue;
+    color: white;
+    border-radius: 5%;
+    }
+{% endblock style %}
 {% block content %}
-    <h2>Contact the Owner of {{ property.location }}</h2>
-    <p>
-        <strong>Owner:</strong> {{ owner_name }}
-    </p>
-    <p>
-        <strong>Email:</strong> {{ owner_email }}
-    </p>
-    <p>
-        <strong>Phone:</strong> {{ owner_phone }}
-    </p>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Send Email</button>
-    </form>
+    <div class="headline--contact">
+        <h2>Contact the Owner of {{ property.location }}</h2>
+    </div>
+    <div class="body--content">
+        <p>
+            <strong>Owner:</strong> {{ owner_name }}
+        </p>
+        <p>
+            <strong>Email:</strong> {{ owner_email }}
+        </p>
+        <p>
+            <strong>Phone:</strong> {{ owner_phone }}
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Send Email</button>
+        </form>
+    </div>
 {% endblock content %}
