@@ -87,30 +87,39 @@
                 <svg class="feature__icon">
                     <use xlink:href="{% static 'bdenapp/images/sprite.svg#icon-global' %}"></use>
                 </svg>
-                <h4 class="heading-4 heading-4--dark">Effortless Property Search</h4>
-                <p class="feature__text">Find verified listing with accurate details all in one place</p>
+                <h4 class="heading-4 heading-4--dark">Nationwide Coverage 🌍</h4>
+                <p class="feature__text">
+                    Unlike many property platforms that focus on specific cities, B-Eden offers listings across the entire country, making it a one-stop solution for buyers, renters, and landlords nationwide
+                </p>
             </div>
             <div class="feature">
                 <svg class="feature__icon">
                     <use xlink:href="{% static 'bdenapp/images/sprite.svg#icon-trophy' %}"></use>
                 </svg>
-                <h4 class="heading-4 heading-4--dark">Direct Tenants-Owner interaction</h4>
-                <p class="feature__text">No middleman, just seamless communication</p>
+                <h4 class="heading-4 heading-4--dark">Versatility: Rentals, Lease and Sales🏠</h4>
+                <p class="feature__text">
+                    B-den is a seamless platform for landlords, real estate agents and homebuyers. Whether you're listing, renting or buying—short-term stays, long-term rentals or property sales. B-den makes property management effortless nationwide.
+                </p>
             </div>
             <div class="feature">
                 <svg class="feature__icon">
                     <use xlink:href="img/sprite.svg#icon-map-pin"></use>
                 </svg>
-                <h4 class="heading-4 heading-4--dark">Cost Effective & Efficient</h4>
-                <p class="feature__text">Skip agent fees and simplify transaction</p>
+                <h4 class="heading-4 heading-4--dark">Strong Customer Support 📞</h4>
+                <p class="feature__text">
+                    B-Eden offers 24/7 customer support, quick onboarding for property owners and fast issue resolution. Renters and landlords get direct assistance, dispute handling and legal advisory, ensuring a smooth and transparent rental experience. 🚀
+                </p>
             </div>
             <div class="feature">
                 <svg class="feature__icon">
                     <use xlink:href="img/sprite.svg#icon-key"></use>
                 </svg>
-                <h4 class="heading-4 heading-4--dark">Locally Tailored Features</h4>
-                <p class="feature__text">Peer-to-peer room sharing and integrated payment solution</p>
+                <h4 class="heading-4 heading-4--dark">Peer-to-Peer Room Sharing 🏠🤝</h4>
+                <p class="feature__text">
+                    B-Eden offers a Peer-to-Peer (P2P) Room Sharing feature, allowing users to find and list shared accommodations easily. Whether you have a spare room to rent or need an affordable co-living space, this feature connects you directly with potential roommates.
+                </p>
             </div>
+            {% comment %}
             <div class="feature">
                 <svg class="feature__icon">
                     <use xlink:href="img/sprite.svg#icon-presentation"></use>
@@ -127,6 +136,7 @@
                     With our secure form payment, we don't allow payment through this platform, but to engage the seller directly who must have proven beyond reasonable doubts that he/she is legit
                 </p>
             </div>
+            {% endcomment %}
         </section>
         <section class="gallery">
             <figure class="gallery__item gallery__item--1">
@@ -211,14 +221,63 @@
         <footer class="footer">
             <ul class="nav">
                 <li class="nav__item">
-                    <a href="{% url 'home' %}" class="nav__link">Find your dream home</a>
+                    <div class="dropdown">
+                        <button class="dropbtn">Support</button>
+                        <div class="dropdown-content">
+                            <a href="">Help Center</a>
+                            <a href="">Live Chat and Contact Form</a>
+                            <a href="">Report an issue</a>
+                            <a href="">Community Forum</a>
+                            <a href="">Refund & Cancellation Policy</a>
+                        </div>
+                    </div>
+                    <!-- <a href="#" class="nav__link">Support</a> -->
                 </li>
-                <a href="#" class="nav__link">Contact us</a>
                 <li class="nav__item">
-                    <a href="#" class="nav__link">Submit your property</a>
+                    <div class="dropdown">
+                        <button class="dropbtn">Discover</button>
+                        <div class="dropdown-content">
+                            <a href="">Trending Locations</a>
+                            <a href="">New Listings</a>
+                            <a href="">Best Deals & Discounts</a>
+                            <a href="">User Reviews & Ratings</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- <a href="#" class="nav__link">Discover</a> -->
+                <li class="nav__item">
+                    <div class="dropdown">
+                        <button class="dropbtn">Terms & Settings</button>
+                        <div class="dropdown-content">
+                            <a href="">Privacy Policy</a>
+                            <a href="">Terms of Service</a>
+                        </div>
+                    </div>
+                    <!-- <a href="#" class="nav__link">Terms & Settings</a> -->
                 </li>
                 <li class="nav__item">
-                    <a href="#" class="nav__link">Come work with us!</a>
+                    <div class="dropdown">
+                        <button class="dropbtn">Partner</button>
+                        <div class="dropdown-content">
+                            <a href="">List Your Property</a>
+                            <a href="">Property Management Tools</a>
+                            <a href="">Marketing Services</a>
+                            <a href="">Corporate & Bulk Listings</a>
+                        </div>
+                    </div>
+                    <!-- <a href="#" class="nav__link">Partner</a> -->
+                </li>
+                <li class="nav__item">
+                    <div class="dropdown">
+                        <button class="dropbtn">About</button>
+                        <div class="dropdown-content">
+                            <a href="">Our Mission</a>
+                            <a href="">The Team</a>
+                            <a href="">Customer Success Stories</a>
+                            <a href="">Press & Media</a>
+                        </div>
+                    </div>
+                    <!-- <a href="#" class="nav__link">About</a> -->
                 </li>
             </ul>
             <p class="copyright">&copy; Copyright 2025 by Jenny.</p>
