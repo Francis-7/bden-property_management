@@ -312,3 +312,11 @@ def handle_purchase(request, property_id):
         'owner_phone': owner_phone,
         'owner_email': owner_email,
     })
+
+# Help center page
+def help_center(request):
+    return render(request, 'bdenapp/features/help_center.html', {})
+
+# live chat view 
+def live_chat(request):
+    return render(request, 'bdenapp/features/live_chat.html', {})

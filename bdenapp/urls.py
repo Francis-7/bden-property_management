@@ -22,4 +22,6 @@ urlpatterns = [
     path('purchase/<int:id>', views.complete_purchase, name='purchase'),
     path('delete-purchase/<int:id>/', views.delete_purchase, name='delete-purchase'),
     path('purchase/<int:property_id>/', views.handle_purchase, name='handle-purchase'),
+    path('help',views.help_center, name='help'),
+    path('live_chat', views.live_chat, name='live_chat'),
 ]

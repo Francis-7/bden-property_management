@@ -1,0 +1,55 @@
+{% extends 'bdenapp/base.html' %}
+{% block title %}
+    Welcome to Help Center
+{% endblock title %}
+{% block style %}
+    .faq {
+    text-align: center;
+    letter-spacing: 3px;
+    font-size: 33px;
+    }
+    .faq h2 {
+    font-size: 33px;
+    text-transform: uppercase;
+    }
+    .question__answer {
+    max-width: 80%;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 6rem;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: space-between;
+    gap: 6em;
+    }
+    h1 {
+    font-weight: bold;
+    }
+    p {
+    font-size: 20px;
+    }
+    .question {
+    align-self: auto;
+    text-align: center;
+    }
+    .answer {
+    align-self: auto;
+    text-align: center;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="faq">
+        <h2>Frequently asked questions About B-den app:</h2>
+    </div>
+    <div class="question__answer">
+        <div class="question">
+            <h1>Question:</h1>
+            <p>What is the purpose for the B-Den App?</p>
+        </div>
+        <div class="answer">
+            <h1>Answer:</h1>
+            <p>The main purpose of the B-den app is to simplify property search and purchase as easily as possible</p>
+        </div>
+    </div>
+{% endblock content %}

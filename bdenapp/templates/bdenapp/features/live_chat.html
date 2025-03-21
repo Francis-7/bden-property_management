@@ -1,0 +1,72 @@
+{% extends 'bdenapp/base.html' %}
+{% block title %}
+    Contact the admin
+{% endblock title %}
+{% block style %}
+    .main--head {
+    text-align: center;
+    }
+    .main--head h2 {
+    font-size: 25px;
+    letter-spacing: 3px;
+    }
+    #chatbot {
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    margin-top: 3rem;
+    }
+    #chatbot-messages {
+    <!-- height: 400px; -->
+    overflow-y: auto;
+    padding: 10px;
+    }
+    #chatbot-input {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    outline: none;
+    }
+    #chatbot-send {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 10px;
+    width: 100px;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="main--head">
+        <h2>Contact the Admin to get assistance</h2>
+    </div>
+    <div id="chatbot">
+        <div id="chatbot-messages"></div>
+        <textarea id="chatbot-input" placeholder="Ask me anything..."></textarea>
+        <button id="chatbot-send">Send</button>
+    </div>
+{% endblock content %}
+{% block js %}
+    const sendMessage = () => {
+    const input = document.getElementById('chatbot-input');
+    const messages = document.getElementById('chatbot-messages');
+    const userMessage = input.value;
+    if (userMessage.trim() === '') return;
+    // Add User Message
+    const userDiv = document.createElement('div');
+    userDiv.innerText = `You: ${userMessage}`;
+    messages.appendChild(userDiv);
+    // Simulate Bot Response
+    const botDiv = document.createElement('div');
+    botDiv.innerText = 'Bot: I am here to help!';
+    messages.appendChild(botDiv);
+    input.value = '';
+    };
+    document.getElementById('chatbot-send').addEventListener('click', sendMessage);
+{% endblock js %}
