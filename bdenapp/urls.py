@@ -24,4 +24,7 @@ urlpatterns = [
     path('purchase/<int:property_id>/', views.handle_purchase, name='handle-purchase'),
     path('help',views.help_center, name='help'),
     path('live_chat', views.live_chat, name='live_chat'),
+    path('report_your_issue', views.report_an_issue, name='report_issue'),
+    path('community_forum', views.community_forum, name='community_forum'),
+    path('refunds_and_cancellation_policy', views.refunds_and_cancellation, name='refunds_and_cancellation'),
 ]

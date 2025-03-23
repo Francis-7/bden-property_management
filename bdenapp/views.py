@@ -320,3 +320,15 @@ def help_center(request):
 # live chat view 
 def live_chat(request):
     return render(request, 'bdenapp/features/live_chat.html', {})
+
+# report an issue
+def report_an_issue(request):
+    return render(request, 'bdenapp/features/report_an_issue.html', {})
+
+# the community forum
+def community_forum(request):
+    return render(request, 'bdenapp/features/community_forum.html', {})
+
+# refunds and cancellation policy
+def refunds_and_cancellation(request):
+    return render(request, 'bdenapp/features/refunds_and_cancellation.html', {})

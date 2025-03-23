@@ -1,0 +1,82 @@
+{% extends 'bdenapp/base.html' %}
+{% block title %}
+    Report Here
+{% endblock title %}
+{% block style %}
+    .heading--tag {
+    text-align: center;
+    font-family: sans-serif;
+    }
+    .heading--tag h2 {
+    font-size: 30px;
+    letter-spacing: 5px;
+    margin: 4rem auto;
+    }
+    .content--body {
+    max-width: 80%;
+    margin: 0 auto;
+    border: solid 1px black;
+    padding: 2rem;
+    }
+    .choice {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 2rem;
+    }
+    .choice--option {
+    width: 50%;
+    padding: 1rem;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 5px;
+    }
+    .dynamic-par {
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .op {
+    background: green;
+    color: white;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="heading--tag">
+        <h2>Select from the list below</h2>
+    </div>
+    <div class="content--body">
+        <label for="report_issue" class="choice">Select Your Issue:</label>
+        <select name="issue" id="report_issue" class="choice--option">
+            <option value="" class="op">--Choose A Topic--</option>
+            <option value="low_quality" class="op">Low Quality Properties</option>
+            <option value="no_response" class="op">No Response from Owner</option>
+        </select>
+        <p class="dynamic-par"></p>
+    </div>
+{% endblock content %}
+{% block js %}
+    const section = document.querySelector('.content--body');
+    const select = document.getElementById('report_issue');
+    const par = document.querySelector('.dynamic-par');
+    const issue = (para) => {
+    par.textContent = para;
+    }
+    select.addEventListener('change', () => {
+    switch (select.value) {
+    case "low_quality":
+    issue("Sorry to hear that our properties are of low quality, we're working to imrove our services to you")
+    break;
+    case "no_response":
+    issue("Kindly leave a review on this owner so we can easily resolve your trouble");
+    break;
+    default:
+    issue('');
+    break;
+    }
+    })
+{% endblock js %}
