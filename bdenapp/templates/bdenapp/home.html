@@ -11,6 +11,22 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock css %}
 {% block style %}
+  #suggestions {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  }
+  .suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  }
+  .suggestion-item:hover {
+  background-color: #f0f0f0;
+  }
   .location-icon {
   width: 24px; /* Adjust the size as needed */
   height: 24px;
@@ -261,28 +277,13 @@
         <input type="text"
                name="q"
                placeholder="Search properties by location"
-               id="search-input">
+               id="search-input"
+               autocomplete="off">
         <button type="submit">
           <i class="fa fa-search" aria-hidden="true"></i>
         </button>
         <div id="suggestions"></div>
       </form>
-    </div>
-    <div class="filter-sel">
-      <select name="" id="choice">
-        <option value="">--Select Type--</option>
-        <option value="apartment">Apartment</option>
-        <option value="residence">Residence</option>
-        <option value="unit">Unit</option>
-      </select>
-    </div>
-    <div class="price-choice">
-      <select name="" id="price range">
-        <option value="">--Select price</option>
-        <option value="low">~ ₦300,000</option>
-        <option value="mediu">~ ₦500,000</option>
-        <option value="high">₦1,000,000+</option>
-      </select>
     </div>
   </header>
   <!-- this section is for grouping by states and number of properties -->
@@ -380,5 +381,32 @@
     {% endcomment %}
   </div>
 {% endblock content %}
-{% block script %}
-{% endblock script %}
+{% block js %}
+  $(document).ready(function() {
+  $('#search-input').on('keyup', function() {
+  const query = $(this).val();
+  if (query.length > 1) {
+  $.ajax({
+  url: "{% url 'property_autocomplete' %}",
+  data: { 'q': query },
+  success: function(data) {
+  let suggestions = '';
+  data.forEach(function(item) {
+  suggestions += `
+  <div class="suggestion-item">${item}</div>
+  `;
+  });
+  $('#suggestions').html(suggestions);
+  }
+  });
+  } else {
+  $('#suggestions').empty();
+  }
+  });
+  // Add click functionality for suggestions
+  $(document).on('click', '.suggestion-item', function() {
+  $('#search-input').val($(this).text());
+  $('#suggestions').empty();
+  });
+  });
+{% endblock js %}

@@ -20,7 +20,11 @@ def propertyView(request, id):
     property = get_object_or_404(Property, id=id)
     images = property.propertyimage_set.all()
     properties = Property.objects.all()
-    reviews = Review.objects.filter(property=property, user=request.user)
+    if request.user.is_authenticated:
+        reviews = Review.objects.filter(property=property, user=request.user)
+    else:
+        reviews = Review.objects.none() 
+    # reviews = Review.objects.filter(property=property, user=request.user)
     return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews})
 
 # Define a search pattern for the page
@@ -62,7 +66,7 @@ def property_search(request):
 
     # return render(request, 'bdenapp/property_search_result.html', {'results' : results, 'size' : results.count()})
 
-def property_search_result(request):
+def property_search_result_backup(request):
     query = request.GET.get('q')
     if query:
         if query != '':
@@ -332,3 +336,98 @@ def community_forum(request):
 # refunds and cancellation policy
 def refunds_and_cancellation(request):
     return render(request, 'bdenapp/features/refunds_and_cancellation.html', {})
+
+# live suggestion view 
+def property_autocomplete_backup(request):
+    query = request.GET.get('q', '')
+    if query:
+        suggestions = Property.objects.filter(
+            Q(location__icontains=query) | 
+            Q(description__icontains=query) |
+            Q(typeChoice__icontains=query) 
+        ).values_list('typeChoice', flat=True).distinct()
+        return JsonResponse(list(suggestions), safe=False)
+    return JsonResponse([], safe=False)
+
+def property_autocomplete(request):
+    query = request.GET.get('q', '')
+    if query:
+        suggestions = Property.objects.filter(
+            Q(location__icontains=query) |
+            Q(description__icontains=query) |
+            Q(typeChoice__icontains=query)
+        ).values('location', 'typeChoice').distinct()
+
+        # Format the results as "location - typeChoice"
+        formatted_suggestions = [
+            f"{item['location']} - {item['typeChoice']}"
+            for item in suggestions
+        ]
+        return JsonResponse(formatted_suggestions, safe=False)
+    return JsonResponse([], safe=False)
+
+# updated property_serach view 
+
+def property_search_result(request):
+    query = request.GET.get('q', '')
+    price_filter = request.GET.get('price', '')
+    results = Property.objects.none()  # Default empty results
+    
+    if query:
+        # Check if query contains the format 'location - typeChoice'
+        if ' - ' in query:
+            location, type_choice = query.split(' - ', maxsplit=1)
+            results = Property.objects.filter(
+                Q(location__icontains=location.strip()) & 
+                Q(typeChoice__icontains=type_choice.strip())
+            )
+
+        else:
+            # Search for either location or typeChoice
+            results = Property.objects.filter(
+                Q(location__icontains=query.strip()) |
+                Q(typeChoice__icontains=query.strip()) |
+                Q(description__icontains=query.strip())  # Optional fallback
+            )
+        if price_filter == 'low':
+            results = results.filter(price__lt=500000)
+        elif price_filter == 'medium':
+            results = results.filter(price__gte=500000, price__lte=1000000)
+        elif price_filter == 'high':
+            results = results.filter(price__gt=1000000)
+
+    return render(request, 'bdenapp/property_search_result.html', {
+        'results': results,
+        'size': results.count(),
+        'query':query,
+        'price_filter':price_filter,
+    })
+
+# additional filter for price handling
+def property_search_result_less(request):
+    query = request.GET.get('q', '')
+    price_filter = request.GET.get('price', '')  # Capture price filter
+    results = Property.objects.none()  # Default to empty results
+
+    if query:
+        # Search logic for location, typeChoice, and description
+        base_query = Property.objects.filter(
+            Q(location__icontains=query.strip()) |
+            Q(description__icontains=query.strip()) |
+            Q(typeChoice__icontains=query.strip())
+        ).distinct()
+
+        # Apply price filter
+        if price_filter == 'low':
+            results = base_query.filter(price__lt=500000)
+        elif price_filter == 'medium':
+            results = base_query.filter(price__gte=500000, price__lte=1000000)
+        elif price_filter == 'high':
+            results = base_query.filter(price__gt=1000000)
+        else:
+            results = base_query  # No filter applied
+
+    return render(request, 'bdenapp/property_search_result.html', {
+        'results': results,
+        'size': results.count()
+    })

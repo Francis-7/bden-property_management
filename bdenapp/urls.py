@@ -27,4 +27,5 @@ urlpatterns = [
     path('report_your_issue', views.report_an_issue, name='report_issue'),
     path('community_forum', views.community_forum, name='community_forum'),
     path('refunds_and_cancellation_policy', views.refunds_and_cancellation, name='refunds_and_cancellation'),
+    path('property_autocomplete', views.property_autocomplete, name='property_autocomplete'),
 ]

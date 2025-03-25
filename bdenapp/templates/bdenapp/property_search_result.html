@@ -1,5 +1,7 @@
 {% extends 'bdenapp/base.html' %}
 {% load static %}
+{% load humanize %}
+{% load custom_filters %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet"
@@ -65,5 +67,20 @@
                 <p class="display-4">No Match</p>
             {% endfor %}
         </div>
+    </section>
+    <section class="filtered">
+        <form method="get" action="{% url 'property_search_result' %}">
+            <!-- Keep the original search query -->
+            <input type="hidden" name="q" value="{{ query }}">
+            <!-- Dropdown for price filtering -->
+            <label for="price">Filter by Price:</label>
+            <select name="price" id="price">
+                <option value="">Select Price Range</option>
+                <option value="low" {% if price_filter == 'low' %}selected{% endif %}>Below ₦500,000</option>
+                <option value="medium" {% if price_filter == 'medium' %}selected{% endif %}>₦500,000 - ₦1,000,000</option>
+                <option value="high" {% if price_filter == 'high' %}selected{% endif %}>Above ₦1,000,000</option>
+            </select>
+            <button type="submit">Apply Filter</button>
+        </form>
     </section>
 {% endblock content %}
