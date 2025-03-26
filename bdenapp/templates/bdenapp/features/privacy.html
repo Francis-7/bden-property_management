@@ -1,0 +1,44 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Privacy
+{% endblock title %}
+{% block style %}
+    .body__head {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, 1fr);
+    grid-gap: 2rem;
+    max-width: 80%;
+    margin: 0 auto;
+    }
+    .head__text {
+    text-align: center;
+    padding: 2rem;
+    font-size: 30;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    }
+    .body__text {
+    display: flex;
+    justify-items: center;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="body__head">
+        <div class="head__text">
+            <h1>Our Privacy Policy</h1>
+        </div>
+        <div class="body__text">
+            <div class="para-1">
+                <p>
+                    Our terms of usage: The properties displayed on our site are subject to change based on the present state of the owner--this means the owner who previously posted his/her property/properties on our site might desire to withraw partnership with us without any prior notification to the user
+                </p>
+            </div>
+            <div class="para-2">
+                <p>
+                    A user must not pay up front unless he/she has thoroughly verified in details all necessary information concerning the property/properties he/she is interested in. B-Den will not be held responsible for any loss encoured whatsoever
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

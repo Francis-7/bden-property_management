@@ -1,0 +1,28 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Our user reviews
+{% endblock title %}
+{% block style %}
+    .header__text {
+    font-size: 30px;
+    letter-spacing: 10px;
+    text-align: center;
+    margin: 3rem;
+    padding: 3rem;
+    text-transform: uppercase;
+    }
+    .body__text {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 2rem;
+    background: rgba(0,0,0,0.2);
+    font-size: 20px;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="header__text">
+        <h1>User reviews on our services</h1>
+    </div>
+    <div class="body__text"></div>
+{% endblock content %}

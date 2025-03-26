@@ -431,3 +431,24 @@ def property_search_result_less(request):
         'results': results,
         'size': results.count()
     })
+
+# trending locations view 
+def trending_locations(request):
+    properties = Property.objects.all()[0:10]
+    return render(request, 'bdenapp/features/trending_locations.html', {'properties' : properties})
+
+# new listings 
+def new_listings(request):
+    return render(request, 'bdenapp/features/new_listings.html', {})
+
+# best deals
+def best_deals(request):
+    return render(request, 'bdenapp/features/best_deals.html', {})
+
+# user reviews
+def user_reviews(request):
+    return render(request, 'bdenapp/features/user_reviews.html', {})
+
+# privacy
+def privacy(request):
+    return render(request, 'bdenapp/features/privacy.html', {})

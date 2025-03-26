@@ -1,0 +1,27 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    best deals now
+{% endblock title %}
+{% block style %}
+    .main__heading {
+    text-align: center;
+    letter-spacing: 10px;
+    font-size: 30px;
+    text-transform: uppercase;
+    margin: 3rem;
+    padding: 2rem;
+    }
+    .the__body {
+    max-width: 80%;
+    background: rgba(0,0,0,0.2);
+    margin: 0 auto;
+    padding: 3rem;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="main__heading">
+        <h1>Our best deal for the month</h1>
+    </div>
+    <div class="the__body"></div>
+{% endblock content %}

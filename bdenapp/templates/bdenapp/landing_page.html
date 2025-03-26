@@ -243,10 +243,10 @@
                     <div class="dropdown">
                         <button class="dropbtn">Discover</button>
                         <div class="dropdown-content">
-                            <a href="">Trending Locations</a>
-                            <a href="">New Listings</a>
-                            <a href="">Best Deals & Discounts</a>
-                            <a href="">User Reviews & Ratings</a>
+                            <a href="{% url 'trending_locations' %}">Trending Locations</a>
+                            <a href="{% url 'new_listings' %}">New Listings</a>
+                            <a href="{% url 'best_deals' %}">Best Deals & Discounts</a>
+                            <a href="{% url 'user_reviews' %}">User Reviews & Ratings</a>
                         </div>
                     </div>
                 </li>
@@ -255,7 +255,7 @@
                     <div class="dropdown">
                         <button class="dropbtn">Terms & Settings</button>
                         <div class="dropdown-content">
-                            <a href="">Privacy Policy</a>
+                            <a href="{% url 'privacy' %}">Privacy Policy</a>
                             <a href="">Terms of Service</a>
                         </div>
                     </div>

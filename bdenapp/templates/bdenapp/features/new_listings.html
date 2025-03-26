@@ -1,0 +1,28 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    New listings
+{% endblock title %}
+{% block style %}
+    .heading__text {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    font-size: 30px;
+    padding: 2rem;
+    margin: 2rem;
+    }
+    .the__body {
+    max-width: 80%l
+    margin: 0 auto;
+    padding: 3rem;
+    background: rgba(0,0,0,0.2);
+    font-size: 20px;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="heading__text">
+        <h1>Our new listings of hot properties</h1>
+    </div>
+    <div class="the__body"></div>
+{% endblock content %}
