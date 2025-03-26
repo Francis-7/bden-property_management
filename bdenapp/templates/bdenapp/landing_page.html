@@ -256,7 +256,7 @@
                         <button class="dropbtn">Terms & Settings</button>
                         <div class="dropdown-content">
                             <a href="{% url 'privacy' %}">Privacy Policy</a>
-                            <a href="">Terms of Service</a>
+                            <a href="{% url 'terms' %}">Terms of Service</a>
                         </div>
                     </div>
                     <!-- <a href="#" class="nav__link">Terms & Settings</a> -->
@@ -265,10 +265,10 @@
                     <div class="dropdown">
                         <button class="dropbtn">Partner</button>
                         <div class="dropdown-content">
-                            <a href="">List Your Property</a>
-                            <a href="">Property Management Tools</a>
-                            <a href="">Marketing Services</a>
-                            <a href="">Corporate & Bulk Listings</a>
+                            <a href="{% url 'list_property' %}">List Your Property</a>
+                            <a href="{% url 'property_management' %}">Property Management Tools</a>
+                            <a href="{% url 'marketting' %}">Marketing Services</a>
+                            <a href="{% url 'bulk_listings' %}">Corporate & Bulk Listings</a>
                         </div>
                     </div>
                     <!-- <a href="#" class="nav__link">Partner</a> -->
@@ -277,10 +277,10 @@
                     <div class="dropdown">
                         <button class="dropbtn">About</button>
                         <div class="dropdown-content">
-                            <a href="">Our Mission</a>
-                            <a href="">The Team</a>
-                            <a href="">Customer Success Stories</a>
-                            <a href="">Press & Media</a>
+                            <a href="{% url 'our_mission' %}">Our Mission</a>
+                            <a href="{% url 'the_team' %}">The Team</a>
+                            <a href="{% url 'success_stories' %}">Customer Success Stories</a>
+                            <a href="{% url 'press_media' %}">Press & Media</a>
                         </div>
                     </div>
                     <!-- <a href="#" class="nav__link">About</a> -->

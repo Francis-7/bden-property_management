@@ -1,0 +1,130 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Terms of service
+{% endblock title %}
+{% block style %}
+    .body__head {
+    box-sizing: border-box;
+    margin: 2rem;
+    padding: 2rem;
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.2);
+    text-align: center;
+    letter-spacing: 5px;
+    font-size: 30px;
+    text-transform: uppercase;
+    }
+    a {
+    text-decoration: none;
+    }
+    .body__head  a:hover{
+    background: green;
+    color: white;
+    font-style: italic;
+    padding: 0.5rem;
+    }
+    .popup {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s; }
+    .popup__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    background-color: #fff;
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    display: table;
+    overflow: hidden;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.25);
+    transition: all .5s .2s; }
+    .popup__left {
+    width: 33.333333%;
+    display: table-cell; }
+    .popup__right {
+    width: 66.6666667%;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 3rem 5rem; }
+    .popup__img {
+    display: block;
+    width: 100%; }
+    .popup__text {
+    font-size: 1.4rem;
+    margin-bottom: 4rem;
+    -moz-column-count: 2;
+    -moz-column-gap: 4rem;
+    -moz-column-rule: 1px solid #eee;
+    column-count: 2;
+    column-gap: 4rem;
+    column-rule: 1px solid #eee;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto; }
+    .popup:target {
+    opacity: 1;
+    visibility: visible; }
+    .popup:target .popup__content {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); }
+    .popup__close:link, .popup__close:visited {
+    color: #777;
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    font-size: 3rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: all .2s;
+    line-height: 1; }
+    .popup__close:hover {
+    color: #55c57a; }
+{% endblock style %}
+{% block content %}
+    <div class="body__head">
+        <h2>
+            By using our size you agree to our <a href="#popup">terms of service</a>
+        </h2>
+        <a href="{% url 'landing_page' %}">&larr;Back</a>
+    </div>
+    <div class="popup" id="popup">
+        <div class="popup__content">
+            <div class="popup__left">
+                <img src="{% static 'bdenapp/images/story-1.jpeg' %}"
+                     alt="Tour photo"
+                     class="popup__img">
+                <img src="{% static 'bdenapp/images/story-2.jpeg' %}"
+                     alt="Tour photo"
+                     class="popup__img">
+            </div>
+            <div class="popup__right">
+                <a href="#section-tours" class="popup__close">&times;</a>
+                <h2 class="heading-secondary u-margin-bottom-small">Start booking now</h2>
+                <h3 class="heading-tertiary u-margin-bottom-small">Important &ndash; Please read these terms before booking</h3>
+                <p class="popup__text">
+                    Welcome to B-den, for seemless and easy property search and purchase.
+                    We have come a long way to build this app to meet the needs of thousands of Nigerians
+                    going through difficulty in getting a place to lay their head. This size was borne to carter for
+                    this growing need and solve the rather difficult and unfathomably unsolvable problem for housing.
+                    Here, you can search, and view any kind of property of choice and even partner with us.
+                    A 10% fee for services go to the development and maintenance of this size. All users who use
+                    this site will, on purchase or renting of a property charged a little token which is already
+                    included in the full payment, so no extra charges involved.
+                    Have fun navigating and using our site!
+                </p>
+                <a href="{% url 'home' %}" class="btn btn--green">Book now</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

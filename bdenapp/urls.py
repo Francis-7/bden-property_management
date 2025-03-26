@@ -33,4 +33,13 @@ urlpatterns = [
     path('best_deals', views.best_deals, name='best_deals'),
     path('user_reviews', views.user_reviews, name='user_reviews'),
     path('privacy', views.privacy, name='privacy'),
+    path('terms', views.terms, name='terms'),
+    path('list_property', views.list_property, name='list_property'),
+    path('property_management', views.property_management, name='property_management'),
+    path('success_stories', views.success_stories, name='success_stories'),
+    path('press_media', views.press_and_media, name='press_media'),
+    path('the_team', views.the_team, name='the_team'),
+    path('our_mission', views.our_mission, name='our_mission'),
+    path('bulk_listings', views.bulk_listings, name='bulk_listings'),
+    path('marketting', views.marketing_services, name='marketting')
 ]

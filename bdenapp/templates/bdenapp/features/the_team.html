@@ -1,0 +1,85 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    The Team
+{% endblock title %}
+{% block style %}
+    .body__header {
+    margin: 2rem;
+    padding: 8rem;
+    text-align: center;
+    letter-spacing: 10px;
+    background: rgba(0,0,0,0.2);
+    }
+    .body__header h1 {
+    font-size: 30px;
+    margin: 5rem;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    }
+    .body__text {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin: 5rem;
+    }
+    .body__row {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.2);
+    align-self: auto;
+    max-width: 80%;
+    margin: 0 auto;
+    }
+    .body__row img {
+    width: 50%;
+    height: 90%;
+    border-radius: 50%;
+    object-fit: cover;
+    padding: 1rem;
+    }
+    .body__row p {
+    padding: 1rem;
+    text-align: justify;
+    font-size: 20px;
+    <!-- border: 1px solid black; -->
+    }
+    .para {
+    align-self: center;
+    }
+    .image {
+    align-self: center;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="body__header">
+        <h1>Meet the faces behind b-den app</h1>
+    </div>
+    <div class="body__text">
+        <div class="body__row">
+            <div class="image">
+                <img src="{% static 'bdenapp/images/realtor-1.jpg' %}" alt="">
+            </div>
+            <div class="para">
+                <p>Meet Alade, the IT guru behind all the logic and models used in building this wonderful app</p>
+            </div>
+        </div>
+        <div class="body__row">
+            <div class="image">
+                <img src="{% static 'bdenapp/images/realtor-2.jpg' %}" alt="">
+            </div>
+            <div class="para">
+                <p>Meet Alade, the Project manager, relentless and on ground to see the right and top-notch architecture is used</p>
+            </div>
+        </div>
+        <div class="body__row">
+            <div class="image">
+                <img src="{% static 'bdenapp/images/realtor-3.jpg' %}" alt="">
+            </div>
+            <div class="para">
+                <p>Meet Jenny, the resource manager behind all the data and materials used in building this wonderful app</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

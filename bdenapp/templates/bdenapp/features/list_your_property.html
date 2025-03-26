@@ -1,0 +1,52 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    List Your property
+{% endblock title %}
+{% block style %}
+    .body__text {
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 5px;
+    font-size: 30px;
+    margin: 3rem;
+    }
+    .my_list {
+    padding: 2rem;
+    margin: 2rem;
+    box-shadow: 0 2px 2px 2px rgba(0,0,0,0,8);
+    max-width: 80%;
+    margin: 0 auto;
+    background: wheat;
+    color: black;
+    }
+    .my_list li {
+    list-style: none;
+    margin: 1rem;
+    padding: 1rem;
+    font-size: 18px;
+    }
+    .my_list p {
+    font-size: 22px;
+    }
+    .my_list a {
+    text-decoration: none;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="body__text">
+        <h2>Want to partner with b-den?</h2>
+    </div>
+    <div class="my_list">
+        <p>Heere are the steps:</p>
+        <ul>
+            <li>
+                <a href="{% url 'register' %}">Sign-up</a>
+            </li>
+            <li>In the dashboard, click I want to partner</li>
+            <li>Read the terms and conditions</li>
+            <li>Follow the steps by providing valid materials</li>
+            <li>Wait for the admin's approval and upload of the property</li>
+        </ul>
+    </div>
+{% endblock content %}

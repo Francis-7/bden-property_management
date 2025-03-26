@@ -452,3 +452,39 @@ def user_reviews(request):
 # privacy
 def privacy(request):
     return render(request, 'bdenapp/features/privacy.html', {})
+
+# terms of service
+def terms(request):
+    return render(request, 'bdenapp/features/terms.html', {})
+
+# list your property
+def list_property(request):
+    return render(request, 'bdenapp/features/list_your_property.html', {})
+
+# property management
+def property_management(request):
+    return render(request, 'bdenapp/features/propertu_management.html', {})
+
+# marketting services
+def marketing_services(request):
+    return render(request, 'bdenapp/features/mrketing_services.html', {})
+
+# bulk listings
+def bulk_listings(request):
+    return render(request, 'bdenapp/features/bulk_listings.html', {})
+
+# our mission
+def our_mission(request):
+    return render(request, 'bdenapp/features/our_mission.html', {})
+
+# the team 
+def the_team(request):
+    return render(request, 'bdenapp/features/the_team.html', {})
+
+# success_stories
+def success_stories(request):
+    return render(request, 'bdenapp/features/success_stories.html', {})
+
+# Press and media
+def press_and_media(request):
+    return render(request, 'bdenapp/features/press_and_media.html', {})

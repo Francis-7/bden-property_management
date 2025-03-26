@@ -1,0 +1,29 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Marketting
+{% endblock title %}
+{% block style %}
+    .body {
+    text-align: center;
+    padding: 8rem;
+    margin: 2rem;
+    <!-- background: aqua; -->
+    }
+    .body button {
+    padding: 2rem;
+    width: 500px;
+    letter-spacing: 10px;
+    border-radius: 10rem;
+    background: green;
+    color: white;
+    font-size: 20px;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="body">
+        <a href="{% url 'dashboard' %}">
+            <button>Go to your dashboard</button>
+        </a>
+    </div>
+{% endblock content %}

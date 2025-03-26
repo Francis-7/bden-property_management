@@ -1,0 +1,31 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Press and Media
+{% endblock title %}
+{% block style %}
+    .body__text {
+    text-align: center;
+    max-width: 50%;
+    margin: 0 auto;
+    }
+    .body__text a {
+    text-decoration: none;
+    }
+    .body__text a:hover {
+    padding: 1rem;
+    }
+    .body__text p {
+    font-size: 20px;
+    letter-spacing: 5px;
+    padding: 3rem;
+    margin: 3rem;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="body__text">
+        <p>
+            Go to our <a href="https://facebook.com">facebook page</a>
+        </p>
+    </div>
+{% endblock content %}
