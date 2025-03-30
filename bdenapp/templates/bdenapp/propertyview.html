@@ -13,85 +13,121 @@
 {% block style %}
     .main-body {
     display: grid;
-    background-color: rgba(0,0,0,0.3);
     grid-template-areas:
-    "main-property related"
+    "main-property main-property"
+    "related related"
     "for-review contact";
     gap: 55px;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: repeat(auto-fit, 1fr);
     padding: 5px;
-    grid-template-rows: auto auto;
-    color: white;
-    <!-- grid-auto-rows: 100px; -->
+    box-sizing: border-box;
     }
     .main-property {
     grid-area: main-property;
-    display: grid;
-    grid-template-rows: auto auto auto;
-    row-gap: 10px;
+    display: flex;
+    flex-flow: column;
+    padding: 2rem;
+    box-sizing: border-box;
+    width: 100%;
+    }
+    .contact {
+    grid-area: contact;
+    display: flex;
+    flex-flow: column;
+    padding: 2rem;
+    box-sizing: border-box;
+    width: 100%;
     }
     .media {
-    <!-- border: 1px solid #ccc; -->
-    padding: 10px;
-    <!-- background-color: #f9f9f9 -->
+    margin: 2rem;
     }
     .for-review {
     grid-area: for-review;
-    display: grid;
+    display: flex;
+    flex-flow: column;
+    padding: 2rem;
+    box-sizing: border-box;
+    width: 100%;
     }
     .related {
     grid-area: related;
-    display: grid;
+    display: flex;
+    flex-flow: column;
+    padding: 2rem;
+    box-sizing: border-box;
+    width: 100%;
     }
     .media-1 {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 40px;
-    align-items: center;
-    }
-    .media-1 img {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    }
-    .media-1 .content {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    font: 18px sans-serif;
+    gap: 2rem;
+    padding: 4rem;
+    align-items: start;
+    justify-content: space-around;
+    }
+    .location {
+    align-self: auto;
+    }
+    .description {
+    align-self: auto;
+    }
+    .price {
+    align-self: auto;
     }
     .media-2 {
-    display: grid;
-    grid-auto-flow: column;
-    gap: 5px;
-    align-items: start;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    max-width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-around;
+    }
+    .images-col {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: calc(25% - 1rem);
+    box-sizing: border-box;
+    }
+    .media-2::-webkit-scrollbar {
+    height: 8px;
     }
     .images-col img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
-    display: block;
     }
     .related-items {
     display: flex;
-    flex-direction: column;
-    gap: 25px;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 20px;
+    margin: 5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    max-width: 100%;
+    box-sizing: border-box;
     }
     .related-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
+    display: grid;
+    grid-template-rows: repeat(auto-fit, 1fr);
+    grid-gap: 1rem;
+    padding: 1rem;
+    border: solid 1px black;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: calc(33.33% - 1rem);
+    box-sizing: border-box;
     }
     .related-image img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    display: block;
     }
-    .related-item .related-content h2 {
-    font: 16px sans-serif;
+    .related-content h2 {
+    font: 18px sans-serif;
+    text-align: justify;
     }
     .reviews {
     padding: 2rem;
@@ -135,122 +171,383 @@
     .star.filled {
     color: #ffc107; /* Gold for filled stars */
     }
+    .user-choice {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    }
+    .user-choice button {
+    padding: auto;
+    font-size: 16px;
+    }
+    .fullscreen-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    }
+    /* Full-screen image styling */
+    .fullscreen-modal img {
+    max-width: 90%;
+    max-height: 80%;
+    margin-bottom: 20px;
+    }
+    /* Close button (x) */
+    .fullscreen-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    }
+    /* Next and Previous Buttons */
+    .fullscreen-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1;
+    }
+    #prevImage {
+    left: 10px;
+    }
+    #nextImage {
+    right: 10px;
+    }
+    .fullscreen-btn:hover {
+    color: #ccc; /* Light grey color when hovered */
+    }
+    .fullscreen-btn:focus {
+    outline: none;
+    }
+    .related--header {
+    text-align: center;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    padding: 2rem;
+    margin: 2rem;
+    }
+    .located h2{
+    font: 18px sans-serif;
+    }
+    .heaing--sort {
+    text-align: center;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    }
+    .heaing--sort h1 {
+    font: 20px sans-serif;
+    }
+    .cities {
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+    justify-content: center;
+    padding: 1rem;
+    margin-top: 2rem;
+    }
+    .cities a {
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px;
+    border: solid 1px black;
+    display: grid;
+    grid-template-rows: repeat(auto-fit, 1fr);
+    grid-gap: 0;
+    justify-items: center;
+    }
+    .cities a:hover {
+    background: rgba(0,0,255,0.5);
+    color: white;
+    }
+    .cities span {
+    }
+    .filter {
+    letter-spacing: 4px;
+    margin: 4rem;
+    }
+    .filter p {
+    font: 18px sans-serif;
+    }
+    .filter button {
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding:  1px 1rem;
+    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.2);
+    font-size: 16px;
+    border-radius: 2rem;
+    }
+    .filter label {
+    font-size: 16px;
+    }
+    .filter select {
+    font-size: 16px;
+    padding: 1px 1rem;
+    margin: auto 1rem;
+    }
 {% endblock style %}
 {% block content %}
     <div class="main-body">
         <section class="main-property">
-            <div class="media">
-                <div class="media-1">
-                    <div class="img">
-                        <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
-                    </div>
-                    <div class="content">
-                        <h3>
-                            <strong>Location:</strong>
+            <div class="heaing--sort">
+                <h1>Other locations in {{ property.location | first_word_before_comma }}:</h1>
+            </div>
+            <div class="cities">
+                {% for city, count in properties|get_city_counts:state_name %}
+                    <div class="city">
+                        <a href="{% url 'properties_by_city' city %}"><span>{{ city }}</span>
                             <br>
-                            {{ property.location }}
-                        </h3>
-                        <h4>{{ property.description }}</h4>
-                        <p>
-                            Type:
-                            <br>
-                            {{ property.typeChoice }}
-                        </p>
-                        <h2 class="display-4">₦{{ property.price | intcomma }}</h2>
+                            <span>{{ count }}
+                                {% if count == 1 %}
+                                    property
+                                {% else %}
+                                    properties
+                                {% endif %}
+                            </span></a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="media">
+                    <div class="media-1">
+                        <div class="location">
+                            <h2>
+                                <strong>Location:</strong>
+                                <br>
+                                {{ property.location }}
+                            </h2>
+                        </div>
+                        <div class="description">
+                            <h2>
+                                <strong>Description:</strong>
+                                <br>
+                                {{ property.description }}
+                                <br>
+                                {{ property.typeChoice }}
+                            </h2>
+                        </div>
+                        <div class="price">
+                            <h2>
+                                <strong>Price:</strong>
+                                <br>
+                                ₦{{ property.price | intcomma }}
+                            </h2>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="media">
-                <div class="media-2">
-                    {% for image in images %}
-                        <div class="images-col">
-                            <img src="{{ image.images.url }}" alt="{{ image.property.owner }}">
+                <div class="media">
+                    <div class="media-2">
+                        {% for image in images %}
+                            <div class="images-col">
+                                <img src="{{ image.images.url }}"
+                                     alt="{{ image.property.owner }}"
+                                     class="gallery__img">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="user-choice">
+                        {% if property.isPeerToPeer and property.provision == "Rent" %}
+                            <a href="" class="">
+                                <button class="btn btn-info me-4">Check the PeerToPeer condition</button>
+                            </a>
+                        {% elif property.provision == "Lease" %}
+                            <a href="">
+                                <button class="btn btn-info me-4">See the lease condition</button>
+                            </a>
+                        {% elif property.provision == "Rent" %}
+                            <a href="">
+                                <button class="btn btn-info btn-lg me-4">Rent this Property</button>
+                            </a>
+                        {% elif property.provision == "Sale" %}
+                            <a href="{% url 'handle-purchase' property.id %}">
+                                <button class="btn btn-info me-4">Purchase this property</button>
+                            </a>
+                        {% endif %}
+                        <a href="{% url 'save_for_later' property.id %}">
+                            <button class="btn btn-lg btn-secondary">Save for later</button>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <section class="for-review">
+                <div class="title--head">
+                    <h2 class="review-heading">See the reviews on this property</h2>
+                </div>
+                <div class="reviews">
+                    {% for review in reviews %}
+                        <div class="review">
+                            <img src="{{ review.user.profile.profile_picture.url }}" alt="">
+                            <div class="para">
+                                <p>{{ review.user.username }}</p>
+                            </div>
+                        </div>
+                        <div class="reviewer-name">
+                            <div class="reviewer-rating">
+                                {% for i in 1|to:6 %}
+                                    <!-- Loop from 1 to 5 (inclusive) -->
+                                    {% if i <= review.rating %}
+                                        <span class="star filled">★</span>  <!-- Filled star for ratings less than or equal to user input -->
+                                    {% else %}
+                                        <span class="star">★</span>  <!-- Empty star for remaining -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {{ review.review_text }}
+                        </div>
+                    {% empty %}
+                        <h4>No reviews yet</h4>
+                    {% endfor %}
+                </div>
+            </section>
+            <div class="related">
+                <div class="related--header">
+                    <h2>See similar properties on b-den</h2>
+                </div>
+                <div class="filter">
+                    <p>
+                        <strong>filter properties</strong>
+                    </p>
+                    <form id="price-filter-form">
+                        <label for="price">Filter by Price:</label>
+                        <select name="price" id="price">
+                            <option value="">Select Price Range</option>
+                            <option value="low">Below ₦500,000</option>
+                            <option value="medium">₦500,000 - ₦1,000,000</option>
+                            <option value="high">Above ₦1,000,000</option>
+                        </select>
+                        <button type="button" id="apply-filter">Apply Filter</button>
+                        <button type="button" id="reset-filter">Reset Filter</button>
+                    </form>
+                </div>
+                <div class="related-items" id="property-list">
+                    {% for property in properties %}
+                        <div class="related-item" data-price="{{ property.price }}">
+                            <div class="related-image">
+                                <a href="{% url 'propertyview' property.pk %}">
+                                    <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
+                                </a>
+                            </div>
+                            <div class="related-content">
+                                <h2>{{ property.description }}</h2>
+                            </div>
+                            <div class="located">
+                                <h2>{{ property.location |first_word_before_comma }}</h2>
+                            </div>
+                            <div class="price">
+                                <h2>₦{{ property.price }}</h2>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
             </div>
-            <div class="media">
-                <div class="p-4 m-4">
-                    {% if property.isPeerToPeer and property.provision == "Rent" %}
-                        <a href="" class="">
-                            <button class="btn btn-info me-4">Check the PeerToPeer condition</button>
-                        </a>
-                    {% elif property.provision == "Lease" %}
-                        <a href="">
-                            <button class="btn btn-info me-4">See the lease condition</button>
-                        </a>
-                    {% elif property.provision == "Rent" %}
-                        <a href="">
-                            <button class="btn btn-info btn-lg me-4">Rent this Property</button>
-                        </a>
-                    {% elif property.provision == "Sale" %}
-                        <a href="{% url 'handle-purchase' property.id %}">
-                            <button class="btn btn-info me-4">Purchase this property</button>
-                        </a>
-                    {% endif %}
-                    <a href="{% url 'save_for_later' property.id %}">
-                        <button class="btn btn-lg btn-secondary">Save for later</button>
-                    </a>
+            <section class="for-contact">
+                <div class="contact-form">
+                    <form action="">
+                        <label for="username">Name:</label>
+                        <input type="text" id="username" required>
+                        <label for="email">Email</label>
+                        <input type="email" name="" id="email">
+                    </form>
                 </div>
-            </div>
-        </section>
-        <section class="for-review">
-            <div class="title--head">
-                <h2 class="review-heading">See the reviews on this property</h2>
-            </div>
-            <div class="reviews">
-                {% for review in reviews %}
-                    <div class="review">
-                        <img src="{{ review.user.profile.profile_picture.url }}" alt="">
-                        <div class="para">
-                            <p>{{ review.user.username }}</p>
-                        </div>
-                    </div>
-                    <div class="reviewer-name">
-                        <div class="reviewer-rating">
-                            {% for i in 1|to:6 %}
-                                <!-- Loop from 1 to 5 (inclusive) -->
-                                {% if i <= review.rating %}
-                                    <span class="star filled">★</span>  <!-- Filled star for ratings less than or equal to user input -->
-                                {% else %}
-                                    <span class="star">★</span>  <!-- Empty star for remaining -->
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        {{ review.review_text }}
-                    </div>
-                {% empty %}
-                    <h4>No reviews yet</h4>
-                {% endfor %}
-            </div>
-        </section>
-        <div class="related">
-            <div class="related-items">
-                <h2 class="display-5">See similar properties</h2>
-                {% for property in properties %}
-                    <div class="related-item">
-                        <div class="related-image">
-                            <a href="{% url 'propertyview' property.pk %}">
-                                <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
-                            </a>
-                        </div>
-                        <div class="related-content">
-                            <h2>{{ property.description }}</h2>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+            </section>
         </div>
-        <section class="for-contact">
-            <div class="contact-form">
-                <form action="">
-                    <label for="username">Name:</label>
-                    <input type="text" id="username" required>
-                    <label for="email">Email</label>
-                    <input type="email" name="" id="email">
-                </form>
-            </div>
-        </section>
-    </div>
-</div>
-{% endblock content %}
+        <div id="fullscreenModal" class="fullscreen-modal">
+            <span id="closeFullscreen" class="fullscreen-close-btn">&times;</span>
+            <img id="fullscreenImage" src="" alt="Fullscreen Image">
+            <button id="prevImage" class="fullscreen-btn">
+                <
+            </button>
+            <button id="nextImage" class="fullscreen-btn">></button>
+        </div>
+    {% endblock content %}
+    {% block js %}
+        <!-- ajax filter -->
+        document.getElementById('apply-filter').addEventListener('click', function () {
+        const filterValue = document.getElementById('price').value; // Get selected price range
+        // Make AJAX request
+        fetch(`/ajax/filter-properties/?price=${filterValue}`)
+        .then(response => response.json())
+        .then(data => {
+        const propertyList = document.getElementById('property-list');
+        propertyList.innerHTML = ''; // Clear the current list
+        // Dynamically add filtered properties
+        data.properties.forEach(property => {
+        const propertyItem = document.createElement('div');
+        propertyItem.classList.add('related-item');
+        propertyItem.innerHTML = `
+        <div class="related-image">
+            <img src="${property.picture_url}" alt="Property Image">
+        </div>
+        <div class="related-content">
+            <h2>${property.description}</h2>
+        </div>
+        <div class="located">
+            <h2>${property.location}</h2>
+        </div>
+        <div class="price">
+            <h2>₦${property.price}</h2>
+        </div>
+        `;
+        propertyList.appendChild(propertyItem);
+        });
+        })
+        .catch(error => console.error('Error:', error));
+        });
+        <!-- fullscreen -->
+        const modal = document.getElementById('fullscreenModal');
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const closeBtn = document.getElementById('closeFullscreen');
+        const prevBtn = document.getElementById('prevImage');
+        const nextBtn = document.getElementById('nextImage');
+        const images = document.querySelectorAll('.gallery__img');
+        let currentIndex = 0;
+        // Show the full-screen image when an image is clicked
+        images.forEach((img, index) => {
+        img.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        fullscreenImage.src = img.src;
+        currentIndex = index;
+        });
+        });
+        // Close the full-screen modal when clicking the close button or pressing ESC
+        closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        });
+        // Close the modal if clicking anywhere outside the image
+        modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+        modal.style.display = 'none';
+        }
+        });
+        // Listen for ESC key to close modal
+        window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+        modal.style.display = 'none';
+        }
+        });
+        // Go to the previous image
+        prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        fullscreenImage.src = images[currentIndex].src;
+        });
+        // Go to the next image
+        nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        fullscreenImage.src = images[currentIndex].src;
+        });
+        <!-- filtering properties -->
+    {% endblock js %}

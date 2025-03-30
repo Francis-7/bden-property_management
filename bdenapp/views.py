@@ -9,6 +9,7 @@ from .forms import UserRegistrationForm, PropertyForm, PropertyImageForm, Review
 from .models import group_and_sort_by_first_word
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from collections import Counter
 
 
 def home_view(request):
@@ -24,9 +25,43 @@ def propertyView(request, id):
         reviews = Review.objects.filter(property=property, user=request.user)
     else:
         reviews = Review.objects.none() 
-    # reviews = Review.objects.filter(property=property, user=request.user)
-    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews})
+    
+    state_name = property.location.split(',')[0].strip()
+    
+    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews, 'state_name':state_name})
 
+# Ajax for filtering properties
+def ajax_filter_properties(request):
+    # Get the price filter from the GET request
+    price_filter = request.GET.get('price')
+    properties = Property.objects.all()
+
+    # Filter properties based on the selected price range
+    if price_filter == 'low':
+        properties = properties.filter(price__lt=500000)
+    elif price_filter == 'medium':
+        properties = properties.filter(price__gte=500000, price__lte=1000000)
+    elif price_filter == 'high':
+        properties = properties.filter(price__gt=1000000)
+
+    # Serialize filtered properties for JSON response
+    property_data = [
+        {
+            'id': property.id,
+            'location': property.location,
+            'picture_url': property.picture.url,
+            'description': property.description,
+            'price': property.price,
+        }
+        for property in properties
+    ]
+
+    return JsonResponse({'properties': property_data})
+
+# properties in a specific city
+def properties_by_city(request, city_name):
+    filtered_properties = Property.objects.filter(location__icontains=f"{city_name},")
+    return render(request, 'bdenapp/city_properties.html', {'city_name':city_name, 'properties':filtered_properties})
 # Define a search pattern for the page
 def search_results_single(request):
     query = request.GET.get('q')

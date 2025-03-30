@@ -41,5 +41,7 @@ urlpatterns = [
     path('the_team', views.the_team, name='the_team'),
     path('our_mission', views.our_mission, name='our_mission'),
     path('bulk_listings', views.bulk_listings, name='bulk_listings'),
-    path('marketting', views.marketing_services, name='marketting')
+    path('marketting', views.marketing_services, name='marketting'),
+    path('properties/<str:city_name>/', views.properties_by_city, name='properties_by_city'),
+    path('ajax/filter-properties/', views.ajax_filter_properties, name='ajax_filter_properties'),
 ]
