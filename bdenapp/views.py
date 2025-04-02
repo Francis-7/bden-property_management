@@ -401,6 +401,24 @@ def property_autocomplete(request):
         return JsonResponse(formatted_suggestions, safe=False)
     return JsonResponse([], safe=False)
 
+# live search ouput for another search input on the page
+def property_autocomplete_view(request):
+    query = request.GET.get('q', '')
+    if query:
+        matches_found = Property.objects.filter(
+            Q(location__icontains=query) |
+            Q(description__icontains=query) |
+            Q(typeChoice__icontains=query)
+        ).values('location', 'typeChoice').distinct()
+
+        # Format the results as "location - typeChoice"
+        formatted_suggestions = [
+            f"{item['location']} - {item['typeChoice']}"
+            for item in matches_found
+        ]
+        return JsonResponse(formatted_suggestions, safe=False)
+    return JsonResponse([], safe=False)
+
 # updated property_serach view 
 
 def property_search_result(request):

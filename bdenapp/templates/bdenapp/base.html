@@ -148,11 +148,11 @@
                    name="q"
                    placeholder="Search"
                    aria-label="Search"
-                   id="search-input"
+                   id="search-input_word"
                    autocomplete="off" />
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
-          <div id="suggestions"></div>
+          <div id="results"></div>
         </div>
       </div>
     </nav>
@@ -205,12 +205,16 @@
     </script>
     <script>
       $(document).ready(function() {
-  $('#search-input').on('keyup', function() {
+  $('#search-input_word').on('keyup', function() {
   const query = $(this).val();
   if (query.length > 1) {
   $.ajax({
-  url: "{% url 'property_autocomplete' %}",
+  url: "{% url 'property_autocomplete_view' %}",
   data: { 'q': query },
+  headers: {
+    'X-CSRFToken': '{{ csrf_token }}'
+  },
+
   success: function(data) {
   let suggestions = '';
   data.forEach(function(item) {
@@ -218,17 +222,17 @@
   <div class="suggestion-item">${item}</div>
   `;
   });
-  $('#suggestions').html(suggestions);
+  $('#results').html(suggestions);
   }
   });
   } else {
-  $('#suggestions').empty();
+  $('#results').empty();
   }
   });
   // Add click functionality for suggestions
   $(document).on('click', '.suggestion-item', function() {
-  $('#search-input').val($(this).text());
-  $('#suggestions').empty();
+  $('#search-input_word').val($(this).text());
+  $('#results').empty();
   });
   });
     </script>

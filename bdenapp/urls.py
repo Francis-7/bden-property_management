@@ -28,6 +28,7 @@ urlpatterns = [
     path('community_forum', views.community_forum, name='community_forum'),
     path('refunds_and_cancellation_policy', views.refunds_and_cancellation, name='refunds_and_cancellation'),
     path('property_autocomplete', views.property_autocomplete, name='property_autocomplete'),
+    path('property_autocomplete_view', views.property_autocomplete_view, name='property_autocomplete_view'),
     path('trending_locations', views.trending_locations, name='trending_locations'),
     path('new_listings', views.new_listings, name='new_listings'),
     path('best_deals', views.best_deals, name='best_deals'),
