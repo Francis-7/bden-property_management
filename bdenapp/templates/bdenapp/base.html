@@ -58,9 +58,8 @@
   .icon__link:hover, .icon__link:active {
     background-color: rgba(1, 20, 0, 0.05);
     transform: translateY(-3px); }
-
-/* foooter */
-
+    
+    
      {% endblock %}
     </style>
   </head>
@@ -141,14 +140,19 @@
               </li>
             </ul>
           {% endif %}
-          <form class="d-flex"  action="">
+          <form class="d-flex me-5 pe-5"
+                method="get"
+                action="{% url 'property_search_result' %}">
             <input class="form-control me-2"
                    type="text"
                    name="q"
                    placeholder="Search"
-                   aria-label="Search" />
+                   aria-label="Search"
+                   id="search-input"
+                   autocomplete="off" />
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+          <div id="suggestions"></div>
         </div>
       </div>
     </nav>
@@ -198,6 +202,35 @@
               {% block js %}
               
             {% endblock js %}
+    </script>
+    <script>
+      $(document).ready(function() {
+  $('#search-input').on('keyup', function() {
+  const query = $(this).val();
+  if (query.length > 1) {
+  $.ajax({
+  url: "{% url 'property_autocomplete' %}",
+  data: { 'q': query },
+  success: function(data) {
+  let suggestions = '';
+  data.forEach(function(item) {
+  suggestions += `
+  <div class="suggestion-item">${item}</div>
+  `;
+  });
+  $('#suggestions').html(suggestions);
+  }
+  });
+  } else {
+  $('#suggestions').empty();
+  }
+  });
+  // Add click functionality for suggestions
+  $(document).on('click', '.suggestion-item', function() {
+  $('#search-input').val($(this).text());
+  $('#suggestions').empty();
+  });
+  });
     </script>
   </body>
 </html>

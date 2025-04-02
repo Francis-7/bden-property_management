@@ -1,5 +1,6 @@
 {% extends 'bdenApp/base.html' %}
 {% load static %}
+{% load humanize %}
 {% load custom_filters %}
 {% block title %}
     Category View
@@ -14,47 +15,43 @@
     max-width: 100%;
     margin: 1em auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, 25%);
+    grid-template-rows: repeat(auto-fit, 1fr);
+    justify-content: center;
     grid-gap: 15px;
-    }
-    .for-property {
-    font: 1em sans-serif;
-    padding: 1em;
-    }
-    .for-property img {
-    max-width: 100%;
+    padding: 3rem;
     }
     .card {
     border: 1px solid #999;
-    border-radius: 3px;
+    padding: 1rem;
     display: grid;
-    grid-template-rows: max-content 150px 1fr;
+    grid-template-rows: 250px 1fr;
+    grid-gap: 5px;
     }
     .card img {
     object-fit: cover;
     width: 100%;
     height: 100%;
     }
-    .card h2 {
-    margin: 0;
-    padding: 0.5rem;
-    font: 1em sans-serif;
+    .content {
+    padding: 1rem;
+    text-align: justify;
     }
-    .card .content {
-    padding: 0.5rem;
+    .category--heading {
+    letter-spacing: 5px;
+    padding: 3rem;
+    text-align: center;
+    text-transform: uppercase;
     }
 {% endblock style %}
 {% block content %}
-    <div class="text-center">
-        <h2 class="display-4">Property Category View</h2>
+    <div class="category--heading">
+        <h2>Category View</h2>
     </div>
     <section class="for-property">
         <div class="cards">
             {% for obj in objects %}
                 <div class="card">
-                    <div class="heading">
-                        <h2>{{ obj.typeChoice }}</h2>
-                    </div>
                     <a href="{% url 'propertyview' obj.pk %}">
                         <img src="{{ obj.picture.url }}" alt="{{ obj.owner }}" />
                     </a>
@@ -62,6 +59,7 @@
                         <h3>{{ obj.location |first_word_before_comma }}</h3>
                         <p>{{ obj.description }}</p>
                     </div>
+                    <div class="content">₦{{ obj.price | intcomma }}</div>
                 </div>
             {% endfor %}
         </div>

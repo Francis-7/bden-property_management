@@ -13,48 +13,61 @@
 {% endblock title %}
 {% block style %}
     .cards {
-    max-width: 100%;
-    margin: 1em auto;
+    margin: 2rem;
+    padding: 3rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(auto-fit, 25%));
+    grid-template-rows: 250px repeat(auto-fit, 1fr);
     grid-gap: 15px;
-    }
-    .for-property {
-    font: 1em sans-serif;
-    padding: 1em;
-    }
-    .for-property img {
-    max-width: 100%;
+    justify-content: center;
     }
     .card {
     border: 1px solid #999;
-    border-radius: 3px;
     display: grid;
-    grid-template-rows: max-content 150px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-gap: 4px;
+    padding: 1rem;
     }
     .card img {
     object-fit: cover;
     width: 100%;
     height: 100%;
     }
-    .card h2 {
-    margin: 0;
-    padding: 0.5rem;
-    font: 1em sans-serif;
+    .heading--text {
+    letter-spacing: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 4rem;
     }
-    .card .content {
-    padding: 0.5rem;
+    .filtered{
+    padding: 3rem;
+    letter-spacing: 5px;
+    text-align: center;
+    }
+    .filtered button {
+    padding: 1px 1rem;
+    border-radius: 7rem;
+    font-size: 18px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    }
+    .filtered label {
+    font-size: 18px;
+    }
+    .filtered select {
+    padding: 1px 1rem;
+    margin: 1px 2rem;
+    font-size: 18px;
     }
 {% endblock %}
 {% block content %}
-    <h1 class="display-4">Results: {{ size }}</h1>
+    <div class="heading--text">
+        <h1>Results: {{ size }}</h1>
+    </div>
     <section class="for-property">
         <div class="cards">
             {% for result in results %}
                 <div class="card">
-                    <div class="heading">
-                        <h2>{{ result.typeChoice }}</h2>
-                    </div>
                     <a href="{% url 'propertyview' result.pk %}">
                         <img src="{{ result.picture.url }}" alt="{{ result.owner }}" />
                     </a>

@@ -476,14 +476,26 @@
     {% endblock content %}
     {% block js %}
         <!-- ajax filter -->
+        document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('apply-filter').addEventListener('click', function () {
         const filterValue = document.getElementById('price').value; // Get selected price range
         // Make AJAX request
-        fetch(`/ajax/filter-properties/?price=${filterValue}`)
-        .then(response => response.json())
+        fetch(`ajax/filter-properties/?price=${filterValue}`)
+        .then(response => {
+        if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+        })
         .then(data => {
         const propertyList = document.getElementById('property-list');
         propertyList.innerHTML = ''; // Clear the current list
+        if (data.properties.length === 0) {
+        propertyList.innerHTML = `
+        <p>No properties match the selected price range.</p>
+        `;
+        return;
+        }
         // Dynamically add filtered properties
         data.properties.forEach(property => {
         const propertyItem = document.createElement('div');
@@ -505,16 +517,17 @@
         propertyList.appendChild(propertyItem);
         });
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error during filtering:', error));
         });
+        });
+        <!-- Reset button -->
         <!-- fullscreen -->
-        const modal = document.getElementById('fullscreenModal');
-        const fullscreenImage = document.getElementById('fullscreenImage');
-        const closeBtn = document.getElementById('closeFullscreen');
-        const prevBtn = document.getElementById('prevImage');
-        const nextBtn = document.getElementById('nextImage');
-        const images = document.querySelectorAll('.gallery__img');
-        let currentIndex = 0;
+        <!-- const modal = document.getElementById('fullscreenModal'); -->
+        <!-- const fullscreenImage = document.getElementById('fullscreenImage'); -->
+        <!-- const closeBtn = document.getElementById('closeFullscreen'); -->
+        <!-- const prevBtn = document.getElementById('prevImage'); -->
+        <!-- const nextBtn = document.getElementById('nextImage'); -->
+        <!-- const images = document.querySelectorAll('.gallery__img'); -->
         // Show the full-screen image when an image is clicked
         images.forEach((img, index) => {
         img.addEventListener('click', () => {
