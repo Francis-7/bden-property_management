@@ -88,6 +88,24 @@ class Purchase(models.Model):
 
     def __str__(self):
         return f"{self.user.username}"
+    
+
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    currency = models.CharField(max_length=10, default='NGN')
+    STAGE = models.TextChoices('STAGE', 'Pending Completed Failed')
+    status = models.CharField(max_length=20, choices=STAGE)
+    transaction_id = models.CharField(max_length=100, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'payment'
+        ordering = ['created_at']
+        verbose_name_plural = 'Payments'
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amount} - {self.currency} ({self.status})"
 
 def group_and_sort_by_first_word():
     # fetch all objects

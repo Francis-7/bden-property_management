@@ -219,7 +219,7 @@
   let suggestions = '';
   data.forEach(function(item) {
   suggestions += `
-  <div class="suggestion-item">${item}</div>
+  <div class="matching-items">${item}</div>
   `;
   });
   $('#results').html(suggestions);
@@ -230,7 +230,7 @@
   }
   });
   // Add click functionality for suggestions
-  $(document).on('click', '.suggestion-item', function() {
+  $(document).on('click', '.matching-items', function() {
   $('#search-input_word').val($(this).text());
   $('#results').empty();
   });
