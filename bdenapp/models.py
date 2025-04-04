@@ -17,7 +17,7 @@ class Category(models.Model):
 class Property(models.Model):
     location = models.CharField(max_length=250)
     owner = models.CharField(max_length=150)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=12, decimal_places=2)
     propertyType = models.TextChoices('propertyType', 'studio 1-bedroom 2-bedroom 3-bedroom pent-house single-family-home town-house condominium duplex villa luxury-apartment estate-home mansion private-villa pent-house-suite')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     typeChoice = models.CharField(max_length=150, choices=propertyType, default='')
@@ -65,6 +65,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    is_owner = models.BooleanField(default=False)
+    is_merchant = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'user_profile'

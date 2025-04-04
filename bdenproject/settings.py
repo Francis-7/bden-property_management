@@ -144,3 +144,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'realmabove02@gmail.com'
 EMAIL_HOST_PASSWORD = 'qson kwkr lqzg opkk'
+
+# settings.py
+PAYSTACK_PUBLIC_KEY = "pk_test_1428cf2987a9c051e9b5771bd2d54381767a5130"
+PAYSTACK_SECRET_KEY = "sk_test_db145b8809831ca3d834ee5f3696c7b61a714ec6"
+PAYSTACK_BASE_URL = "https://api.paystack.co"

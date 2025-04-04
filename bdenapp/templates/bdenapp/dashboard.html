@@ -7,83 +7,62 @@
 {% endblock title %}
 {% block style %}
     .wrapper {
-    <!-- background: yellow; -->
     display: grid;
-    grid-template-columns: repeat(2, 1fr 2fr);
     grid-template-areas:
-    "logo header"
-    "purchased saved";
-    grid-auto-rows: minmax(100px, auto);
-    padding: 2em;
+    "main main"
+    "saved saved"
+    "purchased purchased";
+    padding: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    box-sizing: border-box;
+    }
+    .main {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12rem;
+    padding: 1rem;
+    width: 200%;
+    background: green;
+    color: white;
     }
     .profile-info {
-    grid-area: logo;
+    grid-area: main;
     display: flex;
-    width: 30%;
-    padding: 2rem;
-    <!-- background: blue; -->
+    justify-content: space-between;
+    order: 1;
+    width: 50%;
+    }
+    .bio-section {
+    align-self: center;
+    }
+    .profile {
+    width: 40px;
+    border-radius: 50%;
     }
     .user--name {
-    grid-area: header;
-    <!-- background: green; -->
+    grid-area: main;
+    letter-spacing: 10px;
     }
-    .content-body {
+    .saved {
     grid-area: saved;
     }
-    .purchased {
-    grid-area: purchased;
-    }
     .saved--later {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-column-gap: 2em;
-    <!-- grid-auto-rows: minmax(100px, auto); -->
-    grid-row-gap: 22em;
-    max-width: 80%;
-    align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem;
+    padding: 1rem;
     }
     .saved--later img {
     width: 100%;
-    <!-- height: 100%; -->
+    height: 200px;
     object-fit: cover;
-    margin: 1.5em;
     }
-    .profile {
-    border-radius: 50%;
-    margin-bottom: 2rem;
+    .saved h2 {
+    text-align: center;
     }
-    .profile-info {
-    padding: 2rem;
-    }
-    .bio-section {
-    margin-left: 1.5rem;
-    }
-    .sub--text {
-    padding: 2px;
-    align-text: center;
-    margin-bottom: 15px;
-    font: 18px sans-serif;
-    }
-    .purchases {
-    max-width: 100%;
-    margin: 1em auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 15px;
-    }
-    .purchases--container {
-    position: relative;
-    display: inline-block;
-    margin: 10px;
-    }
-    .purchases--img img {
-    display: block;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    .purchased {
+    grid-area: purchased;
     }
     .close {
     position: absolute;
@@ -115,44 +94,42 @@
 {% endblock style %}
 {% block content %}
     <div class="wrapper">
-        <div class="profile-info">
-            {% if user_profile.profile_picture %}
-                <img src="{{ user_profile.profile_picture.url }}"
-                     alt="Profile Picture"
-                     height="100"
-                     class="profile">
-            {% else %}
-                <img src="{% static 'bdenapp/images/profile.png' %}"
-                     alt="Default Profile Picture"
-                     height="70"
-                     class="profile">
-            {% endif %}
-            <div class="bio-section">
-                <button class="btn btn-secondary"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#bioCollapse"
-                        aria-expanded="false"
-                        aria-controls="bioCollapse">View Bio</button>
-                <div class="collapse" id="bioCollapse">
-                    <h2>{{ user_profile.bio|default:"No bio provided." }}</h2>
+        <div class="main">
+            <div class="profile-info">
+                {% if user_profile.profile_picture %}
+                    <img src="{{ user_profile.profile_picture.url }}"
+                         alt="Profile Picture"
+                         class="profile">
+                {% else %}
+                    <img src="{% static 'bdenapp/images/profile.png' %}"
+                         alt="Default Profile Picture"
+                         class="profile">
+                {% endif %}
+                <div class="bio-section">
+                    <button class="btn btn-secondary"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#bioCollapse"
+                            aria-expanded="false"
+                            aria-controls="bioCollapse">View Bio</button>
+                    <div class="collapse" id="bioCollapse">
+                        <h2>{{ user_profile.bio|default:"No bio provided." }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="user--name">
+                <div class="user-name">
+                    <h2>Welcome {{ user_profile.user.username }}</h2>
                 </div>
             </div>
         </div>
-        <div class="user--name">
-            <div class="text-center">
-                <h2 class="display-5">Welcome {{ user_profile.user.username }}</h2>
+        <div class="saved">
+            <div class="heading--text">
+                <h2>Saved Items</h2>
             </div>
-        </div>
-        <div class="content-body">
-            <h2 class="sub--text">Saved items</h2>
             <div class="saved--later">
                 {% for item in saved_items %}
                     <div class="image">
-                        <div class="image">
-                            <img src="{{ item.property.picture.url }}"
-                                 alt="{{ item.description }}"
-                                 height="150">
-                        </div>
+                        <img src="{{ item.property.picture.url }}" alt="{{ item.description }}">
                     </div>
                 {% endfor %}
             </div>

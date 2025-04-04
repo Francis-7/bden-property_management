@@ -380,6 +380,8 @@
                         <a href="{% url 'save_for_later' property.id %}">
                             <button class="btn btn-lg btn-secondary">Save for later</button>
                         </a>
+                        <a href="{% url 'initiate_paystack_payment' property.price|floatformat:0 %}"
+                           class="btn btn-success">Pay Now</a>
                     </div>
                 </div>
             </section>

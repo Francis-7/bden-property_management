@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Property, PropertyImage, Review, UserProfile, User, SavedItems, Purchase
+from .models import Property, PropertyImage, Review, UserProfile, User, SavedItems, Purchase, Payment
 from .filters import PropertyFilter
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
@@ -10,6 +10,8 @@ from .models import group_and_sort_by_first_word
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from collections import Counter
+import requests
+from django.conf import settings
 
 
 def home_view(request):
@@ -541,3 +543,142 @@ def success_stories(request):
 # Press and media
 def press_and_media(request):
     return render(request, 'bdenapp/features/press_and_media.html', {})
+
+# initiate the paystack payment system
+def initiate_paystack_payment(request, amount):
+    user = request.user
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "email": user.email,
+        "amount": int(amount * 100),  # Convert to kobo (smallest unit of Naira)
+        "currency": "NGN",
+        "callback_url": "https://127.0.0.1:8000/payment/verify/"  # Redirect after payment
+    }
+
+    response = requests.post(f"{settings.PAYSTACK_BASE_URL}/transaction/initialize", headers=headers, json=data)
+    
+    if response.status_code == 200:
+        response_data = response.json()
+        payment = Payment.objects.create(
+            user=user, 
+            amount=amount,
+            transaction_id=response_data['data']['reference'],
+            status="Pending"
+        )
+        return redirect(response_data['data']['authorization_url'])  # Redirect to Paystack payment page
+    
+    else:
+        return JsonResponse({"error": "Unable to initiate payment"}, status=400)
+
+# verify paystack payment
+def verify_paystack_payment_without_email(request, reference):
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    }
+
+    response = requests.get(f"{settings.PAYSTACK_BASE_URL}/transaction/verify/{reference}", headers=headers)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        
+        if response_data["data"]["status"] == "success":
+            # Update payment record
+            payment = Payment.objects.get(transaction_id=reference)
+            payment.status = "completed"
+            payment.save()
+            return JsonResponse({"message": "Payment successful!"}, status=200)
+        else:
+            return JsonResponse({"message": "Payment failed or pending"}, status=400)
+    else:
+        return JsonResponse({"error": "Unable to verify payment"}, status=400)
+
+
+# get the latest exchange rate 
+def get_naira_exchange_rate():
+    """Fetches the latest USD to NGN exchange rate"""
+    url = "https://api.exchangerate-api.com/v4/latest/USD"
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return data["rates"].get("NGN", None)  # Get Naira rate
+    return None  # If API fails
+
+# attempt conversion to naira from usd
+def initiate_payment(request, amount_in_usd):
+    """Converts USD to NGN, then initiates payment"""
+    exchange_rate = get_naira_exchange_rate()
+
+    if not exchange_rate:
+        return JsonResponse({"error": "Failed to fetch exchange rate"}, status=500)
+
+    amount_in_naira = round(amount_in_usd * exchange_rate, 2)  # Convert and round off
+    
+    # Proceed with Paystack payment using amount_in_naira
+    return initiate_paystack_payment(request, amount_in_naira)
+
+# payment status
+def payment_status(request):
+    status = Payment.objects.get(user=request.user)
+    return render(request, 'bdenapp/features/payment_status.html', {'payment': status})
+
+# check payment status
+def check_payment_status(request):
+    """Checks the latest payment status via AJAX."""
+    payment = Payment.objects.filter(user=request.user).last()  # Get the user's most recent payment
+
+    if payment:
+        return JsonResponse({"status": payment.status})
+    else:
+        return JsonResponse({"status": "not_found"})
+    
+# send a confirmation email to the user after making payment successfully
+from django.core.mail import send_mail
+
+def send_payment_confirmation_email(user, payment):
+    """Sends email notification upon successful payment."""
+    subject = "Payment Confirmation - Property Management App"
+    message = f"""
+    Hello {user.username},
+
+    Your payment of ₦{payment.amount} has been successfully processed. 🎉
+    
+    Transaction ID: {payment.transaction_id}
+    
+    Thank you for using our service. If you have any questions, feel free to contact support.
+    
+    Regards,
+    Property Management Team
+    """
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+
+# verify payment updated
+def verify_paystack_payment(request, reference):
+    """Verifies the payment using Paystack's API and sends an email."""
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    }
+
+    response = requests.get(f"{settings.PAYSTACK_BASE_URL}/transaction/verify/{reference}", headers=headers)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        
+        if response_data["data"]["status"] == "success":
+            # Update payment record
+            payment = Payment.objects.get(transaction_id=reference)
+            payment.status = "completed"
+            payment.save()
+
+            # Send email notification
+            send_payment_confirmation_email(request.user, payment)
+            
+            return JsonResponse({"message": "Payment successful! Email sent."}, status=200)
+        else:
+            return JsonResponse({"message": "Payment failed or pending"}, status=400)
+    else:
+        return JsonResponse({"error": "Unable to verify payment"}, status=400)

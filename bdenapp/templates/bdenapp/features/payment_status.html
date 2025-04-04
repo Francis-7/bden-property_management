@@ -1,0 +1,46 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Payment status
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content %}
+    {% if payment.status == "Completed" %}
+        <div class="alert alert-success">Payment successful! Your transaction ID is {{ payment.transaction_id }}.</div>
+    {% elif payment.status == "Failed" %}
+        <div class="alert alert-danger">Payment failed! Please try again or contact support.</div>
+    {% else %}
+        <div class="alert alert-warning">Payment is pending... Please wait for confirmation.</div>
+    {% endif %}
+    <div id="payment-message">
+        <div class="alert alert-info">Waiting for payment confirmation... 🔄</div>
+    </div>
+{% endblock content %}
+{% block js %}
+    $(document).ready(function() {
+    function updatePaymentStatus() {
+    $.ajax({
+    url: "{% url 'check_payment_status' %}",
+    type: "GET",
+    success: function(response) {
+    if (response.status === "completed") {
+    $("#payment-message").html("
+    <div class='alert alert-success'>Payment successful! ✅</div>
+    ");
+    } else if (response.status === "failed") {
+    $("#payment-message").html("
+    <div class='alert alert-danger'>Payment failed! ❌</div>
+    ");
+    } else {
+    $("#payment-message").html("
+    <div class='alert alert-warning'>Processing payment... 🔄</div>
+    ");
+    }
+    }
+    });
+    }
+    // Run function every 5 seconds
+    setInterval(updatePaymentStatus, 5000);
+    });
+{% endblock js %}

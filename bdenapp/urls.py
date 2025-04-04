@@ -45,4 +45,8 @@ urlpatterns = [
     path('marketting', views.marketing_services, name='marketting'),
     path('properties/<str:city_name>/', views.properties_by_city, name='properties_by_city'),
     path('ajax/filter-properties/', views.ajax_filter_properties, name='ajax_filter_properties'),
+    path('payment/initiate/<int:amount>/', views.initiate_paystack_payment, name='initiate_paystack_payment'),
+    path('payment/verify/<str:reference>/', views.verify_paystack_payment, name='verify_paystack_payment'),
+    path('payment/success', views.payment_status, name='payment_success'),
+    path('payment/status', views.check_payment_status, name='check_payment_status'),
 ]

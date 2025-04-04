@@ -59,6 +59,9 @@
     margin: 1px 2rem;
     font-size: 18px;
     }
+    .cards a {
+    text-decoration: none;
+    }
 {% endblock %}
 {% block content %}
     <div class="heading--text">
@@ -67,15 +70,15 @@
     <section class="for-property">
         <div class="cards">
             {% for result in results %}
-                <div class="card">
-                    <a href="{% url 'propertyview' result.pk %}">
+                <a href="{% url 'propertyview' result.pk %}">
+                    <div class="card">
                         <img src="{{ result.picture.url }}" alt="{{ result.owner }}" />
-                    </a>
-                    <div class="content">
-                        <h3>{{ result.location |first_word_before_comma }}</h3>
-                        <p>{{ result.description }}</p>
+                        <div class="content">
+                            <h3>{{ result.location |first_word_before_comma }}</h3>
+                            <p>{{ result.description }}</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             {% empty %}
                 <p class="display-4">No Match</p>
             {% endfor %}
