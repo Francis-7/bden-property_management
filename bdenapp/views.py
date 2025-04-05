@@ -161,35 +161,36 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+# is owner users can also list properties
+def is_owner_or_superuser(user):
+    return user.is_superuser or hasattr(user, 'profile') and user.profile.is_owner
 
-@user_passes_test(lambda u: u.is_superuser)
+
+@user_passes_test(is_owner_or_superuser)
 def upload_property(request):
     if request.method == 'POST':
-        form = PropertyForm(request.POST)
+        form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
             property = form.save(commit=False)
+            property.owner = request.user
             property.save()
             return redirect('home')
     else:
         form = PropertyForm()
     return render(request, 'bdenapp/upload_property.html', {'form':form})
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(is_owner_or_superuser)
 def upload_images(request):
-    if request.method == 'POST':
-        form = PropertyImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            property_instance = form.cleaned_data.get('property')  # Get the property instance
-            images = request.FILES.getlist('images')  # Get all uploaded images
-
-            for img in images:
-                PropertyImage.objects.create(property=property_instance, images=img)
-            return redirect('home')  # Ensure the home URL is defined in urls.py
-        else:
-            print("Form errors:", form.errors)  # Debug form errors
+    form = PropertyImageForm(request.POST, request.FILES)
+    if request.method == 'POST' and form.is_valid():
+        property_instance = form.cleaned_data.get('property')
+        images = request.FILES.getlist('images')
+        for img in images:
+            pro_image = PropertyImage.objects.create(property=property_instance, images=img)
+            pro_image.save()
+        return redirect('home')
     else:
         form = PropertyImageForm()
-
     return render(request, 'bdenapp/upload_images.html', {'form': form})
 
 
@@ -235,6 +236,17 @@ def user_dashboard(request):
     saved_items = request.user.saveditems_set.all()
     purchases = request.user.purchase_set.all()
     return render(request, 'bdenapp/dashboard.html', {'user_profile':user_profile, 'saved_items':saved_items, 'purchases':purchases})
+
+# enabling the owner mode in the dashboard
+def is_owner(request):
+    user = request.user
+    userprofile = UserProfile.objects.get(user=user)
+    if not userprofile.is_owner:
+        userprofile.is_owner = True
+        userprofile.save()
+    return redirect('dashboard')
+
+
 
 # update profile picture
 @login_required
@@ -682,3 +694,4 @@ def verify_paystack_payment(request, reference):
             return JsonResponse({"message": "Payment failed or pending"}, status=400)
     else:
         return JsonResponse({"error": "Unable to verify payment"}, status=400)
+

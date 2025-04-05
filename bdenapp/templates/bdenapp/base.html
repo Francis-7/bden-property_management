@@ -58,8 +58,9 @@
   .icon__link:hover, .icon__link:active {
     background-color: rgba(1, 20, 0, 0.05);
     transform: translateY(-3px); }
-    
-    
+    .owner {
+      text-decoration: none;
+    }
      {% endblock %}
     </style>
   </head>
@@ -87,7 +88,7 @@
           {% if user.is_authenticated %}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="#">Welcome {{ request.user }}</a>
+                <a class="nav-link" href="{% url 'dashboard' %}">Welcome {{ request.user }}</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Contact Us</a>
@@ -105,6 +106,14 @@
                   <li>
                     <a class="dropdown-item" href="{% url 'update_profile_picture' %}">Update Profile</a>
                   </li>
+                  {% if user.profile.is_owner %}
+                    <li>
+                      <a href="{% url 'upload_property' %}" class="btn btn-outline-secondary">Upload a Property</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'upload_images' %}" class="btn btn-outline-secondary">Attach more images</a>
+                    </li>
+                  {% endif %}
                 </ul>
               </li>
               <li class="nav-item">

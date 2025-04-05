@@ -38,10 +38,33 @@
     .profile {
     width: 40px;
     border-radius: 50%;
+    order: 1;
     }
     .user--name {
     grid-area: main;
     letter-spacing: 10px;
+    display: flex;
+    }
+    .user--name h2 {
+    display: inline-block;
+    }
+    .user--name h2:nth-child(2) {
+    font-weight: bolder;
+    color: blue;
+    text-shadow: 2px 1px 1px black;
+    background: white;
+    padding; 2rem;
+    font-size: 30px;
+    margin-left: 3rem;
+    }
+    .user--name button {
+    padding: 1px 1rem;
+    font-size 18px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    font-weight: bold;
+    letter-spacing: 4px;
+    border-radius: 2rem;
     }
     .saved {
     grid-area: saved;
@@ -119,6 +142,13 @@
             <div class="user--name">
                 <div class="user-name">
                     <h2>Welcome {{ user_profile.user.username }}</h2>
+                    {% if user.profile.is_owner %}
+                        <h2>R</h2>
+                    {% else %}
+                        <a href="{% url 'is_owner' %}">
+                            <button>Become a realtor</button>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

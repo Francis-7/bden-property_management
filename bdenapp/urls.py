@@ -49,4 +49,5 @@ urlpatterns = [
     path('payment/verify/<str:reference>/', views.verify_paystack_payment, name='verify_paystack_payment'),
     path('payment/success', views.payment_status, name='payment_success'),
     path('payment/status', views.check_payment_status, name='check_payment_status'),
+    path('is_owner', views.is_owner, name='is_owner'),
 ]
