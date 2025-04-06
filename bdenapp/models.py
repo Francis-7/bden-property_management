@@ -15,6 +15,7 @@ class Category(models.Model):
         return f"{self.name}"
     
 class Property(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='properties', null=True, blank=False)
     location = models.CharField(max_length=250)
     owner = models.CharField(max_length=150)
     price = models.DecimalField(max_digits=12, decimal_places=2)

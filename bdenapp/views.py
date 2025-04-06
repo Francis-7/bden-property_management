@@ -172,7 +172,7 @@ def upload_property(request):
         form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
             property = form.save(commit=False)
-            property.owner = request.user
+            property.user = request.user
             property.save()
             return redirect('home')
     else:
@@ -181,14 +181,19 @@ def upload_property(request):
 
 @user_passes_test(is_owner_or_superuser)
 def upload_images(request):
-    form = PropertyImageForm(request.POST, request.FILES)
-    if request.method == 'POST' and form.is_valid():
-        property_instance = form.cleaned_data.get('property')
-        images = request.FILES.getlist('images')
-        for img in images:
-            pro_image = PropertyImage.objects.create(property=property_instance, images=img)
-            pro_image.save()
-        return redirect('home')
+    form = PropertyImageForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        print(f"Request FILES: {request.FILES}")
+        if form.is_valid():
+            property_instance = form.cleaned_data.get('property')
+            images = request.FILES.getlist('images')
+
+            print(f"Images received: {images}")
+            for image in images:
+                # image_ins = PropertyImage(images=image)
+                # image_ins.save()
+                PropertyImage.objects.create(property=property_instance, images=image)
+            return redirect('home')
     else:
         form = PropertyImageForm()
     return render(request, 'bdenapp/upload_images.html', {'form': form})
@@ -233,9 +238,10 @@ def save_user_profile(sender, instance, **kwargs):
 @login_required
 def user_dashboard(request):
     user_profile = UserProfile.objects.get(user=request.user)
+    properties = user_profile.user.properties.all
     saved_items = request.user.saveditems_set.all()
     purchases = request.user.purchase_set.all()
-    return render(request, 'bdenapp/dashboard.html', {'user_profile':user_profile, 'saved_items':saved_items, 'purchases':purchases})
+    return render(request, 'bdenapp/dashboard.html', {'user_profile':user_profile, 'saved_items':saved_items, 'purchases':purchases, 'properties':properties})
 
 # enabling the owner mode in the dashboard
 def is_owner(request):

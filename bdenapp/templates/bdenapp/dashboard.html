@@ -10,6 +10,7 @@
     display: grid;
     grid-template-areas:
     "main main"
+    "managed-properties managed-properties"
     "saved saved"
     "purchased purchased";
     padding: 1rem;
@@ -87,6 +88,25 @@
     .purchased {
     grid-area: purchased;
     }
+    .managed-properties {
+    grid-area: managed-properties;
+    padding: 1rem;
+    margin: 1rem;
+    }
+    .your_properties {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
+    gap: 1rem;
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-rows: auto auto;
+    }
+    .your_properties img {
+    width: 250px;
+    height: 100%;
+    object-fit: cover;
+    border: solid 0.5px black;
+    padding: 0.5rem;
+    }
     .close {
     position: absolute;
     top: -10px;
@@ -150,6 +170,20 @@
                         </a>
                     {% endif %}
                 </div>
+            </div>
+        </div>
+        <div class="managed-properties">
+            <h2>Your managed properties on b-den</h2>
+            <div class="your_properties">
+                {% for property in properties %}
+                    <div class="properties">
+                        <img src="{{ property.picture.url }}"
+                             alt="{{ user_profile.user.username }}">
+                        <h2>
+                            <span>{{ property.description }} <span>{{ property.location }}</span></span>
+                        </h2>
+                    </div>
+                {% endfor %}
             </div>
         </div>
         <div class="saved">

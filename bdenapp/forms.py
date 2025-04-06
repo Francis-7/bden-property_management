@@ -42,23 +42,28 @@ class UserRegistrationForm(forms.ModelForm):
 class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = '__all__'
+        fields = ['location', 'owner', 'price', 'category', 'typeChoice', 'description', 'isAvailable', 'picture', 'isPeerToPeer', 'provision']
 
 # for multiple image upload
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
 
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
 
-class PropertyImageForm(forms.ModelForm):
-    images = forms.FileField(widget = forms.TextInput(attrs={
-            "name": "images",
-            "type": "File",
-            "class": "form-control",
-            "multiple": "True",
-        }), label = "")
-    class Meta:
-        model = PropertyImage
-        fields = ('property', 'images',)
-        
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = [single_file_clean(data, initial)]
+        return result
+    
 
+class PropertyImageForm(forms.Form):
+    pass
 class ReviewForm(forms.ModelForm):
     class Meta:
         model =  Review
