@@ -307,21 +307,21 @@ from django.core.paginator import Paginator
 
 def home(request):
     properties = Property.objects.all().order_by('location')
-    grouped_data = group_and_sort_by_first_word()  # Assuming this returns a dictionary
+    grouped_data = group_and_sort_by_first_word()
 
     # Convert grouped_data into a list of items for pagination
     grouped_data_items = list(grouped_data.items())
 
     # Paginate the grouped data (e.g., 10 groups per page)
-    paginator = Paginator(grouped_data_items, 10)
+    paginator = Paginator(grouped_data_items, 12)
 
     # Get the current page number from the request
-    page_number = request.GET.get('page', 1)
+    page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'bdenapp/home.html', {
         'properties': properties,
-        'page_obj': page_obj,  # This will include the paginated groups
+        'page_obj': page_obj, 
     })
 
 # view for email generation and handling
