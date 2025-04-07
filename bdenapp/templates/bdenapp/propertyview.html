@@ -419,6 +419,7 @@
                 <div class="related--header">
                     <h2>See similar properties on b-den</h2>
                 </div>
+                {% comment %}
                 <div class="filter">
                     <p>
                         <strong>filter properties</strong>
@@ -435,6 +436,7 @@
                         <button type="button" id="reset-filter">Reset Filter</button>
                     </form>
                 </div>
+                {% endcomment %}
                 <div class="related-items" id="property-list">
                     {% for property in page_obj %}
                         <div class="related-item" data-price="{{ property.price }}">
