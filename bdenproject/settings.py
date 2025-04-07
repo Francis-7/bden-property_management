@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     'bdenapp',
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -148,4 +149,3 @@ EMAIL_HOST_PASSWORD = 'qson kwkr lqzg opkk'
 # settings.py
 PAYSTACK_PUBLIC_KEY = "pk_test_1428cf2987a9c051e9b5771bd2d54381767a5130"
 PAYSTACK_SECRET_KEY = "sk_test_db145b8809831ca3d834ee5f3696c7b61a714ec6"
-PAYSTACK_BASE_URL = "https://api.paystack.co"

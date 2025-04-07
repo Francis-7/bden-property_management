@@ -375,8 +375,8 @@
                                 <button class="btn btn-info btn-lg me-4">Rent this Property</button>
                             </a>
                         {% elif property.provision == "Sale" %}
-                            <a href="{% url 'handle-purchase' property.id %}">
-                                <button class="btn btn-info me-4">Purchase this property</button>
+                            <a href="{% url 'sales_terms' property.id %}">
+                                <button class="btn btn-info me-4">Read before you buy</button>
                             </a>
                         {% endif %}
                         <!-- <a href="{% url 'save_for_later' property.id %}">

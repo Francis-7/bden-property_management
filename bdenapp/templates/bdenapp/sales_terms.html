@@ -1,0 +1,155 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load humanize %}
+{% block title %}
+    Sales Terms {{ property.typeChoice }}
+{% endblock title %}
+{% block style %}
+    .body--context {
+    max-width: 80%;
+    margin: 5rem auto;
+    padding: 3rem;
+    border-top: solid 2px black;
+    border-bottom: solid 2px black;
+    }
+    .heading--text {
+    letter-spacing: 5px;
+    margin: 3em;
+    }
+    .summary {
+    display: flex;
+    gap: 2em;
+    padding: 2rem;
+    margin: 2em;
+    }
+    .sum-text {
+    letter-spacing: 5px;
+    display: flex;
+    flex-direction: column;
+    }
+    .sum-text p {
+    text-transform: uppercase;
+    font-size: 20px;
+    text-decoration: underline;
+    }
+    .summary p {
+    font-size: 18px;
+    }
+    .details {
+    border-left: solid 2px black;
+    padding-left: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    }
+    .image img {
+    width: 350px;
+    }
+    .image {
+    align-self: flex-end;
+    }
+    .message {
+    text-align: justify;
+    line-height: 22px;
+    }
+    .message p {
+    font-size: 20px;
+    }
+    .read {
+    padding: 2em;
+    background: green;
+    color: white;
+    letter-spacing: 5px;
+    text-align: center;
+    margin-top: 8rem;
+    margin-bottom: 4rem;
+    }
+    .read h3 {
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: bold;
+    }
+    .proceed {
+    padding: 2em;
+    letter-spacing: 5px;
+    margin-top: 8rem;
+    text-align: center;
+    }
+    .proceed a {
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    padding: 1em;
+    text-transform: uppercase;
+    background: black;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="body--context">
+        <div class="heading--text">
+            <h1>You're about to purchase the property of  {{ property.owner| first_word_before_comma }}</h1>
+        </div>
+        <div class="summary">
+            <div class="sum-text">
+                <p>Property summary:</p>
+                <div class="image">
+                    <img src="{{ property.picture.url }}" alt="">
+                </div>
+            </div>
+            <div class="details">
+                <p>
+                    <strong>LOCATION:</strong>
+                    <br>
+                    {{ property.location }}
+                </p>
+                <p>
+                    <strong>DESCRIPTION:</strong>
+                    <br>
+                    {{ property.description }}
+                </p>
+                <p>
+                    <strong>TYPE:</strong>
+                    <br>
+                    {{ property.typeChoice }}
+                </p>
+                <p>
+                    <strong>PRICE:</strong>
+                    <br>
+                    ₦{{ property.price | intcomma }}
+                </p>
+            </div>
+        </div>
+        <div class="read">
+            <h3>Read Me &Darr;</h3>
+        </div>
+        <div class="message">
+            <ul>
+                <li>
+                    <p>
+                        Take a quick look at our privacy and terms of transaction in the <a href="{% url 'privacy' %}">Privacy Page</a>
+                    </p>
+                </li>
+                <li>
+                    <p>After reading the privacy policy you may now proceed to the next page for payments</p>
+                </li>
+                <li>
+                    <p>
+                        Note: the payment is done on the platform and the system regulates the transaction. You are to fill a mail form to contact the owner of this property with details of payment
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        On successful aquisition of the property, you must <a href="{% url 'contact_us' %}">contact the admin</a> for confirmation so that we remit the funds to the owner
+                    </p>
+                </li>
+                <li>
+                    <p>If transaction fails after 7days you'll be refunded. Enjoy your new property!</p>
+                </li>
+            </ul>
+        </div>
+        <div class="proceed">
+            <a href="">Proceed to payment</a>
+        </div>
+    </div>
+{% endblock content %}
