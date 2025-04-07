@@ -23,6 +23,9 @@ def propertyView(request, id):
     property = get_object_or_404(Property, id=id)
     images = property.propertyimage_set.all()
     properties = Property.objects.all()
+    paginator = Paginator(properties, 8)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     if request.user.is_authenticated:
         reviews = Review.objects.filter(property=property, user=request.user)
     else:
@@ -30,7 +33,7 @@ def propertyView(request, id):
     
     state_name = property.location.split(',')[0].strip()
     
-    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews, 'state_name':state_name})
+    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews, 'state_name':state_name, 'page_obj':page_obj})
 
 # Ajax for filtering properties
 def ajax_filter_properties(request):
