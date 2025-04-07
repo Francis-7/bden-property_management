@@ -174,22 +174,13 @@
     <footer class="footers">
       <ul class="icon">
         <li class="icon__item">
-          <a href="#" class="icon__link">Find your dream home</a>
+          <a href="{% url 'find_property' %}" class="icon__link">Find your dream home</a>
         </li>
         <li class="icon__item">
-          <a href="#" class="icon__link">Request proposal</a>
+          <a href="{% url 'contact_us' %}" class="icon__link">Contact us</a>
         </li>
         <li class="icon__item">
-          <a href="#" class="icon__link">Download home planner</a>
-        </li>
-        <li class="icon__item">
-          <a href="#" class="icon__link">Contact us</a>
-        </li>
-        <li class="icon__item">
-          <a href="#" class="icon__link">Submit your property</a>
-        </li>
-        <li class="icon__item">
-          <a href="#" class="icon__link">We're Hiring</a>
+          <a href="{% url 'submit_property' %}" class="icon__link">Submit your property</a>
         </li>
       </ul>
       <p class="copyright">&copy; Copyright 2025 by Jenny.</p>

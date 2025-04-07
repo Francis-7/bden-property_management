@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import PropertyImage, Property, Review, UserProfile
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={
@@ -68,6 +69,12 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model =  Review
         fields = ['rating', 'review_text']
+
+    rating = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'rating-input', 'min': 1, 'max': 5, 'required': True}),
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

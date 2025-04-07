@@ -701,3 +701,15 @@ def verify_paystack_payment(request, reference):
     else:
         return JsonResponse({"error": "Unable to verify payment"}, status=400)
 
+
+# contact us
+def contact_us(request):
+    return render(request, 'bdenapp/contact_us.html', {})
+
+# find your dream home
+def find_a_property(request):
+    return render(request, 'bdenapp/find_a_property.html', {})
+
+# submit your property
+def submit_property(request):
+    return render(request, 'bdenapp/submit_property.html', {})

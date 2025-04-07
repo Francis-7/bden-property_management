@@ -95,13 +95,20 @@
     }
     .your_properties {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
-    gap: 1rem;
-    grid-template-rows: repeat(auto-fill, 1fr);
-    grid-template-rows: auto auto;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 350px));
+    gap: 2rem;
+    margin: 12rem;
+    }
+    .properties {
+    gap: 2px;
+    display: grid;
+    justify-items: center;
+    }
+    .properties p {
+    font-size: 18px;
     }
     .your_properties img {
-    width: 250px;
+    width: 100%;
     height: 100%;
     object-fit: cover;
     border: solid 0.5px black;
@@ -177,11 +184,12 @@
             <div class="your_properties">
                 {% for property in properties %}
                     <div class="properties">
-                        <img src="{{ property.picture.url }}"
-                             alt="{{ user_profile.user.username }}">
-                        <h2>
-                            <span>{{ property.description }} <span>{{ property.location }}</span></span>
-                        </h2>
+                        <a href="{% url 'propertyview' property.pk %}">
+                            <img src="{{ property.picture.url }}"
+                                 alt="{{ user_profile.user.username }}">
+                        </a>
+                        <p>{{ property.description }}</p>
+                        <p>{{ property.location |first_word_before_comma }}</p>
                     </div>
                 {% endfor %}
             </div>

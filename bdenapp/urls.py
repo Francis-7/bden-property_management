@@ -50,4 +50,7 @@ urlpatterns = [
     path('payment/success', views.payment_status, name='payment_success'),
     path('payment/status', views.check_payment_status, name='check_payment_status'),
     path('is_owner', views.is_owner, name='is_owner'),
+    path('contact/us/', views.contact_us, name='contact_us'),
+    path('find/your/dream/home/', views.find_a_property, name='find_property'),
+    path('submit/property/', views.submit_property, name='submit_property'),
 ]

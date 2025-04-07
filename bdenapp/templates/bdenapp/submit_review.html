@@ -5,6 +5,11 @@
 {% block title %}
     Leave a review
 {% endblock title %}
+{% block style %}
+    .form-group {
+    padding: 1rem;
+    }
+{% endblock style %}
 {% block content %}
     <div class="text-center">
         <h2 class="display-5">Submit your review</h2>
@@ -12,8 +17,28 @@
     <div class="text-center">
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {% for f in form %}
+                <div class="form-group">
+                    {{ f.label_tag }}
+                    {{ f }}
+                </div>
+            {% endfor %}
             <button type="submit" class="btn btn-success">submit</button>
         </form>
     </div>
 {% endblock content %}
+{% block js %}
+    document.addEventListener("DOMContentLoaded", function () {
+    const ratingInput = document.querySelector(".rating-input");
+    if (ratingInput) {
+    ratingInput.addEventListener("input", function () {
+    let value = parseInt(this.value);
+    if (value < 1) {
+    this.value = 1;
+    } else if (value > 5) {
+    this.value = 5;
+    }
+    });
+    }
+    });
+{% endblock js %}

@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models import Count
 from collections import defaultdict
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 class Category(models.Model):
     CATEGORIES = models.TextChoices('CATEGORIES', 'Apartment Residence Unit')
@@ -51,8 +53,8 @@ class PropertyImage(models.Model):
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    rating = models.IntegerField()
-    review_text = models.TextField()
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    review_text = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

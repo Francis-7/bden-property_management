@@ -1,0 +1,27 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Submit your property
+{% endblock title %}
+{% block style %}
+    .body--context {
+    text-align: center;
+    margin: 5rem;
+    padding: 3rem;
+    letter-spacing: 4px;
+    }
+    .body--context a {
+    text-decoration: none;
+    }
+    .body--context a:hover {
+    color: green;
+    text-transform: uppercase;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="body--context">
+        <h1>
+            To submit your property you must become a <a href="{% url 'dashboard' %}">Realtor</a>
+        </h1>
+    </div>
+{% endblock content %}

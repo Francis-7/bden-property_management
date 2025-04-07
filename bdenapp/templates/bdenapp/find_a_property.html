@@ -1,0 +1,24 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Find your dream property
+{% endblock title %}
+{% block style %}
+    .body--context {
+    text-align: center;
+    letter-spacing: 4px;
+    background: rgba(0,0,100, 0.5);
+    padding: 13rem;
+    margin: 5rem;
+    }
+    .body--context a {
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="body--context">
+        <a href="{% url 'home' %}">Your can view and search through our list of available properties</a>
+    </div>
+{% endblock content %}
