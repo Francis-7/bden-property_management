@@ -8,6 +8,7 @@ from .paystack  import  Paystack
 class UserWallet(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     currency = models.CharField(max_length=50, default='NGN')
+    balance = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now, null=True)
 
     def __str__(self):

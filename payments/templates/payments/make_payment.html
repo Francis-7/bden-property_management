@@ -1,0 +1,33 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Start payment
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content %}
+    <div class="fund">
+        <p>You are about to fund your wallet with {{ payment.amount }} and transaction reference {{ payment.ref }}</p>
+    </div>
+    <form id="paystackForm">
+        <script src="https://js.paystack.co/v1/inline.js"></script>
+        <button type="button" onclick="payWithPaystack()">Pay Now</button>
+    </form>
+{% endblock content %}
+{% block js %}
+    function payWithPaystack() {
+    var handler = PaystackPop.setup({
+    key: "{{ paystack_pub_key }}",
+    email: "{{ payment.email }}",
+    amount: "{{ amount_value }}",
+    ref: "{{ payment.ref }}",
+    callback: function(response) {
+    window.location.href = "/payments/verify-payment/" + response.reference;
+    },
+    onClose: function() {
+    alert("Transaction was not completed");
+    }
+    });
+    handler.openIframe();
+    }
+{% endblock js %}

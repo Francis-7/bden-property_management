@@ -12,6 +12,9 @@ from django.dispatch import receiver
 from collections import Counter
 import requests
 from django.conf import settings
+from payments.models import UserWallet
+
+
 
 
 def home_view(request):
@@ -239,6 +242,11 @@ def save_user_profile(sender, instance, **kwargs):
     if hasattr(instance, 'userprofile'):
         instance.userprofile.save()
 
+@receiver(post_save, sender=User)
+def create_wallet(sender, instance, created, **kwargs):
+    if created:
+        UserWallet.objects.create(user=instance)
+        
 # the user dashboard
 @login_required
 def user_dashboard(request):
