@@ -96,6 +96,12 @@
                 <option value="medium" {% if price_filter == 'medium' %}selected{% endif %}>₦500,000 - ₦1,000,000</option>
                 <option value="high" {% if price_filter == 'high' %}selected{% endif %}>Above ₦1,000,000</option>
             </select>
+            <label for="location">Location:</label>
+            <select name="location" id="location">
+                <option value="">---</option>
+                <option value="plateu"
+                        {% if location_filter == 'plateu' %}selected{% endif %}>Plateu</option>
+            </select>
             <button type="submit">Apply Filter</button>
         </form>
     </section>

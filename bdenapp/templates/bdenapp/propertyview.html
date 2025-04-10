@@ -268,6 +268,9 @@
     .filter {
     letter-spacing: 4px;
     margin: 4rem;
+    background: green;
+    color: white;
+    padding: 2em;
     }
     .filter p {
     font: 18px sans-serif;
@@ -279,6 +282,7 @@
     box-shadow: 0 1px 1px 1px rgba(0,0,0,0.2);
     font-size: 16px;
     border-radius: 2rem;
+    margin: 1rem 2rem;
     }
     .filter label {
     font-size: 16px;
@@ -287,6 +291,14 @@
     font-size: 16px;
     padding: 1px 1rem;
     margin: auto 1rem;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    text-align: center;
+    }
+    .filter select option {
+    background: #0a0a55;
+    padding: 1rem;
+    margin: 0.5rem;
     }
     .pagination {
     display: flex;
@@ -419,165 +431,290 @@
                 <div class="related--header">
                     <h2>See similar properties on b-den</h2>
                 </div>
-                {% comment %}
                 <div class="filter">
                     <p>
                         <strong>filter properties</strong>
                     </p>
-                    <form id="price-filter-form">
-                        <label for="price">Filter by Price:</label>
+                    <form method="get" action="{% url 'propertyview' property.pk %}">
+                        <label for="price">Price:</label>
                         <select name="price" id="price">
-                            <option value="">Select Price Range</option>
-                            <option value="low">Below ₦500,000</option>
-                            <option value="medium">₦500,000 - ₦1,000,000</option>
-                            <option value="high">Above ₦1,000,000</option>
-                        </select>
-                        <button type="button" id="apply-filter">Apply Filter</button>
-                        <button type="button" id="reset-filter">Reset Filter</button>
-                    </form>
-                </div>
-                {% endcomment %}
-                <div class="related-items" id="property-list">
-                    {% for property in page_obj %}
-                        <div class="related-item" data-price="{{ property.price }}">
-                            <div class="related-image">
-                                <a href="{% url 'propertyview' property.pk %}">
-                                    <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
-                                </a>
-                            </div>
-                            <div class="related-content">
-                                <h2>{{ property.description }}</h2>
-                            </div>
-                            <div class="located">
-                                <h2>{{ property.location |first_word_before_comma }}</h2>
-                            </div>
-                            <div class="price">
-                                <h2>₦{{ property.price }}</h2>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="pagination">
-                    <span class="step-links">
-                        {% if page_obj.has_previous %}
-                            <a href="?page=1">&laquo; first</a>
-                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                        {% endif %}
-                        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
-                        {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}">next</a>
-                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                        {% endif %}
-                    </span>
-                </div>
+                            <option value="" {% if not request.GET.price %}selected{% endif %}>---</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="low" {% if request.GET.price == "low" %}selected{% endif %}>Below ₦1,000,000</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="medium"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {% if request.GET.price == "medium" %}selected{% endif %}>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ₦1,000,000 - ₦5,000,000
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="high" {% if request.GET.price == "high" %}selected{% endif %}>Above ₦5,000,000</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </select>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <label for="location">Location:</label>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <select name="location" id="location">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="">---</option>
+    <option value="abia"
+            {% if request.GET.location == "abia" %}selected{% endif %}>Abia</option>
+    <option value="abuja"
+            {% if request.GET.location == "abuja" %}selected{% endif %}>Abuja</option>
+    <option value="adamawa"
+            {% if request.GET.location == "adamawa" %}selected{% endif %}>Adamawa</option>
+    <option value="anambra"
+            {% if request.GET.location == "anambra" %}selected{% endif %}>Anambra</option>
+    <option value="akwaibom"
+            {% if request.GET.location == "akwaibom" %}selected{% endif %}>Akwa-Ibom</option>
+    <option value="bauchi"
+            {% if request.GET.location == "bauchi" %}selected{% endif %}>Bauchi</option>
+    <option value="benue"
+            {% if request.GET.location == "benue" %}selected{% endif %}>Benue</option>
+    <option value="borno"
+            {% if request.GET.location == "borno" %}selected{% endif %}>Borno</option>
+    <option value="crossriver"
+            {% if request.GET.location == "cross" %}selected{% endif %}>Cross River</option>
+    <option value="delta"
+            {% if request.GET.location == "delta" %}selected{% endif %}>Delta</option>
+    <option value="ebonyi"
+            {% if request.GET.location == "ebonyi" %}selected{% endif %}>Ebonyi</option>
+    <option value="edo" {% if request.GET.location == "edo" %}selected{% endif %}>Edo</option>
+    <option value="edo"
+            {% if request.GET.location == "ekiti" %}selected{% endif %}>Ekiti</option>
+    <option value="enugu"
+            {% if request.GET.location == "enugu" %}selected{% endif %}>Enugu</option>
+    <option value="gombe"
+            {% if request.GET.location == "gombe" %}selected{% endif %}>Gombe</option>
+    <option value="imo" {% if request.GET.location == "imo" %}selected{% endif %}>Imo</option>
+    <option value="jigawa"
+            {% if request.GET.location == "jigawa" %}selected{% endif %}>Jigawa</option>
+    <option value="kaduna"
+            {% if request.GET.location == "kaduna" %}selected{% endif %}>Kaduna</option>
+    <option value="katsina"
+            {% if request.GET.location == "katsina" %}selected{% endif %}>Katsina</option>
+    <option value="kano"
+            {% if request.GET.location == "kano" %}selected{% endif %}>Kano</option>
+    <option value="kebbi"
+            {% if request.GET.location == "kebbi" %}selected{% endif %}>Kebbi</option>
+    <option value="kogi"
+            {% if request.GET.location == "kogi" %}selected{% endif %}>Kogi</option>
+    <option value="kwara"
+            {% if request.GET.location == "kwara" %}selected{% endif %}>Kwara</option>
+    <option value="lagos"
+            {% if request.GET.location == "lagos" %}selected{% endif %}>Lagos</option>
+    <option value="nasarawa"
+            {% if request.GET.location == "nasarawa" %}selected{% endif %}>Nasarawa</option>
+    <option value="niger"
+            {% if request.GET.location == "niger" %}selected{% endif %}>Niger</option>
+    <option value="ogun"
+            {% if request.GET.location == "ogun" %}selected{% endif %}>Ogun</option>
+    <option value="ondo"
+            {% if request.GET.location == "ondo" %}selected{% endif %}>Ondo</option>
+    <option value="osun"
+            {% if request.GET.location == "oyo" %}selected{% endif %}>Osun</option>
+    <option value="oyo" {% if request.GET.location == "oyo" %}selected{% endif %}>Oyo</option>
+    <option value="plateu"
+            {% if request.GET.location == "plateu" %}selected{% endif %}>Plateu</option>
+    <option value="rivers"
+            {% if request.GET.location == "rivers" %}selected{% endif %}>Rivers</option>
+    <option value="sokoto"
+            {% if request.GET.location == "sokoto" %}selected{% endif %}>Sokoto</option>
+    <option value="taraba"
+            {% if request.GET.location == "taraba" %}selected{% endif %}>Taraba</option>
+    <option value="yobe"
+            {% if request.GET.location == "yobe" %}selected{% endif %}>Yobe</option>
+    <option value="zamfara"
+            {% if request.GET.location == "zamfara" %}selected{% endif %}>Zamfara</option>
+</select>
+<label for="typeChoice">Type:</label>
+<select name="typeChoice" id="typeChoice">
+    <option value="" {% if not request.GET.typeChoice %}selected{% endif %}>---</option>
+                                                                                                                        <option value="studio"
+                                                                                                                                {% if request.GET.typeChoice == 'studio' %}selected{% endif %}>
+                                                                                        Studio
+</option>
+    <option value="1-bedroom"
+            {% if request.GET.typeChoice == '1-bedroom' %}selected{% endif %}>1 Bedroom</option>
+    <option value="2-bedroom"
+            {% if request.GET.typeChoice == '2-bedroom' %}selected{% endif %}>2 Bedroom</option>
+    <option value="3-bedroom"
+            {% if request.GET.typeChoice == '3-bedroom' %}selected{% endif %}>3 Bedroom</option>
+    <option value="pent-house"
+            {% if request.GET.typeChoice == 'pent-house' %}selected{% endif %}>Pent House</option>
+    <option value="single-family-home"
+            {% if request.GET.typeChoice == 'single-family-home' %}selected{% endif %}>Single Family House</option>
+    <option value="town-house"
+            {% if request.GET.typeChoice == 'town-house' %}selected{% endif %}>Town House</option>
+    <option value="condominium"
+            {% if request.GET.typeChoice == 'condominium' %}selected{% endif %}>Condominium</option>
+    <option value="duplex"
+            {% if request.GET.typeChoice == 'duplex' %}selected{% endif %}>Duplex</option>
+    <option value="villa"
+            {% if request.GET.typeChoice == 'villa' %}selected{% endif %}>Villa</option>
+    <option value="luxury-apartment"
+            {% if request.GET.typeChoice == 'luxury-apartment' %}selected{% endif %}>Luxury Apartment</option>
+    <option value="estate-home"
+            {% if request.GET.typeChoice == 'estate-home' %}{% endif %}>Estate Home</option>
+    <option value="mansion"
+            {% if request.GET.typeChoice == 'mansion' %}selected{% endif %}>Mansion</option>
+    <option value="private-villa"
+            {% if request.GET.typeChoice == 'private-villa' %}selected{% endif %}>Private Villa</option>
+    <option value="pent-house-suite"
+            {% if request.GET.typeChoice == 'pent-house-suite' %}selected{% endif %}>Pent House Suite</option>
+</select>
+<label for="isPeerToPeer">peering:</label>
+<select name="isPeerToPeer" id="isPeerToPeer">
+                                                                                                                        <option value="" {% if not request.GET.isPeerToPeer %}selected{% endif %}>---</option>
+<option value="true"
+        {% if request.GET.isPeerToPeer == 'true' %}selected{% endif %}>Yes</option>
+</select>
+<label for="provision">Provision:</label>
+<select name="provision" id="provision">
+    <option value="" {% if not request.GET.provision %}selected{% endif %}>---</option>
+    <option value="Sale"
+            {% if request.GET.provision == 'Sale' %}selected{% endif %}>Sale</option>
+    <option value="Lease"
+            {% if request.GET.provision == 'Lease' %}selected{% endif %}>Lease</option>
+    <option value="Rent"
+            {% if request.GET.provision == 'Rent' %}selected{% endif %}>Rent</option>
+</select>
+<button type="submit">Apply Filter</button>
+</form>
+</div>
+<div class="related-items" id="property-list">
+    {% for property in page_obj %}
+        <div class="related-item" data-price="{{ property.price }}">
+            <div class="related-image">
+                <a href="{% url 'propertyview' property.pk %}">
+                    <img src="{{ property.picture.url }}" alt="{{ property.owner }}">
+                </a>
             </div>
-            <section class="for-contact">
-                <div class="contact-form">
-                    <form action="">
-                        <label for="username">Name:</label>
-                        <input type="text" id="username" required>
-                        <label for="email">Email</label>
-                        <input type="email" name="" id="email">
-                    </form>
-                </div>
-            </section>
+            <div class="related-content">
+                <h2>{{ property.description }}</h2>
+            </div>
+            <div class="located">
+                <h2>{{ property.location |first_word_before_comma }}</h2>
+            </div>
+            <div class="price">
+                <h2>₦{{ property.price|intcomma }}</h2>
+            </div>
         </div>
-        <div id="fullscreenModal" class="fullscreen-modal">
-            <span id="closeFullscreen" class="fullscreen-close-btn">&times;</span>
-            <img id="fullscreenImage" src="" alt="Fullscreen Image">
-            <button id="prevImage" class="fullscreen-btn">
-                <
-            </button>
-            <button id="nextImage" class="fullscreen-btn">></button>
-        </div>
-    {% endblock content %}
-    {% block js %}
-        <!-- ajax filter -->
-        document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('apply-filter').addEventListener('click', function () {
-        const filterValue = document.getElementById('price').value; // Get selected price range
-        // Make AJAX request
-        fetch(`ajax/filter-properties/?price=${filterValue}`)
-        .then(response => {
-        if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-        })
-        .then(data => {
-        const propertyList = document.getElementById('property-list');
-        propertyList.innerHTML = ''; // Clear the current list
-        if (data.properties.length === 0) {
-        propertyList.innerHTML = `
-        <p>No properties match the selected price range.</p>
-        `;
-        return;
-        }
-        // Dynamically add filtered properties
-        data.properties.forEach(property => {
-        const propertyItem = document.createElement('div');
-        propertyItem.classList.add('related-item');
-        propertyItem.innerHTML = `
-        <div class="related-image">
-            <img src="${property.picture_url}" alt="Property Image">
-        </div>
-        <div class="related-content">
-            <h2>${property.description}</h2>
-        </div>
-        <div class="located">
-            <h2>${property.location}</h2>
-        </div>
-        <div class="price">
-            <h2>₦${property.price}</h2>
-        </div>
-        `;
-        propertyList.appendChild(propertyItem);
-        });
-        })
-        .catch(error => console.error('Error during filtering:', error));
-        });
-        });
-        <!-- Reset button -->
-        <!-- fullscreen -->
-        <!-- const modal = document.getElementById('fullscreenModal'); -->
-        <!-- const fullscreenImage = document.getElementById('fullscreenImage'); -->
-        <!-- const closeBtn = document.getElementById('closeFullscreen'); -->
-        <!-- const prevBtn = document.getElementById('prevImage'); -->
-        <!-- const nextBtn = document.getElementById('nextImage'); -->
-        <!-- const images = document.querySelectorAll('.gallery__img'); -->
-        // Show the full-screen image when an image is clicked
-        images.forEach((img, index) => {
-        img.addEventListener('click', () => {
-        modal.style.display = 'flex';
-        fullscreenImage.src = img.src;
-        currentIndex = index;
-        });
-        });
-        // Close the full-screen modal when clicking the close button or pressing ESC
-        closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-        });
-        // Close the modal if clicking anywhere outside the image
-        modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-        modal.style.display = 'none';
-        }
-        });
-        // Listen for ESC key to close modal
-        window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-        modal.style.display = 'none';
-        }
-        });
-        // Go to the previous image
-        prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        fullscreenImage.src = images[currentIndex].src;
-        });
-        // Go to the next image
-        nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % images.length;
-        fullscreenImage.src = images[currentIndex].src;
-        });
-        <!-- filtering properties -->
-    {% endblock js %}
+    {% endfor %}
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+<section class="for-contact">
+    <div class="contact-form">
+        <form action="">
+            <label for="username">Name:</label>
+            <input type="text" id="username" required>
+            <label for="email">Email</label>
+            <input type="email" name="" id="email">
+        </form>
+    </div>
+</section>
+</div>
+<div id="fullscreenModal" class="fullscreen-modal">
+    <span id="closeFullscreen" class="fullscreen-close-btn">&times;</span>
+    <img id="fullscreenImage" src="" alt="Fullscreen Image">
+    <button id="prevImage" class="fullscreen-btn">
+        <
+    </button>
+    <button id="nextImage" class="fullscreen-btn">></button>
+</div>
+{% endblock content %}
+{% block js %}
+    <!-- ajax filter -->
+    document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('apply-filter').addEventListener('click', function () {
+    const filterValue = document.getElementById('price').value; // Get selected price range
+    // Make AJAX request
+    fetch(`ajax/filter-properties/?price=${filterValue}`)
+    .then(response => {
+    if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+    })
+    .then(data => {
+    const propertyList = document.getElementById('property-list');
+    propertyList.innerHTML = ''; // Clear the current list
+    if (data.properties.length === 0) {
+    propertyList.innerHTML = `
+    <p>No properties match the selected price range.</p>
+    `;
+    return;
+    }
+    // Dynamically add filtered properties
+    data.properties.forEach(property => {
+    const propertyItem = document.createElement('div');
+    propertyItem.classList.add('related-item');
+    propertyItem.innerHTML = `
+    <div class="related-image">
+        <img src="${property.picture_url}" alt="Property Image">
+    </div>
+    <div class="related-content">
+        <h2>${property.description}</h2>
+    </div>
+    <div class="located">
+        <h2>${property.location}</h2>
+    </div>
+    <div class="price">
+        <h2>₦${property.price}</h2>
+    </div>
+    `;
+    propertyList.appendChild(propertyItem);
+    });
+    })
+    .catch(error => console.error('Error during filtering:', error));
+    });
+    });
+    <!-- Reset button -->
+    <!-- fullscreen -->
+    <!-- const modal = document.getElementById('fullscreenModal'); -->
+    <!-- const fullscreenImage = document.getElementById('fullscreenImage'); -->
+    <!-- const closeBtn = document.getElementById('closeFullscreen'); -->
+    <!-- const prevBtn = document.getElementById('prevImage'); -->
+    <!-- const nextBtn = document.getElementById('nextImage'); -->
+    <!-- const images = document.querySelectorAll('.gallery__img'); -->
+    // Show the full-screen image when an image is clicked
+    images.forEach((img, index) => {
+    img.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    fullscreenImage.src = img.src;
+    currentIndex = index;
+    });
+    });
+    // Close the full-screen modal when clicking the close button or pressing ESC
+    closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+    });
+    // Close the modal if clicking anywhere outside the image
+    modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+    modal.style.display = 'none';
+    }
+    });
+    // Listen for ESC key to close modal
+    window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+    modal.style.display = 'none';
+    }
+    });
+    // Go to the previous image
+    prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    fullscreenImage.src = images[currentIndex].src;
+    });
+    // Go to the next image
+    nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    fullscreenImage.src = images[currentIndex].src;
+    });
+    <!-- filtering properties -->
+{% endblock js %}

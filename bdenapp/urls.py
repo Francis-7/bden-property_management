@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+pp_name = 'bdenapp'
+
 urlpatterns = [
     path('home/', views.home, name='home'),
     path('propertyview/<int:id>/', views.propertyView, name='propertyview'),

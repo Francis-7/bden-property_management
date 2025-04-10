@@ -23,20 +23,110 @@ def home_view(request):
     return render(request, 'bdenapp/home.html', {'properties': properties, 'groups' : grouped_data})
 
 def propertyView(request, id):
+    
+
     property = get_object_or_404(Property, id=id)
     images = property.propertyimage_set.all()
     properties = Property.objects.all()
-    paginator = Paginator(properties, 8)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    # paginator = Paginator(properties, 8)
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)
     if request.user.is_authenticated:
         reviews = Review.objects.filter(property=property, user=request.user)
     else:
         reviews = Review.objects.none() 
     
     state_name = property.location.split(',')[0].strip()
+
+    # filter options
+    price_filter = request.GET.get('price', '')
+    location_filter = request.GET.get('location', '')
+    type_choice_filter = request.GET.get('typeChoice', '')
+    is_peer_to_peer_filter = request.GET.get('isPeerToPeer', '')
+    provision_filter = request.GET.get('provision', '')
     
-    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews, 'state_name':state_name, 'page_obj':page_obj})
+
+    query = Q()
+    if price_filter:
+        if price_filter == "low":
+            query &= Q(price__lte=1000000)
+        elif price_filter == "medium":
+            query &= Q(price__gt=1000000, price__lte=5000000)
+        elif price_filter == "high":
+            query &= Q(price__gt=5000000)
+
+    if location_filter:
+        query &= Q(location__icontains=location_filter)
+    
+    if type_choice_filter:
+        query &= Q(typeChoice=type_choice_filter)
+
+    if is_peer_to_peer_filter:
+        query &= Q(isPeerToPeer=(is_peer_to_peer_filter.lower() == "true"))
+
+    if provision_filter:
+        query &= Q(provision=provision_filter)
+
+
+
+    filtered_properties = properties.filter(query)
+
+    paginator = Paginator(filtered_properties, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+
+    
+    return render(request, 'bdenapp/propertyview.html', {'property':property, 'images':images, 'properties':properties, 'reviews':reviews, 'state_name':state_name, 'page_obj':page_obj,
+                                                         'price_filter':price_filter,
+                                                         'location_filter':location_filter,
+                                                         "filtered_properties": filtered_properties,
+                                                         'type_choice_filter': type_choice_filter,
+                                                         'is_peer_to_peer_filter':is_peer_to_peer_filter,
+                                                         'provision_filter':provision_filter,
+
+                                                         })
+
+# property search result
+def property_search_result(request):
+    query = request.GET.get('q', '')
+    price_filter = request.GET.get('price', '')
+    location_filter = request.GET.get('location', '')
+    results = Property.objects.none()  # Default empty results
+    
+    if query:
+        # Check if query contains the format 'location - typeChoice'
+        if ' - ' in query:
+            location, type_choice = query.split(' - ', maxsplit=1)
+            results = Property.objects.filter(
+                Q(location__icontains=location.strip()) & 
+                Q(typeChoice__icontains=type_choice.strip())
+            )
+
+        else:
+            # Search for either location or typeChoice
+            results = Property.objects.filter(
+                Q(location__icontains=query.strip()) |
+                Q(typeChoice__icontains=query.strip()) |
+                Q(description__icontains=query.strip())  # Optional fallback
+            )
+        if price_filter == 'low':
+            results = results.filter(price__lt=500000)
+        elif price_filter == 'medium':
+            results = results.filter(price__gte=500000, price__lte=5000000)
+        elif price_filter == 'high':
+            results = results.filter(price__gt=10000000)
+
+        if location_filter == 'plateu':
+            results = results.filter(location__istartswith='plat')
+
+    return render(request, 'bdenapp/property_search_result.html', {
+        'results': results,
+        'size': results.count(),
+        'query':query,
+        'price_filter':price_filter,
+        'location_filter':location_filter,
+    })
 
 # Ajax for filtering properties
 def ajax_filter_properties(request):
@@ -161,7 +251,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('home') # Redirect to a home page or dashboard after login
+            return redirect('dashboard')
     return render(request, 'bdenapp/login.html')
 
 @login_required
@@ -450,44 +540,8 @@ def property_autocomplete_view(request):
             for item in matches_found
         ]
         return JsonResponse(formatted_suggestions, safe=False)
-    return JsonResponse([], safe=False)
+    return JsonResponse([], safe=False) 
 
-# updated property_serach view 
-
-def property_search_result(request):
-    query = request.GET.get('q', '')
-    price_filter = request.GET.get('price', '')
-    results = Property.objects.none()  # Default empty results
-    
-    if query:
-        # Check if query contains the format 'location - typeChoice'
-        if ' - ' in query:
-            location, type_choice = query.split(' - ', maxsplit=1)
-            results = Property.objects.filter(
-                Q(location__icontains=location.strip()) & 
-                Q(typeChoice__icontains=type_choice.strip())
-            )
-
-        else:
-            # Search for either location or typeChoice
-            results = Property.objects.filter(
-                Q(location__icontains=query.strip()) |
-                Q(typeChoice__icontains=query.strip()) |
-                Q(description__icontains=query.strip())  # Optional fallback
-            )
-        if price_filter == 'low':
-            results = results.filter(price__lt=500000)
-        elif price_filter == 'medium':
-            results = results.filter(price__gte=500000, price__lte=1000000)
-        elif price_filter == 'high':
-            results = results.filter(price__gt=1000000)
-
-    return render(request, 'bdenapp/property_search_result.html', {
-        'results': results,
-        'size': results.count(),
-        'query':query,
-        'price_filter':price_filter,
-    })
 
 # additional filter for price handling
 def property_search_result_less(request):

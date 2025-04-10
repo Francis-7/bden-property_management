@@ -50,12 +50,8 @@
     display: inline-block;
     }
     .user--name h2:nth-child(2) {
-    font-weight: bolder;
-    color: blue;
-    text-shadow: 2px 1px 1px black;
-    background: white;
-    padding; 2rem;
-    font-size: 30px;
+    color: yellow;
+    font-size: 18px;
     margin-left: 3rem;
     }
     .user--name button {
@@ -170,7 +166,9 @@
                 <div class="user-name">
                     <h2>Welcome {{ user_profile.user.username }}</h2>
                     {% if user.profile.is_owner %}
-                        <h2>R</h2>
+                        <h2 class="realtor">REALTOR</h2>
+                    {% elif user_profile.user.is_superuser %}
+                        <button>Admin User</button>
                     {% else %}
                         <a href="{% url 'is_owner' %}">
                             <button>Become a realtor</button>
@@ -180,18 +178,26 @@
             </div>
         </div>
         <div class="managed-properties">
-            <h2>Your managed properties on b-den</h2>
-            <div class="your_properties">
-                {% for property in properties %}
-                    <div class="properties">
-                        <a href="{% url 'propertyview' property.pk %}">
-                            <img src="{{ property.picture.url }}"
-                                 alt="{{ user_profile.user.username }}">
-                        </a>
-                        <p>{{ property.description }}</p>
-                        <p>{{ property.location |first_word_before_comma }}</p>
-                    </div>
-                {% endfor %}
+            {% if user_profile.is_owner %}
+                <h2>Your managed properties on b-den</h2>
+                <div class="your_properties">
+                    {% for property in properties %}
+                        <div class="properties">
+                            <a href="{% url 'propertyview' property.pk %}">
+                                <img src="{{ property.picture.url }}"
+                                     alt="{{ user_profile.user.username }}">
+                            </a>
+                            <p>{{ property.description }}</p>
+                            <p>{{ property.location |first_word_before_comma }}</p>
+                        </div>
+                    {% endfor %}
+                {% elif user_profile.user.is_superuser %}
+                    <h2>You are a super user</h2>
+                {% else %}
+                    <a href="{% url 'home' %}">
+                        <h2>view listed properties</h2>
+                    </a>
+                {% endif %}
             </div>
         </div>
         <div class="saved">
