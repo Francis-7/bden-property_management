@@ -1,5 +1,6 @@
 {% extends 'bdenapp/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}
     success message
 {% endblock title %}
@@ -9,4 +10,35 @@
     <div class="success">
         <h1>Congratulations, your payment was successful!</h1>
     </div>
+    {% if receipt %}
+        <p>
+            <strong>Username:</strong> {{ receipt.user }}
+        </p>
+        <p>
+            <strong>Email:</strong> {{ receipt.email }}
+        </p>
+        <p>
+            <strong>Amount Paid:</strong> ₦{{ receipt.amount | intcomma }}
+        </p>
+        <p>
+            <strong>Transaction Reference:</strong> {{ receipt.reference }}
+        </p>
+        <p>
+            <strong>Transaction Date:</strong> {{ receipt.date }}
+        </p>
+        <h3>Property Details</h3>
+        <p>
+            <strong>Property Name:</strong> {{ receipt.property_name }}
+        </p>
+        <p>
+            <strong>Property Price:</strong> ₦{{ receipt.property_price | intcomma }}
+        </p>
+        <p>
+            <strong>Location:</strong> {{ receipt.property_location }}
+        </p>
+        <h3>Updated Wallet Balance: ₦{{ wallet_balance | intcomma }}</h3>
+    {% else %}
+        <h2>Payment Verification Failed</h2>
+        <p>{{ error }}</p>
+    {% endif %}
 {% endblock content %}

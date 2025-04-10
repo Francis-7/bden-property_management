@@ -4,25 +4,51 @@
     Start payment
 {% endblock title %}
 {% block style %}
+    .main--body {
+    max-width: 80%;
+    padding: 2em;
+    margin: 2em auto;
+    border: solid 0.5px black;
+    }
+    .fund {
+    background: green;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    }
+    .fund p {
+    font: 18px sans-serif;
+    }
+    form button {
+    padding: 1px 10px;
+    text-align: center;
+    background: blue;
+    color: white;
+    font: 18px sans-serif;
+    }
 {% endblock style %}
 {% block content %}
-    <div class="fund">
-        <p>You are about to fund your wallet with {{ payment.amount }} and transaction reference {{ payment.ref }}</p>
+    <div class="main--body">
+        <div class="fund">
+            <p>You are about to fund your wallet with {{ payment.amount }} and transaction reference {{ payment.ref }}</p>
+        </div>
+        <form id="paystackForm">
+            <script src="https://js.paystack.co/v1/inline.js"></script>
+            <button type="button" onclick="payWithPaystack()">Pay Now</button>
+        </form>
     </div>
-    <form id="paystackForm">
-        <script src="https://js.paystack.co/v1/inline.js"></script>
-        <button type="button" onclick="payWithPaystack()">Pay Now</button>
-    </form>
 {% endblock content %}
 {% block js %}
     function payWithPaystack() {
+    var property_id = "{{ property.id }}";
     var handler = PaystackPop.setup({
     key: "{{ paystack_pub_key }}",
     email: "{{ payment.email }}",
     amount: "{{ amount_value }}",
     ref: "{{ payment.ref }}",
     callback: function(response) {
-    window.location.href = "/payments/verify-payment/" + response.reference;
+    window.location.href = "/payments/verify-payment/" + response.reference + "/" + property_id;
     },
     onClose: function() {
     alert("Transaction was not completed");

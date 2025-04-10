@@ -229,7 +229,7 @@ def search_suggestions(request):
 # Authentication & Authorization 
 from payments.models import UserWallet
 
-def register(request):
+def register_a(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         UserWallet.objects.create(user=user)
@@ -237,11 +237,32 @@ def register(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
+            UserWallet.objects.create(user=user)
             if not hasattr(user, 'userprofile'):
                 UserProfile.objects.create(user=user)
             return redirect('login')
     else:
         form = UserRegistrationForm()
+    return render(request, 'bdenapp/register.html', {'form': form})
+
+from django.contrib import messages
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)  # Now `user` is assigned
+            user.set_password(form.cleaned_data['password'])
+            user.save()  # Now `user` exists
+
+            # Ensure we only create a wallet if the user doesn't already have one
+            UserWallet.objects.get_or_create(user=user)
+
+            messages.success(request, "Registration successful! You can now log in.")
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+
     return render(request, 'bdenapp/register.html', {'form': form})
 
 def user_login(request):
@@ -322,10 +343,14 @@ def submit_review(request, id):
     return render(request, 'bdenapp/submit_review.html', {'form':form, 'property':property})
 
 # user profile creation and things
+from django.db.utils import IntegrityError
+from django.db import transaction
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
+        with transaction.atomic():
+            UserProfile.objects.get_or_create(user=instance)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
