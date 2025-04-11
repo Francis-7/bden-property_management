@@ -40,7 +40,7 @@
     </div>
     <div class="my--context">
         <p>Your message has been sent to the owner of {{ property.description }}.</p>
-        <a href="{% url 'bdenapp:home' %}">Go back to Home</a>
+        <a href="{% url 'bdenapp:purchase' property.id %}">Go back to Dashboard</a>
         <a href="{% url 'bdenapp:submit_review' property.id %}">leave a review</a>
     </div>
 {% endblock content %}

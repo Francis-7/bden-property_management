@@ -52,7 +52,7 @@
         <div class="cards">
             {% for obj in objects %}
                 <div class="card">
-                    <a href="{% url 'propertyview' obj.pk %}">
+                    <a href="{% url 'bdenapp:propertyview' obj.pk %}">
                         <img src="{{ obj.picture.url }}" alt="{{ obj.owner }}" />
                     </a>
                     <div class="content">

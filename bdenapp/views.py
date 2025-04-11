@@ -365,11 +365,12 @@ def create_wallet(sender, instance, created, **kwargs):
 # the user dashboard
 @login_required
 def user_dashboard(request):
+    user = request.user
     user_profile = UserProfile.objects.get(user=request.user)
     properties = user_profile.user.properties.all
     saved_items = request.user.saveditems_set.all()
     purchases = request.user.purchase_set.all()
-    return render(request, 'bdenapp/dashboard.html', {'user_profile':user_profile, 'saved_items':saved_items, 'purchases':purchases, 'properties':properties})
+    return render(request, 'bdenapp/dashboard.html', {'user_profile':user_profile, 'saved_items':saved_items, 'purchases':purchases, 'properties':properties, 'user':user})
 
 # enabling the owner mode in the dashboard
 def is_owner(request):

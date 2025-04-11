@@ -215,6 +215,7 @@
         <div class="purchased">
             <div class="headline">
                 <h2 class="heading--text">Purchased Properties</h2>
+                {% for load in properties %}{{ load.id }}{% endfor %}
             </div>
             <div class="purchases">
                 {% for item in purchases %}
