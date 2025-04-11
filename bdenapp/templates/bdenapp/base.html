@@ -67,7 +67,7 @@
   <body>
     <nav class="navbar navbar-expand-lg shadow p-3 mb-5 sticky-top bg-body-tertiary rounded border border-secondary-subtle">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">
+        <a class="navbar-brand" href="{% url 'bdenapp:home' %}">
           <img src="{% static 'bdenapp/images/bden.png' %}"
                alt="B-Den"
                width="50"
@@ -88,10 +88,10 @@
           {% if user.is_authenticated %}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'dashboard' %}">Welcome {{ request.user }}</a>
+                <a class="nav-link" href="{% url 'bdenapp:dashboard' %}">Welcome {{ request.user }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
+                <a class="nav-link" href="{% url 'bdenapp:contact_us' %}">Contact Us</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle"
@@ -104,7 +104,8 @@
                     <a class="dropdown-item" href="#">Blog</a>
                   </li> -->
                   <li>
-                    <a class="dropdown-item" href="{% url 'update_profile_picture' %}">Update Profile</a>
+                    <a class="dropdown-item"
+                       href="{% url 'bdenapp:update_profile_picture' %}">Update Profile</a>
                   </li>
                   {% if user.profile.is_owner %}
                     <li>
@@ -117,7 +118,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-link" href="{% url 'bdenapp:logout' %}">Logout</a>
               </li>
               {% if user.is_superuser %}
                 <li class="nav-item">
@@ -151,7 +152,7 @@
           {% endif %}
           <form class="d-flex me-5 pe-5"
                 method="get"
-                action="{% url 'property_search_result' %}">
+                action="{% url 'bdenapp:property_search_result' %}">
             <input class="form-control me-2"
                    type="text"
                    name="q"
@@ -174,13 +175,13 @@
     <footer class="footers">
       <ul class="icon">
         <li class="icon__item">
-          <a href="{% url 'find_property' %}" class="icon__link">Find your dream home</a>
+          <a href="{% url 'bdenapp:find_property' %}" class="icon__link">Find your dream home</a>
         </li>
         <li class="icon__item">
-          <a href="{% url 'contact_us' %}" class="icon__link">Contact us</a>
+          <a href="{% url 'bdenapp:contact_us' %}" class="icon__link">Contact us</a>
         </li>
         <li class="icon__item">
-          <a href="{% url 'submit_property' %}" class="icon__link">Submit your property</a>
+          <a href="{% url 'bdenapp:submit_property' %}" class="icon__link">Submit your property</a>
         </li>
       </ul>
       <p class="copyright">&copy; Copyright 2025 by Jenny.</p>
@@ -209,7 +210,7 @@
   const query = $(this).val();
   if (query.length > 1) {
   $.ajax({
-  url: "{% url 'property_autocomplete_view' %}",
+  url: "{% url 'bdenapp:property_autocomplete_view' %}",
   data: { 'q': query },
   headers: {
     'X-CSRFToken': '{{ csrf_token }}'

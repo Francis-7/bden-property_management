@@ -170,7 +170,7 @@
                     {% elif user_profile.user.is_superuser %}
                         <button>Admin User</button>
                     {% else %}
-                        <a href="{% url 'is_owner' %}">
+                        <a href="{% url 'bdenapp:is_owner' %}">
                             <button>Become a realtor</button>
                         </a>
                     {% endif %}
@@ -194,7 +194,7 @@
                 {% elif user_profile.user.is_superuser %}
                     <h2>You are a super user</h2>
                 {% else %}
-                    <a href="{% url 'home' %}">
+                    <a href="{% url 'bdenapp:home' %}">
                         <h2>view listed properties</h2>
                     </a>
                 {% endif %}

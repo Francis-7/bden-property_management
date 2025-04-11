@@ -452,6 +452,11 @@ def home(request):
 # view for email generation and handling
 from django.core.mail import send_mail
 from .forms import EmailForm
+import os
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.core.mail import EmailMessage
+
 
 @login_required
 def handle_purchase(request, property_id):
@@ -467,10 +472,11 @@ def handle_purchase(request, property_id):
 
     if request.method == 'POST':
         # Process the submitted form
-        form = EmailForm(request.POST)
+        form = EmailForm(request.POST, request.FILES)
         if form.is_valid():
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
+            receipt_pdf = request.FILES.get('receipt_pdf')
             full_message = f"""
             Dear {owner_name},
 
@@ -478,14 +484,24 @@ def handle_purchase(request, property_id):
 
             You can contact me directly via email: {request.user.email} or phone: {request.user.username}.
             """
+            email_attachments = []
+            if receipt_pdf:
+                file_path = default_storage.save(f"receipts/{receipt_pdf.name}", ContentFile(receipt_pdf.read()))
+                email_attachments.append(file_path)  # Attach the PDF
+
             
             # Send the email
-            send_mail(
+            email = EmailMessage(
                 subject,
                 full_message,
-                request.user.email,  # From the logged-in user's email
-                [owner_email],  # To the owner's email
+                request.user.email,  
+                [owner_email],
             )
+            if receipt_pdf:
+                file_path = default_storage.save(f"receipts/{receipt_pdf.name}", ContentFile(receipt_pdf.read()))
+                email.attach(receipt_pdf.name, receipt_pdf.read(), 'application/pdf')
+
+            email.send()
 
             return render(request, 'bdenapp/success.html', {'property': property_obj})
     else:
@@ -494,7 +510,7 @@ def handle_purchase(request, property_id):
     # Render the form for GET requests
     return render(request, 'bdenapp/purchase_form.html', {
         'form': form,
-        'property': property_obj,
+        'property_obj': property_obj,
         'owner_name': owner_name,
         'owner_phone': owner_phone,
         'owner_email': owner_email,

@@ -39,8 +39,8 @@
         <h2>Email Sent Successfully</h2>
     </div>
     <div class="my--context">
-        <p>Your message has been sent to the owner of {{ property.location }}.</p>
-        <a href="{% url 'home' %}">Go back to Home</a>
-        <a href="{% url 'submit_review' property.id %}">leave a review</a>
+        <p>Your message has been sent to the owner of {{ property.description }}.</p>
+        <a href="{% url 'bdenapp:home' %}">Go back to Home</a>
+        <a href="{% url 'bdenapp:submit_review' property.id %}">leave a review</a>
     </div>
 {% endblock content %}

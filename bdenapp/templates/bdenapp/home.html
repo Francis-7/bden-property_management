@@ -279,12 +279,11 @@
         <span class="heading-primary--main">B-den</span>
         <span class="heading-primary--sub">Get properties easily</span>
       </h1>
-      <!-- <a href="{% url 'search_results' %}" class="mybtn mybtn--white mybtn--animated">Search for a property</a> -->
     </div>
     <div class="container-form">
       <form class="search-form"
             method="get"
-            action="{% url 'property_search_result' %}">
+            action="{% url 'bdenapp:property_search_result' %}">
         <div class="overlay-form"></div>
         <input type="text"
                name="q"
@@ -327,7 +326,7 @@
     </div>
     <div class="lesser-view">
       {% for key, value in page_obj %}
-        <a href="{% url 'category' key %}" class="cities">
+        <a href="{% url 'bdenapp:category' key %}" class="cities">
           <div class="image">
             <img src="{% static 'bdenapp/images/landing.jpg' %}" alt="">
           </div>
@@ -401,7 +400,7 @@
   const query = $(this).val();
   if (query.length > 1) {
   $.ajax({
-  url: "{% url 'property_autocomplete' %}",
+  url: "{% url 'bdenapp:property_autocomplete' %}",
   data: { 'q': query },
   success: function(data) {
   let suggestions = '';

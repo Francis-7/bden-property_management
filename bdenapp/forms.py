@@ -86,3 +86,4 @@ class UserProfileForm(forms.ModelForm):
 class EmailForm(forms.Form):
     subject = forms.CharField(max_length=100, required=True, label="Email Subject")
     message = forms.CharField(widget=forms.Textarea, required=True, label="Email Message")
+    receipt_pdf = forms.FileField(required=False, label="Upload Payment Receipt (PDF)")

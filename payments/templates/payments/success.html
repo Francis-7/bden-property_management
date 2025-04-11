@@ -5,40 +5,89 @@
     success message
 {% endblock title %}
 {% block style %}
+    .success {
+    max-width: 80%;
+    text-align: center;
+    margin: 2rem auto;
+    padding: 1rem;
+    border: solid 0.5px black;
+    }
+    .success h1 {
+    background: black;
+    color: white;
+    padding: 5rem 2rem;
+    margin: 4rem;
+    letter-spacing: 0.5rem;
+    }
+    .receipt p {
+    text-align: left;
+    margin-left: 4rem;
+    font-size: 20px;
+    }
+    .receipt p strong {
+    background: black;
+    color: white;
+    padding: 1px 2px;
+    }
+    .proceed {
+    margin: 12rem 2rem;;
+    padding: 2rem;
+    text-align: center;
+    }
+    .proceed a {
+    padding: 2rem;
+    background: green;
+    color: white;
+    font-size: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    }
+    .proceed a:hover {
+    }
 {% endblock style %}
 {% block content %}
     <div class="success">
         <h1>Congratulations, your payment was successful!</h1>
+        {% if receipt %}
+            <div class="receipt">
+                <h2>Payment Receipt:</h2>
+                <p>
+                    <strong>Username:</strong> {{ receipt.user }}
+                </p>
+                <p>
+                    <strong>Email:</strong> {{ receipt.email }}
+                </p>
+                <p>
+                    <strong>Amount Paid:</strong> ₦{{ receipt.amount | intcomma }}
+                </p>
+                <p>
+                    <strong>Transaction Reference:</strong> {{ receipt.reference }}
+                </p>
+                <p>
+                    <strong>Transaction Date:</strong> {{ receipt.date }}
+                </p>
+                <h3>Property Details</h3>
+                <p>
+                    <strong>Property details:</strong> {{ receipt.property_name }}
+                </p>
+                <p>
+                    <strong>Property Price:</strong> ₦{{ receipt.property_price | intcomma }}
+                </p>
+                <p>
+                    <strong>Location:</strong> {{ receipt.property_location }}
+                </p>
+                <h3>Updated Wallet Balance: ₦{{ wallet_balance | intcomma }}</h3>
+            </div>
+        {% else %}
+            <h2>Payment Verification Failed</h2>
+            <p>{{ error }}</p>
+        {% endif %}
     </div>
-    {% if receipt %}
-        <p>
-            <strong>Username:</strong> {{ receipt.user }}
-        </p>
-        <p>
-            <strong>Email:</strong> {{ receipt.email }}
-        </p>
-        <p>
-            <strong>Amount Paid:</strong> ₦{{ receipt.amount | intcomma }}
-        </p>
-        <p>
-            <strong>Transaction Reference:</strong> {{ receipt.reference }}
-        </p>
-        <p>
-            <strong>Transaction Date:</strong> {{ receipt.date }}
-        </p>
-        <h3>Property Details</h3>
-        <p>
-            <strong>Property Name:</strong> {{ receipt.property_name }}
-        </p>
-        <p>
-            <strong>Property Price:</strong> ₦{{ receipt.property_price | intcomma }}
-        </p>
-        <p>
-            <strong>Location:</strong> {{ receipt.property_location }}
-        </p>
-        <h3>Updated Wallet Balance: ₦{{ wallet_balance | intcomma }}</h3>
-    {% else %}
-        <h2>Payment Verification Failed</h2>
-        <p>{{ error }}</p>
-    {% endif %}
+    <div class="proceed">
+        <a href="{% url 'bdenapp:handle-purchase' property.pk %}">contact the owner {{ receipt.id }}</a>
+        <a href="/media/receipts/receipt_{{ receipt.reference }}.pdf" download>
+            <button>Download Receipt PDF</button>
+        </a>
+    </div>
 {% endblock content %}

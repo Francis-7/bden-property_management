@@ -30,7 +30,7 @@
 {% endblock style %}
 {% block content %}
     <div class="headline--contact">
-        <h2>Contact the Owner of {{ property.location }}</h2>
+        <h2>Contact the Owner of {{ property_obj.typeChoice }}</h2>
     </div>
     <div class="body--content">
         <p>
@@ -42,9 +42,14 @@
         <p>
             <strong>Phone:</strong> {{ owner_phone }}
         </p>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
+            <label for="id_subject">Subject:</label>
+            {{ form.subject }}
+            <label for="id_message">Message:</label>
+            {{ form.message }}
+            <label for="id_receipt_pdf">Upload Payment Receipt (PDF):</label>
+            {{ form.receipt_pdf }}
             <button type="submit">Send Email</button>
         </form>
     </div>
