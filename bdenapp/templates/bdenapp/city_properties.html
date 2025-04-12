@@ -50,7 +50,7 @@
     </div>
     <div class="properties">
         {% for property in properties %}
-            <a href="{% url 'propertyview' property.id %}">
+            <a href="{% url 'bdenapp:propertyview' property.id %}">
                 <div class="property">
                     <div class="image">
                         <img src="{{ property.picture.url }}" alt="{{ property.owner }}">

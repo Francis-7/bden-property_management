@@ -16,6 +16,7 @@
     .heading--text {
     letter-spacing: 5px;
     margin: 3em;
+    text-align: center;
     }
     .summary {
     display: flex;
@@ -84,12 +85,116 @@
     text-transform: uppercase;
     background: black;
     }
+    .popup {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s; }
+    .popup__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    background-color: #fff;
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    display: table;
+    overflow: hidden;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.25);
+    transition: all .5s .2s; }
+    .popup__left {
+    width: 33.333333%;
+    display: table-cell; }
+    .popup__right {
+    width: 66.6666667%;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 3rem 5rem; }
+    .popup__img {
+    display: block;
+    width: 100%; }
+    .popup__text {
+    font-size: 1.4rem;
+    margin-bottom: 4rem;
+    -moz-column-count: 2;
+    -moz-column-gap: 4rem;
+    -moz-column-rule: 1px solid #eee;
+    column-count: 2;
+    column-gap: 4rem;
+    column-rule: 1px solid #eee;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto; }
+    .popup:target {
+    opacity: 1;
+    visibility: visible; }
+    .popup:target .popup__content {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); }
+    .popup__close:link, .popup__close:visited {
+    color: #777;
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    font-size: 3rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: all .2s;
+    line-height: 1; }
+    .popup__close:hover {
+    color: #55c57a; }
+    .popup__right span {
+    font: 20px sans-serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: green;
+    }
+    .terms_condition {
+    text-align: center;
+    }
 {% endblock style %}
 {% block content %}
     <div class="body--context">
-        <div class="heading--text">
-            <h1>You're about to purchase the property of  {{ property.owner| first_word_before_comma }}</h1>
-        </div>
+        {% if property.provision == 'Sale' %}
+            <div class="heading--text">
+                <h1>You're about to purchase the property of  {{ property.owner| first_word_before_comma }}</h1>
+            </div>
+            <div class="terms_condition">
+                <a href="#popup" class="btn btn-info">Sales terms</a>
+            </div>
+        {% elif property.provision == 'Rent' %}
+            {% if property.isPeerToPeer %}
+                <div class="heading--text">
+                    <h1>You're about to peer with another tenant for the property of  {{ property.owner| first_word_before_comma }}</h1>
+                </div>
+                <div class="terms_condition">
+                    <a href="#popup" class="btn btn-info">Peer-to-Peer</a>
+                </div>
+            {% else %}
+                <div class="heading--text">
+                    <h1>You're about to Rent the property of  {{ property.owner| first_word_before_comma }}</h1>
+                </div>
+                <div class="terms_condition">
+                    <a href="#popup" class="btn btn-info">Rent terms</a>
+                </div>
+            {% endif %}
+        {% elif property.provision == 'Lease' %}
+            <div class="heading--text">
+                <h1>You're about to get the property of  {{ property.owner| first_word_before_comma }} on Lease</h1>
+            </div>
+            <div class="terms_condition">
+                <a href="#popup" class="btn btn-info">Lease terms</a>
+            </div>
+        {% endif %}
         <div class="summary">
             <div class="sum-text">
                 <p>Property summary:</p>
@@ -154,6 +259,54 @@
                 {% csrf_token %}
                 <button type="submit">Proceed to Payment</button>
             </form>
+        </div>
+    </div>
+    <div class="popup" id="popup">
+        <div class="popup__content">
+            <div class="popup__left">
+                <img src="{% static 'bdenapp/images/story-1.jpeg' %}"
+                     alt="Tour photo"
+                     class="popup__img">
+                <img src="{{ property.picture.url }}" alt="Tour photo" class="popup__img">
+            </div>
+            <div class="popup__right">
+                <a href="" class="popup__close">&times;</a>
+                <h2 class="heading-secondary u-margin-bottom-small">
+                    <strong>Property {{ property.provision }} Terms</strong>
+                </h2>
+                <h3 class="heading-tertiary u-margin-bottom-small">Important &ndash; Please read these terms below</h3>
+                <p class="popup__text">
+                    Welcome to B-den the fastest growing platform for property listing and search in Nigeria.
+                    The {{ property.provision }} terms for this property states that
+                    {% if property.provision == 'Rent' %}
+                        {% if property.isPeerToPeer %}
+                            This property is designed for peer to peer sharing meaning that two persons will take
+                            the property and split the cost equally. The full amount is <span>₦{{ property.price | intcomma }}</span>
+                            and the highest amount of users to pay is two. you may want to see the status of this property before you proceed.
+                            You are to pay your own half of the price <span>₦{{ property.price| divide:2 | intcomma }}</span> to be able
+                            to share this property with {{ property.description }}
+                        {% else %}
+                            You the renter must pay the full sum of <span>₦{{ property.price | intcomma }}</span> before you can proceed to contact the owner of the property
+                            otherwise, the transaction won't proceed as the system will decline it. You're advised to update your payment on time to avoid trouble
+                            and if you wish to terminate your rent, you can do so as you wish.
+                        {% endif %}
+                    {% elif property.provision == 'Sale' %}
+                        The amount <span>₦{{ property.price | intcomma }}</span> is non negotiable as this was set
+                        after all considerations were made and approved by the admin. After the full payment is made
+                        via our payment system, you're advised to download a pdf receipt that will be generated
+                        by the system which will serve as proof of payment that can then be sent to the owner via mail.
+                        Read our privacy terms below to have full understanding about this terms.
+                    {% elif property.provision == 'Lease' %}
+                        The interested and intending leasor of this property must pay in full the stated amount of
+                        <span>₦{{ property.price | intcomma }}</span> before he can have access to the property. And the
+                        property is to be maintained and put in a good condition by the leasor otherwise the owner can claim
+                        damages for any carelessness from the part of the leasor. To continue using the property then renewal must
+                        be made 7 days before the expiration of the lease year.
+                    {% endif %}
+                </p>
+                <a href="{% url 'bdenapp:sales_terms' property.id %}"
+                   class="btn btn-primary btn--green">Proceed</a>
+            </div>
         </div>
     </div>
 {% endblock content %}

@@ -31,7 +31,7 @@
                 <h1 class="heading-1">The ultimate personal freedom</h1>
             </div>
             <div class="nav-l">
-                <a href="{% url 'home' %}">
+                <a href="{% url 'bdenapp:home' %}">
                     <button class="btn header__btn">View our properties</button>
                 </a>
             </div>
@@ -230,11 +230,11 @@
                     <div class="dropdown">
                         <button class="dropbtn">Support</button>
                         <div class="dropdown-content">
-                            <a href="{% url 'help' %}">Help Center</a>
-                            <a href="{% url 'live_chat' %}">Live Chat & Contact Form</a>
-                            <a href="{% url 'report_issue' %}">Report an issue</a>
-                            <a href="{% url 'community_forum' %}">Community Forum</a>
-                            <a href="{% url 'refunds_and_cancellation' %}">Refund & Cancellation Policy</a>
+                            <a href="{% url 'bdenapp:help' %}">Help Center</a>
+                            <a href="{% url 'bdenapp:live_chat' %}">Live Chat & Contact Form</a>
+                            <a href="{% url 'bdenapp:report_issue' %}">Report an issue</a>
+                            <a href="{% url 'bdenapp:community_forum' %}">Community Forum</a>
+                            <a href="{% url 'bdenapp:refunds_and_cancellation' %}">Refund & Cancellation Policy</a>
                         </div>
                     </div>
                     <!-- <a href="#" class="nav__link">Support</a> -->
@@ -243,10 +243,10 @@
                     <div class="dropdown">
                         <button class="dropbtn">Discover</button>
                         <div class="dropdown-content">
-                            <a href="{% url 'trending_locations' %}">Trending Locations</a>
-                            <a href="{% url 'new_listings' %}">New Listings</a>
-                            <a href="{% url 'best_deals' %}">Best Deals & Discounts</a>
-                            <a href="{% url 'user_reviews' %}">User Reviews & Ratings</a>
+                            <a href="{% url 'bdenapp:trending_locations' %}">Trending Locations</a>
+                            <a href="{% url 'bdenapp:new_listings' %}">New Listings</a>
+                            <a href="{% url 'bdenapp:best_deals' %}">Best Deals & Discounts</a>
+                            <a href="{% url 'bdenapp:user_reviews' %}">User Reviews & Ratings</a>
                         </div>
                     </div>
                 </li>
@@ -255,8 +255,8 @@
                     <div class="dropdown">
                         <button class="dropbtn">Terms & Settings</button>
                         <div class="dropdown-content">
-                            <a href="{% url 'privacy' %}">Privacy Policy</a>
-                            <a href="{% url 'terms' %}">Terms of Service</a>
+                            <a href="{% url 'bdenapp:privacy' %}">Privacy Policy</a>
+                            <a href="{% url 'bdenapp:terms' %}">Terms of Service</a>
                         </div>
                     </div>
                     <!-- <a href="#" class="nav__link">Terms & Settings</a> -->
@@ -265,10 +265,10 @@
                     <div class="dropdown">
                         <button class="dropbtn">Partner</button>
                         <div class="dropdown-content">
-                            <a href="{% url 'list_property' %}">List Your Property</a>
-                            <a href="{% url 'property_management' %}">Property Management Tools</a>
-                            <a href="{% url 'marketting' %}">Marketing Services</a>
-                            <a href="{% url 'bulk_listings' %}">Corporate & Bulk Listings</a>
+                            <a href="{% url 'bdenapp:list_property' %}">List Your Property</a>
+                            <a href="{% url 'bdenapp:property_management' %}">Property Management Tools</a>
+                            <a href="{% url 'bdenapp:marketting' %}">Marketing Services</a>
+                            <a href="{% url 'bdenapp:bulk_listings' %}">Corporate & Bulk Listings</a>
                         </div>
                     </div>
                     <!-- <a href="#" class="nav__link">Partner</a> -->
@@ -277,10 +277,10 @@
                     <div class="dropdown">
                         <button class="dropbtn">About</button>
                         <div class="dropdown-content">
-                            <a href="{% url 'our_mission' %}">Our Mission</a>
-                            <a href="{% url 'the_team' %}">The Team</a>
-                            <a href="{% url 'success_stories' %}">Customer Success Stories</a>
-                            <a href="{% url 'press_media' %}">Press & Media</a>
+                            <a href="{% url 'bdenapp:our_mission' %}">Our Mission</a>
+                            <a href="{% url 'bdenapp:the_team' %}">The Team</a>
+                            <a href="{% url 'bdenapp:success_stories' %}">Customer Success Stories</a>
+                            <a href="{% url 'bdenapp:press_media' %}">Press & Media</a>
                         </div>
                     </div>
                     <!-- <a href="#" class="nav__link">About</a> -->

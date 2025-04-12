@@ -20,23 +20,21 @@ def initiate_payment(request, property_id):
 
         if not amount or not email:
             return HttpResponse("Missing required payment details", status=400)
-
-        pk = settings.PAYSTACK_PUBLIC_KEY
-
-        wallet = UserWallet.objects.get(user=request.user)
+        
+        wallet = UserWallet.objects.get(user=user)
         if wallet.balance < amount:
             return HttpResponse("Insufficient funds in wallet", status=400)
         
         wallet.balance -= amount
         wallet.save()
 
+        pk = settings.PAYSTACK_PUBLIC_KEY
+
         payment = Payment.objects.create(amount=amount, email=email, user=request.user)
         payment.save()
 
         return redirect('payments:payment_confirmation', payment_id=payment.id, property_id=property.id)
-    else:
-        request.method == 'GET'
-    return render(request, 'payments/payment.html', {})
+    return HttpResponse("Invalid request", status=400)
 
 # payment confirmation
 def payment_confirmation(request, payment_id, property_id):
