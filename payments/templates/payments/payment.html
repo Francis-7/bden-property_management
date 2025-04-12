@@ -6,7 +6,7 @@
 {% block style %}
 {% endblock style %}
 {% block content %}
-    <form method="post" action="{% url 'payments:initiate_payment' %}">
+    <form method="post">
         {% csrf_token %}
         <label>Email:</label>
         <input type="email" name="email" required>

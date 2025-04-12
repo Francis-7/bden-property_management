@@ -109,10 +109,12 @@
                   </li>
                   {% if user.profile.is_owner %}
                     <li>
-                      <a href="{% url 'upload_property' %}" class="btn btn-outline-secondary">Upload a Property</a>
+                      <a href="{% url 'bdenapp:upload_property' %}"
+                         class="btn btn-outline-secondary">Upload a Property</a>
                     </li>
                     <li>
-                      <a href="{% url 'upload_images' %}" class="btn btn-outline-secondary">Attach more images</a>
+                      <a href="{% url 'bdenapp:upload_images' %}"
+                         class="btn btn-outline-secondary">Attach more images</a>
                     </li>
                   {% endif %}
                 </ul>
@@ -130,10 +132,10 @@
                        aria-expanded="false">Admin</a>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" href="{% url 'upload_property' %}">Upload Property</a>
+                        <a class="dropdown-item" href="{% url 'bdenapp:upload_property' %}">Upload Property</a>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="{% url 'upload_images' %}">Upload images</a>
+                        <a class="dropdown-item" href="{% url 'bdenapp:upload_images' %}">Upload images</a>
                       </li>
                     </ul>
                   </div>
@@ -143,10 +145,10 @@
           {% else %}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+                <a class="nav-link" href="{% url 'bdenapp:register' %}">Sign Up</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-link" href="{% url 'bdenapp:login' %}">Login</a>
               </li>
             </ul>
           {% endif %}

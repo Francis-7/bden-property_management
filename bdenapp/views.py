@@ -259,7 +259,7 @@ def register(request):
             UserWallet.objects.get_or_create(user=user)
 
             messages.success(request, "Registration successful! You can now log in.")
-            return redirect('login')
+            return redirect('bdenapp:login')
     else:
         form = UserRegistrationForm()
 
@@ -272,13 +272,13 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('dashboard')
+            return redirect('bdenapp:dashboard')
     return render(request, 'bdenapp/login.html')
 
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect('login')
+    return redirect('bdenapp:login')
 
 # is owner users can also list properties
 def is_owner_or_superuser(user):
@@ -366,11 +366,25 @@ def create_wallet(sender, instance, created, **kwargs):
 @login_required
 def user_dashboard(request):
     user = request.user
+    user_wallet = UserWallet.objects.get(user=user)
     user_profile = UserProfile.objects.get(user=request.user)
     properties = user_profile.user.properties.all
     saved_items = request.user.saveditems_set.all()
     purchases = request.user.purchase_set.all()
-    return render(request, 'bdenapp/dashboard.html', {'user_profile':user_profile, 'saved_items':saved_items, 'purchases':purchases, 'properties':properties, 'user':user})
+    return render(request, 'bdenapp/dashboard.html', {'user_profile':user_profile, 'saved_items':saved_items, 'purchases':purchases, 'properties':properties, 'user':user, 'user_wallet':user_wallet})
+
+# update and fund your wallet
+from .forms import UserWalletForm
+def update_wallet(request, id):
+    wallet = get_object_or_404(UserWallet, id=id)
+    if request.method == 'POST':
+        form = UserWalletForm(request.POST, instance=wallet)
+        if form.is_valid():
+            form.save()
+            return redirect('bdenapp:dashboard')
+    else:
+        form = UserWalletForm(instance=wallet)
+    return render(request, 'bdenapp/update_funds.html', {'form':form})
 
 # enabling the owner mode in the dashboard
 def is_owner(request):
@@ -407,7 +421,7 @@ def save_for_later(request, id):
 def complete_purchase(request, id):
     property = get_object_or_404(Property, id=id)
     Purchase.objects.get_or_create(user=request.user, property=property)
-    return redirect('dashboard')
+    return redirect('bdenapp:dashboard')
 
 # the landing page view
 def landing_page(request):

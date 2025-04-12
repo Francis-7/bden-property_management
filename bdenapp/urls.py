@@ -55,4 +55,5 @@ urlpatterns = [
     path('find/your/dream/home/', views.find_a_property, name='find_property'),
     path('submit/property/', views.submit_property, name='submit_property'),
     path('sales/terms/<int:property_id>/', views.sales_terms, name='sales_terms'),
+    path('fund/wallet/<int:id>/', views.update_wallet, name='update_wallet'),
 ]

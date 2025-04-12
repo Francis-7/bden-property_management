@@ -1,0 +1,45 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% block title %}
+    Update Funds
+{% endblock title %}
+{% block style %}
+    .update {
+    padding: 2rem;
+    background: wheat;
+    text-align: center;
+    letter-spacing: 5px;
+    }
+    .update h1 {
+    text-transform: uppercase;
+    }
+    .form--funds {
+    padding: 4rem;
+    text-align: center;
+    margin: 2rem;
+    }
+    form {
+    font-size: 20px;
+    letter-spacing: 2px;
+    padding: 1rem;
+    }
+    form button {
+    padding: 1px 1rem;
+    border-radius: 4rem;
+    background: blue;
+    color: white;
+    text-transform: capitalize;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="update">
+        <h1>add funds to wallet or update it</h1>
+    </div>
+    <div class="form--funds">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">fund wallet</button>
+        </form>
+    </div>
+{% endblock content %}

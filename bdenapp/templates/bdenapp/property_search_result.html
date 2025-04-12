@@ -70,7 +70,7 @@
     <section class="for-property">
         <div class="cards">
             {% for result in results %}
-                <a href="{% url 'propertyview' result.pk %}">
+                <a href="{% url 'bdenapp:propertyview' result.pk %}">
                     <div class="card">
                         <img src="{{ result.picture.url }}" alt="{{ result.owner }}" />
                         <div class="content">
@@ -85,7 +85,7 @@
         </div>
     </section>
     <section class="filtered">
-        <form method="get" action="{% url 'property_search_result' %}">
+        <form method="get" action="{% url 'bdenapp:property_search_result' %}">
             <!-- Keep the original search query -->
             <input type="hidden" name="q" value="{{ query }}">
             <!-- Dropdown for price filtering -->
