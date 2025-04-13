@@ -6,12 +6,13 @@
 {% block style %}
 {% endblock style %}
 {% block content %}
-    <form method="post">
+    <form method="post"
+          action="{% url 'payments:payment_confirmation' payment.id property.id %}">
         {% csrf_token %}
         <label>Email:</label>
-        <input type="email" name="email" required>
+        <input type="email" name="{{ email }}" required>
         <label>Amount:</label>
-        <input type="number" name="amount" required>
+        <input type="number" name="{{ amount }}" required>
         <button type="submit">Proceed to Payment</button>
     </form>
 {% endblock content %}

@@ -31,6 +31,8 @@ class Property(models.Model):
     uploaded = models.DateField(auto_now_add=True)
     isPeerToPeer = models.BooleanField(default=False)
     provision = models.CharField(max_length=10, choices=STATUS, default='rent')
+    initial_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    peer_payment_status = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'property'
@@ -111,6 +113,20 @@ class Purchase(models.Model):
 
 #     def __str__(self):
 #         return f"{self.user.username} - {self.amount} - {self.currency} ({self.status})"
+
+# Peer to Peer system
+class PeerToPeerTransaction(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='transactions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='peers_payments')
+    amount_paid = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    paid_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'peer_transactions'
+
+    def __str__(self):
+        return f"{self.user} paid {self.amount_paid} for {self.property}"
+
 
 def group_and_sort_by_first_word():
     # fetch all objects

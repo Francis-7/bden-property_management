@@ -45,7 +45,7 @@
     var handler = PaystackPop.setup({
     key: "{{ paystack_pub_key }}",
     email: "{{ payment.email }}",
-    amount: "{{ payment.amount }}",
+    amount: "{{ amount_value }}",
     ref: "{{ payment.ref }}",
     callback: function(response) {
     window.location.href = "/payments/verify-payment/" + response.reference + "/" + property_id;

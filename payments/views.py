@@ -32,6 +32,15 @@ def initiate_payment(request, property_id):
 
         payment = Payment.objects.create(amount=amount, email=email, user=request.user)
         payment.save()
+        context = {
+            "amount": amount,
+            "email": email,
+            "property": property,
+            "payment": payment,
+            "payment_ref": payment.ref,
+            "paystack_pub_key": settings.PAYSTACK_PUBLIC_KEY,
+        }
+        # return render(request, 'payments/payment.html', context)
 
         return redirect('payments:payment_confirmation', payment_id=payment.id, property_id=property.id)
     return HttpResponse("Invalid request", status=400)
@@ -62,7 +71,7 @@ def verify_payment(request, ref, property_id):
         user_wallet.balance -= payment.amount
         user_wallet.save()
         property_obj = get_object_or_404(Property, id=property_id)
-        print("Property ID in view:", property_obj.id)
+        
         
         receipt_data = {
             'user' : request.user.username,

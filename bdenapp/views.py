@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Property, PropertyImage, Review, UserProfile, User, SavedItems, Purchase
+from .models import Property, PropertyImage, Review, UserProfile, User, SavedItems, Purchase, PeerToPeerTransaction
 from .filters import PropertyFilter
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
@@ -703,3 +703,33 @@ def submit_property(request):
 def sales_terms(request, property_id):
     property = get_object_or_404(Property, id=property_id)
     return render(request, 'bdenapp/sales_terms.html', {'property':property})
+
+# the peer to peer businuss
+
+
+@login_required
+def pay_peer_to_peer_property(request, property_id):
+    property = get_object_or_404(Property, id=property_id)
+    if not property.isPeerToPeer:
+        return JsonResponse({'error': 'This property is not a peer-to-peer property'}, status=400)
+    
+    user = request.user
+    amount_to_pay = property.price / 2
+
+    # check if payment was made
+    existing_payment = PeerToPeerTransaction.objects.filter(property=property, user=user).exists()
+    if existing_payment:
+        return JsonResponse({'error': 'User has already paid their share'}, status=400)
+    PeerToPeerTransaction.objects.create(property=property, user=user, amount_paid=amount_to_pay)
+
+    total_payments = PeerToPeerTransaction.objects.filter(property=property).count()
+
+    if total_payments == 1:
+        property.price = amount_to_pay
+        property.peer_payment_status = 1
+    elif total_payments == 2:
+        property.isAvailable = False
+        property.peer_payment_status = 2
+
+    property.save()
+    return JsonResponse({'success': 'Payment successful', 'remaining_price': property.price})

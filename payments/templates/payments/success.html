@@ -85,9 +85,7 @@
         {% endif %}
     </div>
     <div class="proceed">
-        <a href="{% url 'bdenapp:handle-purchase' property.pk %}">contact the owner {{ receipt.id }}</a>
-        <a href="/media/receipts/receipt_{{ receipt.reference }}.pdf" download>
-            <button>Download Receipt PDF</button>
-        </a>
+        <a href="{% url 'bdenapp:handle-purchase' property.pk %}">Contact the Owner</a>
+        <a href="/media/receipts/receipt_{{ receipt.reference }}.pdf" download>Download Receipt PDF</a>
     </div>
 {% endblock content %}
