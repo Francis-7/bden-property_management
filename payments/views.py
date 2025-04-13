@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Payment, UserWallet
 from django.conf import settings
 from django.http import JsonResponse, HttpResponse
-from bdenapp.models import Property
+from bdenapp.models import Property, PeerToPeerTransaction
 from django.shortcuts import get_object_or_404
 import os
 from reportlab.pdfgen import canvas
@@ -21,6 +21,10 @@ def initiate_payment(request, property_id):
         if not amount or not email:
             return HttpResponse("Missing required payment details", status=400)
         
+        # Check if it's a peer-to-peer property
+        if property.isPeerToPeer:
+            amount = property.price / 2
+        
         wallet = UserWallet.objects.get(user=user)
         if wallet.balance < amount:
             return HttpResponse("Insufficient funds in wallet", status=400)
@@ -32,6 +36,17 @@ def initiate_payment(request, property_id):
 
         payment = Payment.objects.create(amount=amount, email=email, user=request.user)
         payment.save()
+
+        # Track peer-to-peer payment status
+        peer_payment_count = PeerToPeerTransaction.objects.filter(property=property).count()
+        if peer_payment_count == 0:
+            property.price = amount  
+            property.peer_payment_status = 1  
+        elif peer_payment_count == 1:
+            property.isAvailable = False  
+            property.peer_payment_status = 2
+
+        property.save()
         context = {
             "amount": amount,
             "email": email,

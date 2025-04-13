@@ -257,6 +257,9 @@
             <form method="post"
                   action="{% url 'payments:initiate_payment' property.id %}">
                 {% csrf_token %}
+                <input type="hidden"
+                       name="amount_to_pay"
+                       value="{% if property.isPeerToPeer and property.peer_payment_status == 1 %}{{ property.price }}{% else %}{{ property.price|divide:2 }}{% endif %}">
                 <button type="submit">Proceed to Payment</button>
             </form>
         </div>
