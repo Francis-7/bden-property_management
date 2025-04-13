@@ -56,4 +56,5 @@ urlpatterns = [
     path('submit/property/', views.submit_property, name='submit_property'),
     path('sales/terms/<int:property_id>/', views.sales_terms, name='sales_terms'),
     path('fund/wallet/<int:id>/', views.update_wallet, name='update_wallet'),
+    path('peers/summary/<int:property_id>/', views.peers_summary, name='peers_summary'),
 ]

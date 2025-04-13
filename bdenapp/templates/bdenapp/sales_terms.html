@@ -283,11 +283,21 @@
                     The {{ property.provision }} terms for this property states that
                     {% if property.provision == 'Rent' %}
                         {% if property.isPeerToPeer %}
-                            This property is designed for peer to peer sharing meaning that two persons will take
-                            the property and split the cost equally. The full amount is <span>₦{{ property.price | intcomma }}</span>
-                            and the highest amount of users to pay is two. you may want to see the status of this property before you proceed.
-                            You are to pay your own half of the price <span>₦{{ property.price| divide:2 | intcomma }}</span> to be able
-                            to share this property with {{ property.description }}
+                            {% if property.peer_payment_status == 1 %}
+                                {% for peer in peer_users %}
+                                    A User <span>{{ peer.user.username }}</span> has deposited for this property at <span>{{ peer.paid_at }}</span> and still remains one slot
+                                    to complete the renting of this property. Make that decisive choice today by depositing and enjoying the shared
+                                    property only on <span>B-den</span>. Amount to pay is <span>₦{{ property.price | intcomma }}</span> only!
+                                {% endfor %}
+                            {% elif property.peer_payment_status == 2 %}
+                                <p>This property is fully paid and rented!</p>
+                            {% else %}
+                                This property is designed for peer to peer sharing meaning that two persons will take
+                                the property and split the cost equally. The full amount is <span>₦{{ property.price | intcomma }}</span>
+                                and the highest amount of users to pay is two. you may want to see the status of this property before you proceed.
+                                You are to pay your own half of the price <span>₦{{ property.price| divide:2 | intcomma }}</span> to be able
+                                to share this property with {{ property.description }}
+                            {% endif %}
                         {% else %}
                             You the renter must pay the full sum of <span>₦{{ property.price | intcomma }}</span> before you can proceed to contact the owner of the property
                             otherwise, the transaction won't proceed as the system will decline it. You're advised to update your payment on time to avoid trouble
@@ -309,6 +319,17 @@
                 </p>
                 <a href="{% url 'bdenapp:sales_terms' property.id %}"
                    class="btn btn-primary btn--green">Proceed</a>
+                {% if property.isPeerToPeer %}
+                    {% if property.peer_payment_status == 1 %}
+                        {% for peer in peer_users %}
+                            <a href="{% url 'bdenapp:peers_summary' property.id %}"
+                               class="btn btn-primary ms-5">See {{ peer.user.username }} summary</a>
+                        {% endfor %}
+                    {% elif property.peer_payment_status == 2_ %}
+                        <a href="{% url 'bdenapp:peers_summary' property.id %}"
+                           class="btn btn-primary ms-5">This property is fully paid and rented!</a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>

@@ -404,7 +404,7 @@ def update_profile_picture(request):
         form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            return redirect('bdenapp:dashboard')
     else:
         form = UserProfileForm()
     return render(request, 'bdenapp/update_profile_picture.html', {'form':form})
@@ -414,7 +414,7 @@ def update_profile_picture(request):
 def save_for_later(request, id):
     property = get_object_or_404(Property, id=id)
     SavedItems.objects.get_or_create(user=request.user, property=property)
-    return redirect('dashboard')
+    return redirect('bdenapp:dashboard')
 
 # completing a transaction
 @login_required
@@ -702,9 +702,16 @@ def submit_property(request):
 # sales form info
 def sales_terms(request, property_id):
     property = get_object_or_404(Property, id=property_id)
-    return render(request, 'bdenapp/sales_terms.html', {'property':property})
+    # peer_users = PeerToPeerTransaction.objects.filter(property=property).values('user__username', 'user__email', 'amount_paid', 'paid_at')
+    peer_users = PeerToPeerTransaction.objects.filter(property=property).select_related('user__profile')
+    return render(request, 'bdenapp/sales_terms.html', {'property':property, 'peer_users':peer_users,})
 
 # the peer to peer businuss
+@login_required
+def peers_summary(request, property_id):
+    property = get_object_or_404(Property, id=property_id)
+    peer_users = PeerToPeerTransaction.objects.filter(property=property).select_related('user__profile')
+    return render(request, 'bdenapp/peers_summary.html', {'property':property, 'peer_users':peer_users})
 
 
 @login_required

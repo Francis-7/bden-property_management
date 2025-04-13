@@ -1,0 +1,56 @@
+{% extends 'bdenapp/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load humanize %}
+{% block title %}
+    Peers
+{% endblock title %}
+{% block style %}
+    .context {
+    text-align: center;
+    margin: 2rem auto;
+    padding: 5rem;
+    }
+    .user {
+    display: flex;
+    gap: 10px;
+    letter-spacing: 5px;
+    padding: 5rem;
+    margin: 2rem;
+    text-align: start;
+    background: black;
+    color: white;
+    justify-content: space-between;
+    }
+{% endblock style %}
+{% block content %}
+    <div class="context">
+        {% if property.peer_payment_status == 1 %}
+            <div class="user">
+                {% for peer in peer_users %}
+                    <div class="details">
+                        <h1>Name: {{ peer.user.username }}</h1>
+                        <h1>Email:{{ peer.user.email }}</h1>
+                        <h1>Amount Paid: ₦ {{ peer.amount_paid| intcomma }}</h1>
+                        <h1>Date: {{ peer.paid_at }}</h1>
+                    </div>
+                    <div class="image">
+                        {% if peer.user.profile.profile_picture %}
+                            <img src="{{ peer.user.profile.profile_picture.url }}"
+                                 alt="{{ peer.user.username }} picture">
+                        {% else %}
+                            <img src="{% static 'bdenapp/images/profile.png' %}"
+                                 alt="Default Profile Picture">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% elif property.peer_payment_status == 2_ %}
+            <div class="text-center">
+                <h1 class="display-4">Users are now enjoying their property 😎😎</h1>
+            </div>
+        {% endif %}
+        <a href="{% url 'bdenapp:sales_terms' property.id %}"
+           class="btn btn-info mt-5 btn-lg">Back</a>
+    </div>
+{% endblock content %}

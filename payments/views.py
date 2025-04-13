@@ -37,13 +37,16 @@ def initiate_payment(request, property_id):
         payment = Payment.objects.create(amount=amount, email=email, user=request.user)
         payment.save()
 
+        # Save peer-to-peer transaction
+        PeerToPeerTransaction.objects.create(property=property, user=user, amount_paid=amount)
+
         # Track peer-to-peer payment status
         peer_payment_count = PeerToPeerTransaction.objects.filter(property=property).count()
-        if peer_payment_count == 0:
-            property.price = amount  
+        if peer_payment_count == 1:
+            property.price = amount 
             property.peer_payment_status = 1  
-        elif peer_payment_count == 1:
-            property.isAvailable = False  
+        elif peer_payment_count == 2:
+            property.isAvailable = False 
             property.peer_payment_status = 2
 
         property.save()
